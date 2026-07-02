@@ -115,63 +115,6 @@ export function AppShell({
   );
 }
 
-function HelpSheet({
-  open,
-  onOpenChange,
-}: {
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
-}) {
-  return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="rounded-t-3xl border-0 p-6">
-        <SheetHeader className="text-left">
-          <SheetTitle className="text-navy text-xl">
-            Você não está sozinho 💚
-          </SheetTitle>
-          <SheetDescription className="text-muted-foreground">
-            Se precisar conversar agora, essas pessoas podem te ajudar,
-            gratuitamente e sem julgamento.
-          </SheetDescription>
-        </SheetHeader>
-
-        <div className="mt-5 space-y-3">
-          <a
-            href="tel:188"
-            className="flex items-center gap-3 rounded-2xl bg-coral p-4 text-coral-foreground shadow-soft"
-          >
-            <div className="grid h-11 w-11 place-items-center rounded-full bg-white/20">
-              <Phone className="h-5 w-5" />
-            </div>
-            <div>
-              <div className="text-sm font-semibold">CVV — Ligar 188</div>
-              <div className="text-xs opacity-90">
-                24h, gratuito, sigiloso.
-              </div>
-            </div>
-          </a>
-
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
-            <div className="text-sm font-semibold text-navy">
-              CAPS mais próximo
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Os Centros de Atenção Psicossocial (CAPS) do SUS oferecem
-              atendimento gratuito para questões de saúde mental, incluindo
-              dependências.
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-secondary p-4 text-xs text-muted-foreground">
-            Lembre: este app é um apoio, não substitui acompanhamento
-            profissional.
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
-  );
-}
-
 // NOTA (dev): Neste protótipo o Xande usa respostas pré-programadas.
 // Na versão completa, este assistente se conectará a uma IA real
 // (Lovable AI Gateway) mantendo o mesmo tom acolhedor e as mesmas
