@@ -57,7 +57,7 @@ const MILESTONES: Milestone[] = [
 function encourage(totalMinutes: number) {
   if (totalMinutes < 60) return "Cada minuto é uma vitória. Respira, você consegue.";
   if (totalMinutes < 60 * 24) return "Você está mais forte a cada hora que passa.";
-  if (totalMinutes < 60 * 24 * 7) return "Um dia de cada vez. Segue firme, dá muito orgulho.";
+  if (totalMinutes < 60 * 24 * 7) return "Siga firme, valerá a pena.";
   if (totalMinutes < 60 * 24 * 30) return "Uma semana muda muita coisa. Continua assim!";
   if (totalMinutes < 60 * 24 * 90) return "Você está transformando sua história 💚";
   return "Você é inspiração pra muita gente. Continue!";
@@ -153,7 +153,7 @@ function Home() {
       {/* Counter card */}
       <section className="mt-3 overflow-hidden rounded-3xl bg-gradient-to-br from-teal to-[#0fa693] p-6 text-teal-foreground shadow-soft animate-fade-in">
         <div className="text-xs font-semibold uppercase tracking-wider opacity-90">
-          Você está livre há
+          Você está sem apostar há:
         </div>
 
         <div className="mt-4 flex items-end justify-between gap-2">
