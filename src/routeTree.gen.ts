@@ -14,6 +14,7 @@ import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as DesafiosRouteImport } from './routes/desafios'
 import { Route as ComunidadeRouteImport } from './routes/comunidade'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
+import { Route as AutoavaliacaoRouteImport } from './routes/autoavaliacao'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SimuladorRoute = SimuladorRouteImport.update({
@@ -41,6 +42,11 @@ const BemVindoRoute = BemVindoRouteImport.update({
   path: '/bem-vindo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AutoavaliacaoRoute = AutoavaliacaoRouteImport.update({
+  id: '/autoavaliacao',
+  path: '/autoavaliacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +55,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/autoavaliacao': typeof AutoavaliacaoRoute
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
   '/desafios': typeof DesafiosRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/autoavaliacao': typeof AutoavaliacaoRoute
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
   '/desafios': typeof DesafiosRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/autoavaliacao': typeof AutoavaliacaoRoute
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
   '/desafios': typeof DesafiosRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/autoavaliacao'
     | '/bem-vindo'
     | '/comunidade'
     | '/desafios'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/autoavaliacao'
     | '/bem-vindo'
     | '/comunidade'
     | '/desafios'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/autoavaliacao'
     | '/bem-vindo'
     | '/comunidade'
     | '/desafios'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AutoavaliacaoRoute: typeof AutoavaliacaoRoute
   BemVindoRoute: typeof BemVindoRoute
   ComunidadeRoute: typeof ComunidadeRoute
   DesafiosRoute: typeof DesafiosRoute
@@ -145,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BemVindoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/autoavaliacao': {
+      id: '/autoavaliacao'
+      path: '/autoavaliacao'
+      fullPath: '/autoavaliacao'
+      preLoaderRoute: typeof AutoavaliacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -157,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AutoavaliacaoRoute: AutoavaliacaoRoute,
   BemVindoRoute: BemVindoRoute,
   ComunidadeRoute: ComunidadeRoute,
   DesafiosRoute: DesafiosRoute,

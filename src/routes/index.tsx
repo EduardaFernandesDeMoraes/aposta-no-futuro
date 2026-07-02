@@ -228,7 +228,7 @@ function Home() {
         </h2>
         <div className="grid grid-cols-2 gap-3">
           <ShortcutCard
-            to="/perfil"
+            to="/autoavaliacao"
             color="bg-magenta/10 text-magenta"
             icon={<ClipboardCheck className="h-5 w-5" />}
             title="Fazer minha autoavaliação"
