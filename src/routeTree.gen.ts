@@ -15,6 +15,7 @@ import { Route as DesafiosRouteImport } from './routes/desafios'
 import { Route as ComunidadeRouteImport } from './routes/comunidade'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AutoavaliacaoRouteImport } from './routes/autoavaliacao'
+import { Route as AjudaRouteImport } from './routes/ajuda'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SimuladorRoute = SimuladorRouteImport.update({
@@ -47,6 +48,11 @@ const AutoavaliacaoRoute = AutoavaliacaoRouteImport.update({
   path: '/autoavaliacao',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AjudaRoute = AjudaRouteImport.update({
+  id: '/ajuda',
+  path: '/ajuda',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -55,6 +61,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ajuda': typeof AjudaRoute
   '/autoavaliacao': typeof AutoavaliacaoRoute
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ajuda': typeof AjudaRoute
   '/autoavaliacao': typeof AutoavaliacaoRoute
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
@@ -74,6 +82,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ajuda': typeof AjudaRoute
   '/autoavaliacao': typeof AutoavaliacaoRoute
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ajuda'
     | '/autoavaliacao'
     | '/bem-vindo'
     | '/comunidade'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ajuda'
     | '/autoavaliacao'
     | '/bem-vindo'
     | '/comunidade'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ajuda'
     | '/autoavaliacao'
     | '/bem-vindo'
     | '/comunidade'
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AjudaRoute: typeof AjudaRoute
   AutoavaliacaoRoute: typeof AutoavaliacaoRoute
   BemVindoRoute: typeof BemVindoRoute
   ComunidadeRoute: typeof ComunidadeRoute
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AutoavaliacaoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ajuda': {
+      id: '/ajuda'
+      path: '/ajuda'
+      fullPath: '/ajuda'
+      preLoaderRoute: typeof AjudaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -177,6 +197,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AjudaRoute: AjudaRoute,
   AutoavaliacaoRoute: AutoavaliacaoRoute,
   BemVindoRoute: BemVindoRoute,
   ComunidadeRoute: ComunidadeRoute,
@@ -187,3 +208,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
