@@ -1,5 +1,5 @@
-import { Link, useLocation } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Home,
   Calculator,
@@ -10,10 +10,14 @@ import {
   MessageCircle,
   Phone,
   X,
-  Send,
+  RotateCcw,
+  Wind,
+  Timer,
+  Heart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import {
   Sheet,
   SheetContent,
