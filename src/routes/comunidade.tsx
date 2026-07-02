@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ShieldAlert, Send, Users } from "lucide-react";
+import { ShieldAlert, Send, ArrowLeft, Info } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
