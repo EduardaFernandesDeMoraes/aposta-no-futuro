@@ -47,9 +47,9 @@ export function AppShell({
   title: string;
   children: ReactNode;
 }) {
-  const [helpOpen, setHelpOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
