@@ -110,7 +110,6 @@ export function AppShell({
         </ul>
       </nav>
 
-      <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />
       <ChatSheet open={chatOpen} onOpenChange={setChatOpen} />
     </div>
   );
