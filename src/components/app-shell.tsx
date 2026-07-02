@@ -60,7 +60,7 @@ export function AppShell({
             {title}
           </h1>
           <button
-            onClick={() => setHelpOpen(true)}
+            onClick={() => navigate({ to: "/ajuda" })}
             className="inline-flex items-center gap-1.5 rounded-full bg-coral px-3 py-1.5 text-xs font-semibold text-coral-foreground shadow-soft transition-transform active:scale-95"
           >
             <LifeBuoy className="h-3.5 w-3.5" />
