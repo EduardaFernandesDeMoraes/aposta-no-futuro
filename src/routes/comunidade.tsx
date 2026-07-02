@@ -122,16 +122,7 @@ function Comunidade() {
         </TabsContent>
 
         <TabsContent value="mentores" className="mt-4">
-          <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center">
-            <Users className="h-10 w-10 text-[#1CA0D8]" />
-            <h2 className="text-lg font-semibold text-[#16233C]">
-              Mentores em breve
-            </h2>
-            <p className="text-sm text-slate-600">
-              Vamos conectar você com quem já passou por essa jornada e quer
-              caminhar junto.
-            </p>
-          </div>
+          <Mentores />
         </TabsContent>
       </Tabs>
     </AppShell>
