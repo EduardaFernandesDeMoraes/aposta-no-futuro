@@ -88,7 +88,7 @@ export function AppShell({
       </button>
 
       {/* Bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-navy text-navy-foreground">
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-navy text-navy-foreground pb-[env(safe-area-inset-bottom)]">
         <ul className="mx-auto grid max-w-md grid-cols-5">
           {TABS.map((tab) => {
             const active =
