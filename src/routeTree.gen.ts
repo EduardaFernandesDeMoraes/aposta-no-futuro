@@ -9,8 +9,38 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SimuladorRouteImport } from './routes/simulador'
+import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as DesafiosRouteImport } from './routes/desafios'
+import { Route as ComunidadeRouteImport } from './routes/comunidade'
+import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SimuladorRoute = SimuladorRouteImport.update({
+  id: '/simulador',
+  path: '/simulador',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerfilRoute = PerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesafiosRoute = DesafiosRouteImport.update({
+  id: '/desafios',
+  path: '/desafios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComunidadeRoute = ComunidadeRouteImport.update({
+  id: '/comunidade',
+  path: '/comunidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BemVindoRoute = BemVindoRouteImport.update({
+  id: '/bem-vindo',
+  path: '/bem-vindo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +49,102 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bem-vindo': typeof BemVindoRoute
+  '/comunidade': typeof ComunidadeRoute
+  '/desafios': typeof DesafiosRoute
+  '/perfil': typeof PerfilRoute
+  '/simulador': typeof SimuladorRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bem-vindo': typeof BemVindoRoute
+  '/comunidade': typeof ComunidadeRoute
+  '/desafios': typeof DesafiosRoute
+  '/perfil': typeof PerfilRoute
+  '/simulador': typeof SimuladorRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bem-vindo': typeof BemVindoRoute
+  '/comunidade': typeof ComunidadeRoute
+  '/desafios': typeof DesafiosRoute
+  '/perfil': typeof PerfilRoute
+  '/simulador': typeof SimuladorRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/bem-vindo'
+    | '/comunidade'
+    | '/desafios'
+    | '/perfil'
+    | '/simulador'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/bem-vindo'
+    | '/comunidade'
+    | '/desafios'
+    | '/perfil'
+    | '/simulador'
+  id:
+    | '__root__'
+    | '/'
+    | '/bem-vindo'
+    | '/comunidade'
+    | '/desafios'
+    | '/perfil'
+    | '/simulador'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BemVindoRoute: typeof BemVindoRoute
+  ComunidadeRoute: typeof ComunidadeRoute
+  DesafiosRoute: typeof DesafiosRoute
+  PerfilRoute: typeof PerfilRoute
+  SimuladorRoute: typeof SimuladorRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/simulador': {
+      id: '/simulador'
+      path: '/simulador'
+      fullPath: '/simulador'
+      preLoaderRoute: typeof SimuladorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/perfil': {
+      id: '/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/desafios': {
+      id: '/desafios'
+      path: '/desafios'
+      fullPath: '/desafios'
+      preLoaderRoute: typeof DesafiosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comunidade': {
+      id: '/comunidade'
+      path: '/comunidade'
+      fullPath: '/comunidade'
+      preLoaderRoute: typeof ComunidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bem-vindo': {
+      id: '/bem-vindo'
+      path: '/bem-vindo'
+      fullPath: '/bem-vindo'
+      preLoaderRoute: typeof BemVindoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +157,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BemVindoRoute: BemVindoRoute,
+  ComunidadeRoute: ComunidadeRoute,
+  DesafiosRoute: DesafiosRoute,
+  PerfilRoute: PerfilRoute,
+  SimuladorRoute: SimuladorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
