@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ShieldAlert, Send, Users } from "lucide-react";
+import { ShieldAlert, Send, ArrowLeft, Info } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -122,16 +122,7 @@ function Comunidade() {
         </TabsContent>
 
         <TabsContent value="mentores" className="mt-4">
-          <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center">
-            <Users className="h-10 w-10 text-[#1CA0D8]" />
-            <h2 className="text-lg font-semibold text-[#16233C]">
-              Mentores em breve
-            </h2>
-            <p className="text-sm text-slate-600">
-              Vamos conectar você com quem já passou por essa jornada e quer
-              caminhar junto.
-            </p>
-          </div>
+          <Mentores />
         </TabsContent>
       </Tabs>
     </AppShell>
@@ -254,6 +245,215 @@ function Forum({
           Você aparece como <strong>{nick}</strong>. Nada de dados pessoais nem
           links, tá?
         </p>
+      </div>
+    </div>
+  );
+}
+
+type Mentor = {
+  id: string;
+  name: string;
+  timeLabel: string;
+  bio: string;
+  intro: string;
+  color: string;
+  initials: string;
+};
+
+const MENTORES: Mentor[] = [
+  {
+    id: "rafa",
+    name: "Rafa",
+    timeLabel: "2 anos livre",
+    bio: "Já estive onde você está. Bora conversar.",
+    intro:
+      "Oi! Sou o Rafa, faz 2 anos que parei. Se hoje tá pesado, me conta como você tá chegando aqui — sem julgamento nenhum.",
+    color: "#16BFAC",
+    initials: "RA",
+  },
+  {
+    id: "juliana",
+    name: "Juliana",
+    timeLabel: "1 ano e 4 meses livre",
+    bio: "Um dia de cada vez também funcionou pra mim.",
+    intro:
+      "Oi, sou a Juliana. Comecei igualzinho a você, achando que não ia dar. Me conta um pouco do seu momento — a gente vai devagar.",
+    color: "#E8197E",
+    initials: "JU",
+  },
+  {
+    id: "marcos",
+    name: "Marcos",
+    timeLabel: "3 anos livre",
+    bio: "Recaí várias vezes antes de conseguir. Tá tudo bem recomeçar.",
+    intro:
+      "E aí, sou o Marcos. Antes de firmar esses 3 anos eu recomecei umas 6 vezes. Se você recaiu ou tá com medo de recair, pode desabafar.",
+    color: "#1CA0D8",
+    initials: "MA",
+  },
+  {
+    id: "bia",
+    name: "Bia",
+    timeLabel: "1 ano e 8 meses livre",
+    bio: "A vida do outro lado é mais leve. Vem conversar.",
+    intro:
+      "Oi, sou a Bia 💚 Faz quase 2 anos. Me conta o que te trouxe aqui hoje — pode ser qualquer coisa, até só um oi.",
+    color: "#F5A623",
+    initials: "BI",
+  },
+];
+
+type ChatMsg = { from: "mentor" | "me"; text: string };
+
+function Mentores() {
+  const [active, setActive] = useState<Mentor | null>(null);
+  const [chats, setChats] = useLocalStorage<Record<string, ChatMsg[]>>(
+    "anf.comunidade.mentores.chats",
+    {},
+  );
+
+  if (active) {
+    return (
+      <MentorChat
+        mentor={active}
+        messages={chats[active.id] ?? [{ from: "mentor", text: active.intro }]}
+        onSend={(text) =>
+          setChats((c) => {
+            const prev = c[active.id] ?? [{ from: "mentor", text: active.intro }];
+            return { ...c, [active.id]: [...prev, { from: "me", text }] };
+          })
+        }
+        onBack={() => setActive(null)}
+      />
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-start gap-2 rounded-2xl bg-[#1CA0D8]/10 p-3 text-sm text-[#0b4f6c]">
+        <Info className="mt-0.5 h-4 w-4 flex-none text-[#1CA0D8]" />
+        <p>
+          Mentores são <strong>voluntários</strong> com pelo menos 1 ano sem
+          apostar. Eles oferecem escuta e apoio, mas <strong>não substituem
+          atendimento profissional</strong> de saúde.
+        </p>
+      </div>
+
+      <div className="space-y-3">
+        {MENTORES.map((m) => (
+          <div
+            key={m.id}
+            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className="flex h-14 w-14 flex-none items-center justify-center rounded-full text-lg font-bold text-white"
+                style={{ backgroundColor: m.color }}
+              >
+                {m.initials}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-[#16233C]">
+                  {m.name} — <span className="font-normal text-slate-600">{m.timeLabel}</span>
+                </p>
+                <p className="mt-0.5 text-sm text-slate-600">{m.bio}</p>
+              </div>
+            </div>
+            <Button
+              type="button"
+              onClick={() => setActive(m)}
+              className="mt-3 w-full rounded-full bg-[#16BFAC] text-white hover:bg-[#12a595]"
+            >
+              Conversar
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MentorChat({
+  mentor,
+  messages,
+  onSend,
+  onBack,
+}: {
+  mentor: Mentor;
+  messages: ChatMsg[];
+  onSend: (text: string) => void;
+  onBack: () => void;
+}) {
+  const [draft, setDraft] = useState("");
+
+  const send = () => {
+    const text = draft.trim();
+    if (!text) return;
+    onSend(text);
+    setDraft("");
+  };
+
+  return (
+    <div className="space-y-3">
+      <button
+        type="button"
+        onClick={onBack}
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-[#16BFAC]"
+      >
+        <ArrowLeft className="h-4 w-4" /> Voltar para mentores
+      </button>
+
+      <div
+        className="flex items-center gap-3 rounded-2xl p-3 text-white shadow-sm"
+        style={{ backgroundColor: mentor.color }}
+      >
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/20 font-bold">
+          {mentor.initials}
+        </div>
+        <div>
+          <p className="font-semibold">{mentor.name}</p>
+          <p className="text-xs opacity-90">{mentor.timeLabel} · voluntário(a)</p>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        {messages.map((m, i) => (
+          <div
+            key={i}
+            className={cn(
+              "max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed",
+              m.from === "mentor"
+                ? "bg-slate-100 text-slate-800"
+                : "ml-auto bg-[#16BFAC] text-white",
+            )}
+          >
+            {m.text}
+          </div>
+        ))}
+      </div>
+
+      <p className="rounded-xl bg-slate-50 p-2 text-center text-[11px] text-slate-500">
+        Mentores são voluntários e não substituem atendimento profissional.
+      </p>
+
+      <div className="sticky bottom-0 -mx-4 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur">
+        <div className="flex items-end gap-2">
+          <Textarea
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder={`Escreva para ${mentor.name}…`}
+            rows={2}
+            className="min-h-[44px] resize-none rounded-2xl border-slate-200 text-sm"
+          />
+          <Button
+            type="button"
+            onClick={send}
+            disabled={!draft.trim()}
+            className="h-11 rounded-full bg-[#16BFAC] px-4 text-white hover:bg-[#12a595] disabled:opacity-50"
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
