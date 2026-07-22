@@ -18,7 +18,6 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import logoAsset from "@/assets/logo-completo.svg.asset.json";
 import {
   Sheet,
   SheetContent,
@@ -26,7 +25,6 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-
 
 type Tab = {
   to: string;
@@ -57,25 +55,19 @@ export function AppShell({
     <div className="min-h-dvh bg-background text-navy flex flex-col">
       {/* Top bar */}
       <header className="sticky top-0 z-30 bg-navy text-navy-foreground shadow-soft">
-        <div className="relative mx-auto flex max-w-md items-center justify-center px-4 py-3">
-          <Link to="/" aria-label={title} className="flex items-center justify-center">
-            <img
-              src={logoAsset.url}
-              alt="Aposta no Futuro"
-              className="h-16 w-auto object-contain"
-            />
-          </Link>
+        <div className="mx-auto flex max-w-md items-center justify-between gap-3 px-4 py-3">
+          <h1 className="truncate text-lg font-semibold tracking-tight">
+            {title}
+          </h1>
           <button
             onClick={() => navigate({ to: "/ajuda" })}
-            aria-label="Preciso de ajuda"
-            className="absolute right-4 top-1/2 inline-flex -translate-y-1/2 items-center gap-1.5 rounded-full bg-coral px-3 py-1.5 text-xs font-semibold text-coral-foreground shadow-soft transition-transform active:scale-95"
+            className="inline-flex items-center gap-1.5 rounded-full bg-coral px-3 py-1.5 text-xs font-semibold text-coral-foreground shadow-soft transition-transform active:scale-95"
           >
             <LifeBuoy className="h-3.5 w-3.5" />
-            Ajuda
+            Preciso de ajuda
           </button>
         </div>
       </header>
-
 
       {/* Content */}
       <main
