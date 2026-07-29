@@ -470,7 +470,7 @@ function ChatSheet({
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSend(e);
+                  handleSend(e as unknown as React.FormEvent);
                 }
               }}
               placeholder="Como você está?"
