@@ -46,10 +46,10 @@ export const Route = createFileRoute("/")({
         content:
           "Aplicativo gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online. Contador de dias livres, simulador financeiro, autoavaliação e comunidade de apoio.",
       },
-      { property: "og:url", content: "https://www.apostanofuturo.online" },
+      { property: "og:url", content: "https://apostanofuturo.online/" },
       {
         property: "og:image",
-        content: "https://www.apostanofuturo.online/og-image.jpg",
+        content: "https://apostanofuturo.online/og-image.jpg",
       },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
@@ -68,10 +68,10 @@ export const Route = createFileRoute("/")({
       },
       {
         name: "twitter:image",
-        content: "https://www.apostanofuturo.online/og-image.jpg",
+        content: "https://apostanofuturo.online/og-image.jpg",
       },
     ],
-    links: [{ rel: "canonical", href: "https://www.apostanofuturo.online/" }],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/" }],
   }),
   component: HomeRoute,
 });
