@@ -97,10 +97,11 @@ function pickNick(seed: string) {
   return NICKS[h % NICKS.length];
 }
 
-/** Mede o composer fixo, a barra de navegação e o padding do main
- *  para reservar exatamente 16px entre a última mensagem e o composer. */
+/** Mede o composer fixo, a barra de navegação e o espaço abaixo da lista
+ *  para deixar exatamente 16px entre a última mensagem e o composer. */
 function useComposerHeight() {
   const ref = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const [pad, setPad] = useState(96);
   const [navH, setNavH] = useState(62);
 
@@ -111,18 +112,21 @@ function useComposerHeight() {
     const update = () => {
       const composerH = el?.offsetHeight ?? 0;
       const h = nav?.getBoundingClientRect().height ?? 0;
-      const mainPad = main
-        ? parseFloat(getComputedStyle(main).paddingBottom) || 0
-        : 0;
-      // espaço extra abaixo do <main> no documento (wrappers/safe-area)
-      const mainBottom = main
-        ? main.getBoundingClientRect().bottom + window.scrollY
-        : 0;
-      const extra = main
-        ? Math.max(0, document.documentElement.scrollHeight - mainBottom)
-        : 0;
       setNavH(h);
-      setPad(Math.max(0, composerH + h + 16 - mainPad - extra));
+
+      const list = listRef.current;
+      if (!list) return;
+      const lastCard = list.lastElementChild as HTMLElement | null;
+      if (!lastCard) return;
+
+      const docH = document.documentElement.scrollHeight;
+      const lastBottomAbs =
+        lastCard.getBoundingClientRect().bottom + window.scrollY;
+      const currentPad = parseFloat(getComputedStyle(list).paddingBottom) || 0;
+      // tudo que existe no documento abaixo da lista (padding do main etc.)
+      const below = docH - (lastBottomAbs + currentPad);
+
+      setPad(Math.max(0, composerH + h + 16 - below));
     };
 
     update();
@@ -130,6 +134,7 @@ function useComposerHeight() {
     if (el) ro.observe(el);
     if (nav) ro.observe(nav);
     if (main) ro.observe(main);
+
     return () => ro.disconnect();
   }, []);
 
