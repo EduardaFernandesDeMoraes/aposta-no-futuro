@@ -461,20 +461,20 @@ function ChatSheet({
           {/* Campo de digitação */}
           <form
             onSubmit={handleSend}
-            className="flex items-center gap-2 border-t border-border bg-card px-3 py-2.5"
+            className="flex items-center gap-2 border-t border-border bg-card px-4 py-2.5"
           >
             <input
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              placeholder="Escreva o que você está sentindo..."
+              placeholder="Como você está?"
               aria-label="Escreva sua mensagem para o Xande"
-              className="min-w-0 flex-1 rounded-full border border-border bg-background px-4 py-2.5 text-base outline-none md:text-sm placeholder:text-muted-foreground focus:border-teal"
+              className="min-w-0 flex-1 truncate rounded-full border border-border bg-background px-4 py-2.5 text-base outline-none md:text-sm placeholder:text-muted-foreground focus:border-teal"
             />
             <button
               type="submit"
               aria-label="Enviar mensagem"
               disabled={!draft.trim()}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal text-teal-foreground transition-all duration-200 ease-out hover:bg-[#14ac9b] active:scale-95 disabled:opacity-40"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-teal text-white transition-all duration-150 ease-out hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92] disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Send className="h-5 w-5" strokeWidth={2.2} />
             </button>
