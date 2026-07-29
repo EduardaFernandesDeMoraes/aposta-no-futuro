@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimuladorRouteImport } from './routes/simulador'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as DesafiosRouteImport } from './routes/desafios'
@@ -17,7 +18,13 @@ import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as AutoavaliacaoRouteImport } from './routes/autoavaliacao'
 import { Route as AjudaRouteImport } from './routes/ajuda'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GuiaPararDeApostarRouteImport } from './routes/guia.parar-de-apostar'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SimuladorRoute = SimuladorRouteImport.update({
   id: '/simulador',
   path: '/simulador',
@@ -58,6 +65,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuiaPararDeApostarRoute = GuiaPararDeApostarRouteImport.update({
+  id: '/guia/parar-de-apostar',
+  path: '/guia/parar-de-apostar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +80,8 @@ export interface FileRoutesByFullPath {
   '/desafios': typeof DesafiosRoute
   '/perfil': typeof PerfilRoute
   '/simulador': typeof SimuladorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +92,8 @@ export interface FileRoutesByTo {
   '/desafios': typeof DesafiosRoute
   '/perfil': typeof PerfilRoute
   '/simulador': typeof SimuladorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +105,8 @@ export interface FileRoutesById {
   '/desafios': typeof DesafiosRoute
   '/perfil': typeof PerfilRoute
   '/simulador': typeof SimuladorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +119,8 @@ export interface FileRouteTypes {
     | '/desafios'
     | '/perfil'
     | '/simulador'
+    | '/sitemap.xml'
+    | '/guia/parar-de-apostar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +131,8 @@ export interface FileRouteTypes {
     | '/desafios'
     | '/perfil'
     | '/simulador'
+    | '/sitemap.xml'
+    | '/guia/parar-de-apostar'
   id:
     | '__root__'
     | '/'
@@ -121,6 +143,8 @@ export interface FileRouteTypes {
     | '/desafios'
     | '/perfil'
     | '/simulador'
+    | '/sitemap.xml'
+    | '/guia/parar-de-apostar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,10 +156,19 @@ export interface RootRouteChildren {
   DesafiosRoute: typeof DesafiosRoute
   PerfilRoute: typeof PerfilRoute
   SimuladorRoute: typeof SimuladorRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  GuiaPararDeApostarRoute: typeof GuiaPararDeApostarRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/simulador': {
       id: '/simulador'
       path: '/simulador'
@@ -192,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guia/parar-de-apostar': {
+      id: '/guia/parar-de-apostar'
+      path: '/guia/parar-de-apostar'
+      fullPath: '/guia/parar-de-apostar'
+      preLoaderRoute: typeof GuiaPararDeApostarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +244,8 @@ const rootRouteChildren: RootRouteChildren = {
   DesafiosRoute: DesafiosRoute,
   PerfilRoute: PerfilRoute,
   SimuladorRoute: SimuladorRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  GuiaPararDeApostarRoute: GuiaPararDeApostarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
