@@ -10,6 +10,7 @@ import {
   Sparkles,
   ChevronRight,
   Phone,
+  Send,
 
   RotateCcw,
   Wind,
