@@ -27,19 +27,46 @@ import { OnboardingGate } from "@/components/onboarding-gate";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aposta no Futuro — Sua jornada livre de apostas" },
+      {
+        title:
+          "Aposta no Futuro | Apoio anônimo e gratuito contra o vício em apostas",
+      },
       {
         name: "description",
         content:
-          "Acompanhe em tempo real seus dias livres de apostas, conquistas e próximos passos.",
+          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online. Contador de dias livres, simulador financeiro, autoavaliação e comunidade de apoio.",
       },
-      { property: "og:title", content: "Aposta no Futuro — Sua jornada livre de apostas" },
+      {
+        property: "og:title",
+        content:
+          "Aposta no Futuro | Apoio anônimo e gratuito contra o vício em apostas",
+      },
       {
         property: "og:description",
         content:
-          "Acompanhe em tempo real seus dias livres de apostas, conquistas e próximos passos.",
+          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online.",
       },
       { property: "og:url", content: "https://apostanofuturo.online/" },
+      {
+        property: "og:image",
+        content: "https://apostanofuturo.online/og-image.jpg",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content:
+          "Aposta no Futuro | Apoio anônimo e gratuito contra o vício em apostas",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://apostanofuturo.online/og-image.jpg",
+      },
     ],
     links: [{ rel: "canonical", href: "https://apostanofuturo.online/" }],
   }),
