@@ -97,6 +97,24 @@ function pickNick(seed: string) {
   return NICKS[h % NICKS.length];
 }
 
+/** Mede a altura do composer fixo para reservar espaço na lista. */
+function useComposerHeight() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(96);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setHeight(el.offsetHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return { ref, height };
+}
+
 function Comunidade() {
   const [posts, setPosts] = useLocalStorage<Record<string, Msg[]>>(
     "anf.comunidade.posts",
