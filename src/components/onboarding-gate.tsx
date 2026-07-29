@@ -14,8 +14,8 @@ function readOnboarded(): boolean {
 function Splash() {
   return (
     <div
-      className="flex min-h-dvh w-full items-center justify-center bg-[#16233C] px-6"
-      aria-busy="true"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#16233C] px-6"
+      aria-hidden="true"
     >
       <p className="text-center text-2xl font-semibold tracking-tight text-white">
         Aposta no Futuro
@@ -25,9 +25,11 @@ function Splash() {
 }
 
 /**
- * Renders a neutral splash (identical on server and client) until the
- * onboarding flag in localStorage is read — on the very first client
- * effect, before any content paint. No artificial delay.
+ * The real content is ALWAYS rendered (server and client), so crawlers and
+ * visitors without JavaScript get the full page with HTTP 200 — never a
+ * server-side redirect. Only after hydration, on the client, a neutral
+ * splash overlay covers it while the onboarding flag is read from
+ * localStorage and, if needed, the user is navigated to the right route.
  */
 export function OnboardingGate({
   expect,
@@ -52,6 +54,10 @@ export function OnboardingGate({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (allowed !== true) return <Splash />;
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      {allowed !== true ? <Splash /> : null}
+    </>
+  );
 }
