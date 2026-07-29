@@ -235,28 +235,32 @@ function Home() {
         <h2 className="mb-3 text-sm font-semibold text-navy">
           Continue sua jornada
         </h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 items-stretch gap-3">
           <ShortcutCard
             to="/autoavaliacao"
             color="bg-magenta/10 text-magenta"
+            hover="hover:bg-magenta/5 hover:border-magenta/30"
             icon={<ClipboardCheck className="h-5 w-5" />}
-            title="Fazer minha autoavaliação"
+            title="Fazer autoavaliação"
           />
           <ShortcutCard
             to="/simulador"
             color="bg-teal/10 text-teal"
+            hover="hover:bg-teal/5 hover:border-teal/30"
             icon={<Calculator className="h-5 w-5" />}
-            title="Ver meu simulador"
+            title="Ver simulador"
           />
           <ShortcutCard
             to="/desafios"
             color="bg-gold/15 text-gold"
+            hover="hover:bg-gold/10 hover:border-gold/30"
             icon={<Trophy className="h-5 w-5" />}
-            title="Desafio de hoje"
+            title="Ver desafio de hoje"
           />
           <ShortcutCard
             to="/comunidade"
             color="bg-cyan/10 text-cyan"
+            hover="hover:bg-cyan/5 hover:border-cyan/30"
             icon={<Users className="h-5 w-5" />}
             title="Falar com a comunidade"
           />
@@ -354,28 +358,33 @@ function TimeBlock({
 function ShortcutCard({
   to,
   color,
+  hover,
   icon,
   title,
 }: {
   to: string;
   color: string;
+  hover?: string;
   icon: React.ReactNode;
   title: string;
 }) {
   return (
     <Link
       to={to}
-      className="group rounded-2xl border border-border bg-card p-4 shadow-card transition-transform active:scale-[0.98]"
+      className={cn(
+        "group flex h-full min-h-[124px] flex-col rounded-2xl border border-border bg-card p-4 text-left shadow-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-soft active:translate-y-0 active:scale-[0.98]",
+        hover,
+      )}
     >
       <div
         className={cn(
-          "grid h-10 w-10 place-items-center rounded-xl",
+          "grid h-10 w-10 place-items-center rounded-xl transition-colors duration-200",
           color,
         )}
       >
         {icon}
       </div>
-      <div className="mt-3 text-sm font-semibold leading-tight text-navy">
+      <div className="mt-auto pt-3 text-sm font-semibold leading-tight text-navy">
         {title}
       </div>
     </Link>
