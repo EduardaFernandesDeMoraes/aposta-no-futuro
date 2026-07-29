@@ -241,7 +241,7 @@ function Home() {
             color="bg-magenta/10 text-magenta"
             hover="hover:bg-magenta/5 hover:border-magenta/30"
             icon={<ClipboardCheck className="h-5 w-5" />}
-            title="Fazer autoavaliação"
+            title="Autoavaliação"
           />
           <ShortcutCard
             to="/simulador"
