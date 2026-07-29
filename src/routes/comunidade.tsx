@@ -456,7 +456,7 @@ function MentorChat({
           <Textarea
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder={`Escreva para ${mentor.name}…`}
+            placeholder="Escreva aqui…"
             rows={2}
             className="min-h-[44px] resize-none rounded-2xl border-slate-200 text-sm"
           />
