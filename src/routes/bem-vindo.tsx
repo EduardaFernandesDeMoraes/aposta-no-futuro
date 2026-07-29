@@ -165,36 +165,51 @@ function FinalStep({
   onName: (v: string) => void;
   onDate: (v: string) => void;
 }) {
+  const isAnonymous = name.trim() === "";
+
   return (
     <div>
       <h2 className="text-2xl font-bold leading-tight text-navy">
         Vamos nos conhecer?
       </h2>
       <p className="mt-2 text-sm text-muted-foreground">
-        Você pode continuar de forma anônima. O nome é opcional e não é salvo nem
-        enviado.
+        Você pode continuar de forma anônima, do seu jeito.
       </p>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-4 flex items-start gap-3 rounded-2xl bg-[#E1F5EE] p-4">
+        <span className="grid h-9 w-9 flex-none place-items-center rounded-full bg-white/70">
+          <ShieldCheck className="h-5 w-5 text-[#16BFAC]" strokeWidth={2.4} />
+        </span>
+        <p className="text-sm font-medium leading-snug text-navy">
+          Seu nome é opcional. Ele não é salvo em nenhum servidor e não é
+          enviado a ninguém — fica só no seu aparelho.
+        </p>
+      </div>
+
+      <div className="mt-5 space-y-4">
         <label className="block" htmlFor="onboarding-name">
-          <span className="mb-1.5 block text-sm font-medium text-navy">
-            Como podemos te chamar?{" "}
-            <span className="text-muted-foreground">(opcional)</span>
+          <span className="mb-1.5 flex items-center gap-2 text-sm font-medium text-navy">
+            Como podemos te chamar?
+            <span className="rounded-full bg-[#E1F5EE] px-2 py-0.5 text-[11px] font-semibold text-[#0d6b60]">
+              opcional
+            </span>
           </span>
           <input
             id="onboarding-name"
             value={name}
             onChange={(e) => onName(e.target.value)}
-            placeholder="Digite um nome ou deixe em branco"
+            placeholder="Ex.: Alex — ou deixe em branco"
             aria-describedby="name-help"
             className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-base outline-none md:text-sm transition-colors duration-200 focus:border-teal"
           />
-          <span
-            id="name-help"
-            className="mt-1.5 block text-xs text-muted-foreground"
-          >
-            Deixe em branco para continuar anonimamente.
-          </span>
+          {isAnonymous && (
+            <span
+              id="name-help"
+              className="mt-1.5 block text-xs font-medium text-[#0d6b60]"
+            >
+              Tudo certo, você vai continuar no anonimato ✓
+            </span>
+          )}
         </label>
 
         <label className="block">
@@ -209,6 +224,22 @@ function FinalStep({
           />
         </label>
       </div>
+
+      <ul className="mt-6 space-y-2.5">
+        {[
+          { icon: Calendar, text: "Contador dos seus dias livres, em tempo real" },
+          { icon: PiggyBank, text: "Simulador do quanto você deixa de perder" },
+          { icon: HandHeart, text: "Comunidade anônima e acolhedora" },
+        ].map(({ icon: Icon, text }) => (
+          <li key={text} className="flex items-center gap-3 text-sm text-navy/80">
+            <span className="grid h-8 w-8 flex-none place-items-center rounded-xl bg-[#E1F5EE]">
+              <Icon className="h-4 w-4 text-[#16BFAC]" strokeWidth={2.4} />
+            </span>
+            {text}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
+
