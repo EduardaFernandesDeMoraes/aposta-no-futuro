@@ -215,8 +215,8 @@ function ChatSheet({
     }, delay);
   }
 
-  function handleQuick(id: QuickId) {
-    const label = INITIAL_QUICK.find((q) => q.id === id)?.label ?? "";
+  function handleQuick(id: QuickId, userText?: string) {
+    const label = userText ?? INITIAL_QUICK.find((q) => q.id === id)?.label ?? "";
     pushUser(label);
 
     if (id === "vontade") {
