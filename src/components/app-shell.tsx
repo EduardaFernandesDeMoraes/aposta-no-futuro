@@ -361,7 +361,7 @@ function ChatSheet({
           {/* Messages */}
           <div
             ref={scrollRef}
-            className="flex-1 space-y-3 overflow-y-auto bg-background p-4 pb-6"
+            className="flex-1 space-y-4 overflow-y-auto bg-background p-4 pb-8"
           >
             {messages.map((m) => (
               <MessageBubble key={m.id} from={m.from}>
