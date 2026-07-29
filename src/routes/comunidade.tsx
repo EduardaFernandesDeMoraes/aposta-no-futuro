@@ -166,11 +166,17 @@ function Forum({
 }) {
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
   const [draft, setDraft] = useState("");
+  const { ref: composerRef, height: composerH } = useComposerHeight();
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   const room = ROOMS.find((r) => r.id === activeRoom)!;
   const messages = useMemo(() => {
     return [...(SEED[activeRoom] ?? []), ...(posts[activeRoom] ?? [])];
   }, [activeRoom, posts]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ block: "end" });
+  }, [activeRoom, messages.length]);
 
   const send = () => {
     const text = draft.trim();
@@ -194,8 +200,8 @@ function Forum({
       </div>
 
       {/* Seletor de salas */}
-      <div className="-mx-4 overflow-x-auto no-scrollbar px-4">
-        <div className="flex gap-2 pb-1">
+      <div className="-mx-4 overflow-x-auto overscroll-x-contain scroll-smooth no-scrollbar">
+        <div className="flex w-max gap-2 px-4 pb-1">
           {ROOMS.map((r) => {
             const active = r.id === activeRoom;
             return (
@@ -231,7 +237,7 @@ function Forum({
       </div>
 
       {/* Mensagens */}
-      <div className="space-y-3">
+      <div className="space-y-3" style={{ paddingBottom: composerH + 12 }}>
         {messages.map((m, i) => (
           <div
             key={`${m.nick}-${i}`}
@@ -246,38 +252,38 @@ function Forum({
             </p>
           </div>
         ))}
+        <div ref={bottomRef} />
       </div>
 
-      {/* Composer */}
-      <div className="sticky bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] z-20 -mx-4 -mb-4 bg-background px-4 pb-3 pt-2">
-        <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_4px_20px_-6px_rgba(22,35,60,0.18)]">
-
-
-
-        <div className="flex items-end gap-2">
-          <Textarea
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            placeholder="Escreva aqui…"
-            rows={2}
-            className="min-h-[44px] resize-none rounded-2xl border-slate-200 text-sm"
-          />
-          <Button
-            type="button"
-            onClick={send}
-            disabled={!draft.trim()}
-            className="h-11 rounded-full bg-[#16BFAC] px-4 text-white transition-all duration-200 hover:bg-[#14ac9b] disabled:opacity-50"
-          >
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
-        <p className="mt-1.5 text-[11px] text-slate-400">
-          Você aparece como <strong>{nick}</strong>. Nada de dados pessoais nem
-          links, tá?
-        </p>
+      {/* Composer fixo, acima da barra de navegação */}
+      <div
+        ref={composerRef}
+        className="fixed inset-x-0 bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] z-20 border-t border-slate-200 bg-white"
+      >
+        <div className="mx-auto w-full max-w-md px-4 pb-3 pt-2.5">
+          <div className="flex items-end gap-2">
+            <Textarea
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder="Escreva aqui…"
+              rows={2}
+              className="min-h-[44px] resize-none rounded-2xl border-slate-200 text-sm"
+            />
+            <Button
+              type="button"
+              onClick={send}
+              disabled={!draft.trim()}
+              className="h-11 rounded-full bg-[#16BFAC] px-4 text-white transition-all duration-200 hover:bg-[#14ac9b] disabled:opacity-50"
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+          <p className="mt-1.5 text-[11px] text-slate-400">
+            Você aparece como <strong>{nick}</strong>. Nada de dados pessoais nem
+            links, tá?
+          </p>
         </div>
       </div>
-
     </div>
   );
 }
