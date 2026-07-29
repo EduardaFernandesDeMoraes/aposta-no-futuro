@@ -109,7 +109,61 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Remove o retângulo cinza/azul padrão do toque no mobile, que conflita
+     com o feedback :active da identidade visual. */
+  button,
+  a,
+  summary,
+  label,
+  [role="button"],
+  [role="tab"],
+  [role="link"],
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
+
+/* Hover REAL apenas em dispositivos com mouse: garante que nenhum estado
+   de hover fique "preso" após o toque em telas touch. */
+@custom-variant hover (@media (hover: hover) and (pointer: fine) { &:hover { @slot } });
+
+/* Feedback de toque no mobile: mesma cor do hover (um tom mais escuro da
+   cor base do elemento) + scale(0.97) + transição de 100ms. */
+@media (hover: none), (pointer: coarse) {
+  button:not(:disabled):not([aria-disabled="true"]),
+  a,
+  summary,
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
+  [role="link"] {
+    transition:
+      transform 100ms ease,
+      filter 100ms ease,
+      background-color 100ms ease;
+  }
+
+  button:not(:disabled):not([aria-disabled="true"]):active,
+  a:active,
+  summary:active,
+  [role="button"]:not([aria-disabled="true"]):active,
+  [role="tab"]:not([aria-disabled="true"]):active,
+  [role="link"]:active {
+    transform: scale(0.97);
+    filter: brightness(0.9);
+  }
+
+  /* Desabilitados nunca recebem feedback. */
+  button:disabled,
+  button:disabled:active,
+  [aria-disabled="true"],
+  [aria-disabled="true"]:active {
+    transform: none;
+    filter: none;
+  }
+}
+
 
 @utility no-scrollbar {
   scrollbar-width: none;
