@@ -361,7 +361,7 @@ function ChatSheet({
           {/* Messages */}
           <div
             ref={scrollRef}
-            className="flex-1 space-y-3 overflow-y-auto bg-background p-4"
+            className="flex-1 space-y-3 overflow-y-auto bg-background p-4 pb-6"
           >
             {messages.map((m) => (
               <MessageBubble key={m.id} from={m.from}>
@@ -370,12 +370,13 @@ function ChatSheet({
             ))}
 
             {typing && (
-              <div className="flex max-w-[80%] items-center gap-1.5 rounded-2xl rounded-tl-sm bg-card p-3 shadow-card">
+              <div className="flex w-fit max-w-[80%] items-center gap-1.5 rounded-2xl rounded-tl-sm bg-card p-3 shadow-card">
                 <Dot />
                 <Dot delay={0.15} />
                 <Dot delay={0.3} />
               </div>
             )}
+            <div className="h-1" />
           </div>
 
           {/* Quick replies */}
@@ -384,12 +385,12 @@ function ChatSheet({
               <div className="mb-2 text-[11px] font-medium text-muted-foreground">
                 Toque numa resposta rápida:
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                 {quick.map((q) => (
                   <button
                     key={q.id}
                     onClick={() => handleQuick(q.id)}
-                    className="rounded-full border border-teal/40 bg-teal/10 px-3 py-1.5 text-xs font-semibold text-teal transition-colors active:scale-95"
+                    className="rounded-full border border-teal/40 bg-teal/10 px-3 py-2 text-xs font-semibold text-teal transition-colors active:scale-95 sm:w-auto"
                   >
                     {q.label}
                   </button>
