@@ -49,8 +49,28 @@ export function AppShell({
   children: ReactNode;
 }) {
   const [chatOpen, setChatOpen] = useState(false);
+  const [scrolling, setScrolling] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let timer: number | undefined;
+    const onScroll = () => {
+      setScrolling(true);
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(() => setScrolling(false), 1500);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (timer) window.clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    setScrolling(false);
+  }, [location.pathname]);
+
 
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
@@ -83,10 +103,20 @@ export function AppShell({
         <button
           onClick={() => setChatOpen(true)}
           aria-label="Abrir assistente virtual Xande IA"
-          className="fixed right-0 bottom-[calc(8.4rem+env(safe-area-inset-bottom))] z-40 flex h-14 w-[22px] items-center justify-center rounded-l-xl bg-teal text-white opacity-90 shadow-soft transition-opacity duration-200 hover:opacity-100 active:opacity-100"
+          style={{
+            transform: scrolling ? "translateX(16px)" : "translateX(0)",
+            opacity: scrolling ? 0.5 : 0.9,
+          }}
+          className="fixed right-0 bottom-[calc(8.4rem+env(safe-area-inset-bottom))] z-40 flex h-14 w-[22px] items-center justify-center rounded-l-xl bg-teal text-white shadow-soft transition-[transform,opacity] duration-[250ms] ease-out"
         >
-          <ChevronLeft className="h-4 w-4" strokeWidth={2.5} />
+          <span className="absolute -left-6 top-[-8px] bottom-[-8px] right-[-16px]" aria-hidden="true" />
+          <ChevronLeft
+            className="h-4 w-4 transition-opacity duration-[250ms]"
+            strokeWidth={2.5}
+            style={{ opacity: scrolling ? 0 : 1 }}
+          />
         </button>
+
       )}
 
 
