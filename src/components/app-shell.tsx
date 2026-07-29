@@ -420,9 +420,9 @@ function MessageBubble({
     <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed shadow-card",
+          "max-w-[92%] rounded-2xl p-3.5 text-sm leading-relaxed shadow-card break-words whitespace-pre-wrap sm:max-w-[85%]",
           isUser
-            ? "rounded-tr-sm bg-teal text-teal-foreground"
+            ? "rounded-tr-sm bg-[#0d6b60] text-white"
             : "rounded-tl-sm bg-card text-navy",
         )}
       >
