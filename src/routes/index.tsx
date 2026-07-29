@@ -159,7 +159,7 @@ function Home() {
       </div>
 
       {/* Counter card */}
-      <section className="mt-3 overflow-hidden rounded-3xl bg-gradient-to-br from-teal to-[#0fa693] p-6 text-teal-foreground shadow-soft animate-fade-in">
+      <section className="mt-3 overflow-hidden rounded-3xl bg-gradient-to-br from-[#0d6b60] to-[#094e46] p-6 text-white shadow-soft animate-fade-in">
         <div className="text-xs font-semibold uppercase tracking-wider opacity-90">
           Você está sem apostar há:
         </div>
