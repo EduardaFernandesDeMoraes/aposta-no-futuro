@@ -326,7 +326,7 @@ function ChatSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="h-[85dvh] rounded-t-3xl border-0 p-0"
+        className="h-[80dvh] rounded-t-3xl border-0 p-0 sm:h-[85dvh]"
       >
         <SheetHeader className="sr-only">
           <SheetTitle>Xande — assistente virtual</SheetTitle>
@@ -361,7 +361,7 @@ function ChatSheet({
           {/* Messages */}
           <div
             ref={scrollRef}
-            className="flex-1 space-y-3 overflow-y-auto bg-background p-4"
+            className="flex-1 space-y-4 overflow-y-auto bg-background p-4 pb-8"
           >
             {messages.map((m) => (
               <MessageBubble key={m.id} from={m.from}>
@@ -370,12 +370,13 @@ function ChatSheet({
             ))}
 
             {typing && (
-              <div className="flex max-w-[80%] items-center gap-1.5 rounded-2xl rounded-tl-sm bg-card p-3 shadow-card">
+              <div className="flex w-fit max-w-[80%] items-center gap-1.5 rounded-2xl rounded-tl-sm bg-card p-3 shadow-card">
                 <Dot />
                 <Dot delay={0.15} />
                 <Dot delay={0.3} />
               </div>
             )}
+            <div className="h-1" />
           </div>
 
           {/* Quick replies */}
@@ -384,12 +385,12 @@ function ChatSheet({
               <div className="mb-2 text-[11px] font-medium text-muted-foreground">
                 Toque numa resposta rápida:
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                 {quick.map((q) => (
                   <button
                     key={q.id}
                     onClick={() => handleQuick(q.id)}
-                    className="rounded-full border border-teal/40 bg-teal/10 px-3 py-1.5 text-xs font-semibold text-teal transition-colors active:scale-95"
+                    className="rounded-full border border-teal/40 bg-teal/10 px-3 py-2 text-xs font-semibold text-teal transition-colors active:scale-95 sm:w-auto"
                   >
                     {q.label}
                   </button>
@@ -420,9 +421,9 @@ function MessageBubble({
     <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed shadow-card",
+          "max-w-[92%] rounded-2xl p-3.5 text-sm leading-relaxed shadow-card break-words whitespace-pre-wrap sm:max-w-[85%]",
           isUser
-            ? "rounded-tr-sm bg-teal text-teal-foreground"
+            ? "rounded-tr-sm bg-[#0d6b60] text-white"
             : "rounded-tl-sm bg-card text-navy",
         )}
       >

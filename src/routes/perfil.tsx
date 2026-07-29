@@ -147,8 +147,10 @@ function Perfil() {
       {/* Header */}
       <section className="rounded-3xl bg-gradient-to-br from-navy to-[#0f1a2e] p-6 text-white shadow-soft">
         <div className="flex items-center gap-4">
-          <div className="grid h-16 w-16 place-items-center rounded-full bg-teal text-2xl font-bold text-teal-foreground shadow-soft">
-            {profile.name ? profile.name.charAt(0).toUpperCase() : "🌱"}
+          <div className="grid h-16 w-16 place-items-center rounded-full bg-[#0d6b60] text-4xl leading-none text-white shadow-[inset_0_2px_6px_rgba(0,0,0,0.25)] ring-2 ring-white/10">
+            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
+              {profile.name ? profile.name.charAt(0).toUpperCase() : "🌱"}
+            </span>
           </div>
           <div className="min-w-0 flex-1">
             <div className="truncate text-lg font-semibold">
