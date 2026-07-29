@@ -27,19 +27,46 @@ import { OnboardingGate } from "@/components/onboarding-gate";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aposta no Futuro — Sua jornada livre de apostas" },
+      {
+        title:
+          "Aposta no Futuro | Apoio anônimo e gratuito contra o vício em apostas",
+      },
       {
         name: "description",
         content:
-          "Acompanhe em tempo real seus dias livres de apostas, conquistas e próximos passos.",
+          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online. Contador de dias livres, simulador financeiro, autoavaliação e comunidade de apoio.",
       },
-      { property: "og:title", content: "Aposta no Futuro — Sua jornada livre de apostas" },
+      {
+        property: "og:title",
+        content:
+          "Aposta no Futuro | Apoio anônimo e gratuito contra o vício em apostas",
+      },
       {
         property: "og:description",
         content:
-          "Acompanhe em tempo real seus dias livres de apostas, conquistas e próximos passos.",
+          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online.",
       },
       { property: "og:url", content: "https://apostanofuturo.online/" },
+      {
+        property: "og:image",
+        content: "https://apostanofuturo.online/og-image.jpg",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content:
+          "Aposta no Futuro | Apoio anônimo e gratuito contra o vício em apostas",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://apostanofuturo.online/og-image.jpg",
+      },
     ],
     links: [{ rel: "canonical", href: "https://apostanofuturo.online/" }],
   }),
@@ -156,18 +183,10 @@ function Home() {
     <AppShell title="Aposta no Futuro" titleAs="p">
 
       {/* Título principal da página */}
-      <div className="pb-3">
-        <h1 className="leading-tight tracking-tight">
-          <span className="block text-2xl font-bold text-navy">
-            Aposta no Futuro
-          </span>
-          <span className="mt-0.5 block text-sm font-normal text-navy/70">
-            apoio anônimo e gratuito contra o vício em apostas
-          </span>
-        </h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">
+      <div className="pb-5">
+        <h1 className="text-xl font-bold leading-tight tracking-tight text-navy sm:text-2xl">
           Menos apostas. Mais futuro. Essa é a nossa aposta.
-        </p>
+        </h1>
       </div>
 
       {/* Greeting */}
