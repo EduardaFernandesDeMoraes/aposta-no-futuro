@@ -48,8 +48,39 @@ export function AppShell({
   children: ReactNode;
 }) {
   const [chatOpen, setChatOpen] = useState(false);
+  const [fabVisible, setFabVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  const scrollTimeoutRef = useRef<number | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y > lastScrollY.current && y > 20) {
+        setFabVisible(false);
+      } else {
+        setFabVisible(true);
+      }
+      lastScrollY.current = y;
+      if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = window.setTimeout(() => setFabVisible(true), 300);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    setFabVisible(true);
+  }, [location.pathname]);
+
+
+
+
 
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
@@ -72,8 +103,9 @@ export function AppShell({
       {/* Content */}
       <main
         key={location.pathname}
-        className="mx-auto w-full max-w-md flex-1 px-4 pb-32 pt-4 animate-fade-in"
+        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(10rem+env(safe-area-inset-bottom))] pt-4 animate-fade-in"
       >
+
         {children}
       </main>
 
@@ -82,10 +114,14 @@ export function AppShell({
       <button
         onClick={() => setChatOpen(true)}
         aria-label="Abrir assistente virtual"
-        className="fixed bottom-24 right-4 z-40 grid h-14 w-14 place-items-center rounded-full bg-teal text-teal-foreground shadow-[0_8px_24px_-6px_rgba(22,191,172,0.6)] transition-transform active:scale-95"
+        aria-hidden={!fabVisible}
+        className="fixed bottom-24 right-4 z-40 grid h-14 w-14 place-items-center rounded-full bg-teal text-teal-foreground shadow-[0_8px_24px_-6px_rgba(22,191,172,0.6)] transition-all duration-300 ease-out active:scale-95"
+        style={fabVisible ? {} : { transform: "translateY(2rem)", opacity: 0, pointerEvents: "none" }}
       >
         <MessageCircle className="h-6 w-6" />
       </button>
+
+
 
       {/* Bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-navy text-navy-foreground pb-[env(safe-area-inset-bottom)]">
