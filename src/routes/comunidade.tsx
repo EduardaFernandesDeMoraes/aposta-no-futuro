@@ -171,7 +171,7 @@ function Forum({
 }) {
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
   const [draft, setDraft] = useState("");
-  const { ref: composerRef, height: composerH } = useComposerHeight();
+  const { ref: composerRef, height: composerH, navH } = useComposerHeight();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const room = ROOMS.find((r) => r.id === activeRoom)!;
@@ -263,7 +263,8 @@ function Forum({
       {/* Composer fixo, acima da barra de navegação */}
       <div
         ref={composerRef}
-        className="fixed inset-x-0 bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] z-20 border-t border-slate-200 bg-white"
+        className="fixed inset-x-0 z-20 border-t border-slate-200 bg-white"
+        style={{ bottom: navH }}
       >
         <div className="mx-auto w-full max-w-md px-4 pb-3 pt-2.5">
           <div className="flex items-end gap-2">
@@ -428,7 +429,7 @@ function MentorChat({
   onBack: () => void;
 }) {
   const [draft, setDraft] = useState("");
-  const { ref: composerRef, height: composerH } = useComposerHeight();
+  const { ref: composerRef, height: composerH, navH } = useComposerHeight();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -490,7 +491,8 @@ function MentorChat({
 
       <div
         ref={composerRef}
-        className="fixed inset-x-0 bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] z-20 border-t border-slate-200 bg-white"
+        className="fixed inset-x-0 z-20 border-t border-slate-200 bg-white"
+        style={{ bottom: navH }}
       >
         <div className="mx-auto w-full max-w-md px-4 pb-3 pt-2.5">
           <div className="flex items-end gap-2">
