@@ -79,30 +79,31 @@ function AjudaPage() {
       </section>
 
       {/* CVV */}
-      <section className="mb-5 overflow-hidden rounded-3xl bg-gradient-to-br from-teal to-[#0fa693] text-teal-foreground shadow-soft">
+      <section className="mb-5 overflow-hidden rounded-3xl bg-gradient-to-br from-[#0d6b60] to-[#094e46] text-white shadow-soft">
         <div className="p-6">
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider opacity-90">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white/90">
             <Heart className="h-3.5 w-3.5" />
             Atendimento imediato
           </div>
-          <h2 className="mt-2 text-xl font-bold">
+          <h2 className="mt-2 text-xl font-bold text-white">
             CVV — Centro de Valorização da Vida
           </h2>
-          <p className="mt-1 text-sm opacity-95">
+          <p className="mt-1 text-sm text-white/95">
             Atendimento 24 horas, gratuito e sigiloso. Pode ligar ou conversar
             pelo site.
           </p>
 
           <a
             href="tel:188"
-            className="mt-5 flex items-center gap-3 rounded-2xl bg-white/20 p-4 backdrop-blur-sm transition-transform active:scale-[0.98]"
+            className="mt-5 flex items-center gap-3 rounded-2xl bg-white/20 p-4 text-white backdrop-blur-sm transition-transform active:scale-[0.98]"
+            aria-label="Ligar para o CVV 188"
           >
             <div className="grid h-12 w-12 place-items-center rounded-full bg-white/25">
               <Phone className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-lg font-bold">Ligar 188</div>
-              <div className="text-xs opacity-90">
+              <div className="text-2xl font-extrabold tracking-tight">Ligar 188</div>
+              <div className="text-xs text-white/90">
                 24h · gratuito · sigiloso
               </div>
             </div>
@@ -112,11 +113,11 @@ function AjudaPage() {
             href="https://www.cvv.org.br"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 text-sm font-medium transition-colors hover:bg-white/20"
+            className="mt-3 flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-white/20"
           >
             <MessageSquare className="h-4 w-4" />
             Acessar chat no site do CVV
-            <ExternalLink className="ml-auto h-3.5 w-3.5 opacity-80" />
+            <ExternalLink className="ml-auto h-3.5 w-3.5 text-white/80" />
           </a>
         </div>
       </section>
