@@ -446,7 +446,7 @@ function MentorChat({
         Mentores são voluntários e não substituem atendimento profissional.
       </p>
 
-      <div className="sticky bottom-[68px] -mx-4 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur">
+      <div className="sticky bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] -mx-4 -mb-4 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur">
         <div className="flex items-end gap-2">
           <Textarea
             value={draft}
