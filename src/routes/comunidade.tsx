@@ -483,12 +483,19 @@ function MentorChat({
 }) {
   const [draft, setDraft] = useState("");
   const canSend = draft.trim().length > 0;
-  const { ref: composerRef, pad: listPad, navH } = useComposerHeight();
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const {
+    ref: composerRef,
+    listRef,
+    pad: listPad,
+    navH,
+    measure,
+  } = useComposerHeight();
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ block: "end" });
+    measure();
+    listRef.current?.lastElementChild?.scrollIntoView({ block: "end" });
   }, [messages.length]);
+
 
 
   const send = () => {
