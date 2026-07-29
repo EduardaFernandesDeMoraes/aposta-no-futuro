@@ -171,20 +171,26 @@ function FinalStep({
         Vamos nos conhecer?
       </h2>
       <p className="mt-2 text-sm text-muted-foreground">
-        Essas informações são opcionais e ficam salvas só no seu aparelho.
+        Nome é opcional. Nada sai do seu aparelho. É tudo anônimo.
       </p>
 
       <div className="mt-6 space-y-4">
         <label className="block">
-          <span className="mb-1.5 block text-sm font-medium text-navy">
+          <span className="mb-1.5 flex items-center gap-2 text-sm font-medium text-navy">
             Como podemos te chamar?
+            <span className="rounded-full bg-teal/10 px-2 py-0.5 text-[10px] font-semibold text-teal">
+              opcional
+            </span>
           </span>
           <input
             value={name}
             onChange={(e) => onName(e.target.value)}
-            placeholder="Seu primeiro nome"
+            placeholder="Como quer ser chamado?"
             className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm outline-none focus:border-teal"
           />
+          <span className="mt-1.5 block text-xs text-muted-foreground">
+            Pode deixar em branco. Só você vê isso.
+          </span>
         </label>
 
         <label className="block">
