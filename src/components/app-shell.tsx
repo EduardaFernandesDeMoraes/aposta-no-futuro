@@ -49,39 +49,8 @@ export function AppShell({
   children: ReactNode;
 }) {
   const [chatOpen, setChatOpen] = useState(false);
-  const [fabVisible, setFabVisible] = useState(true);
-  const lastScrollY = useRef(0);
-  const scrollTimeoutRef = useRef<number | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (y > lastScrollY.current && y > 20) {
-        setFabVisible(false);
-      } else {
-        setFabVisible(true);
-      }
-      lastScrollY.current = y;
-      if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = window.setTimeout(() => setFabVisible(true), 300);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    lastScrollY.current = window.scrollY;
-    setFabVisible(true);
-  }, [location.pathname]);
-
-
-
-
 
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
@@ -104,23 +73,22 @@ export function AppShell({
       {/* Content */}
       <main
         key={location.pathname}
-        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(10rem+env(safe-area-inset-bottom))] pt-4 animate-fade-in"
+        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(11rem+env(safe-area-inset-bottom))] pt-4 animate-fade-in"
       >
-
         {children}
       </main>
 
+      {/* Side tab to open chat */}
+      {!chatOpen && (
+        <button
+          onClick={() => setChatOpen(true)}
+          aria-label="Abrir assistente virtual Xande IA"
+          className="fixed right-0 top-[45%] z-40 flex h-14 w-[22px] items-center justify-center rounded-l-xl bg-teal text-white opacity-90 shadow-soft transition-opacity duration-200 hover:opacity-100 active:opacity-100"
+        >
+          <ChevronLeft className="h-4 w-4" strokeWidth={2.5} />
+        </button>
+      )}
 
-      {/* Floating chat button */}
-      <button
-        onClick={() => setChatOpen(true)}
-        aria-label="Abrir assistente virtual"
-        aria-hidden={!fabVisible}
-        className="fixed bottom-24 right-4 z-40 grid h-14 w-14 place-items-center rounded-full bg-teal text-teal-foreground shadow-[0_8px_24px_-6px_rgba(22,191,172,0.6)] transition-all duration-300 ease-out active:scale-95"
-        style={fabVisible ? {} : { transform: "translateY(2rem)", opacity: 0, pointerEvents: "none" }}
-      >
-        <MessageCircle className="h-6 w-6" />
-      </button>
 
 
 
