@@ -55,8 +55,10 @@ export function AppShell({
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("[FAB] effect mounted");
     const onScroll = () => {
       const y = window.scrollY;
+      console.log("[FAB] scroll y", y, "last", lastScrollY.current);
       if (y > lastScrollY.current && y > 20) {
         setFabVisible(false);
       } else {
@@ -68,10 +70,12 @@ export function AppShell({
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
+      console.log("[FAB] effect cleanup");
       window.removeEventListener("scroll", onScroll);
       if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
     };
   }, []);
+
 
 
   return (
