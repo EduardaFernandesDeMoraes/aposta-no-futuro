@@ -17,7 +17,15 @@ export const Route = createFileRoute("/comunidade")({
         content:
           "Salas anônimas por tempo sem apostar e mentores pra você não caminhar sozinho.",
       },
+      { property: "og:title", content: "Comunidade — Aposta no Futuro" },
+      {
+        property: "og:description",
+        content:
+          "Fórum anônimo por tempo de abstinência e mentores voluntários pra você não caminhar sozinho.",
+      },
+      { property: "og:url", content: "https://apostanofuturo.online/comunidade" },
     ],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/comunidade" }],
   }),
   component: Comunidade,
 });

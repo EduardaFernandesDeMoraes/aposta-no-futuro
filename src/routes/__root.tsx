@@ -78,24 +78,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#16233C" },
-      { title: "Aposta no Futuro" },
-      {
-        name: "description",
-        content:
-          "App social e educativo para jovens prevenirem e enfrentarem o vício em apostas online, com acolhimento e sem julgamento.",
-      },
-      { property: "og:title", content: "Aposta no Futuro" },
-      {
-        property: "og:description",
-        content:
-          "Acompanhe seus dias livres, veja quanto economiza e não caminhe sozinho.",
-      },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Aposta no Futuro" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Aposta no Futuro" },
-      { name: "description", content: "Aposta no Futuro: app social e educativo para jovens prevenirem e enfrentarem o vício em apostas online." },
-      { property: "og:description", content: "Aposta no Futuro: app social e educativo para jovens prevenirem e enfrentarem o vício em apostas online." },
-      { name: "twitter:description", content: "Aposta no Futuro: app social e educativo para jovens prevenirem e enfrentarem o vício em apostas online." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fa8ffdfa-9da1-4fe5-b6a3-4594c8e13925/id-preview-4c557b64--aadf69c0-1500-42b5-994b-069f742bb975.lovable.app-1782987170001.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fa8ffdfa-9da1-4fe5-b6a3-4594c8e13925/id-preview-4c557b64--aadf69c0-1500-42b5-994b-069f742bb975.lovable.app-1782987170001.png" },
     ],
@@ -111,6 +96,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Aposta no Futuro",
+          url: "https://apostanofuturo.online",
+          logo: "https://apostanofuturo.online/web-app-manifest-512x512.png",
+          description:
+            "App social e educativo para jovens prevenirem e enfrentarem o vício em apostas online.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Aposta no Futuro",
+          url: "https://apostanofuturo.online",
+        }),
       },
     ],
   }),

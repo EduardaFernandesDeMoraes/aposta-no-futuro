@@ -15,7 +15,15 @@ export const Route = createFileRoute("/desafios")({
         content:
           "Missões pra fortalecer novos hábitos e celebrar cada conquista da sua jornada.",
       },
+      { property: "og:title", content: "Desafios — Aposta no Futuro" },
+      {
+        property: "og:description",
+        content:
+          "Missões diárias pra fortalecer novos hábitos e celebrar cada passo sem apostar.",
+      },
+      { property: "og:url", content: "https://apostanofuturo.online/desafios" },
     ],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/desafios" }],
   }),
   component: Desafios,
 });

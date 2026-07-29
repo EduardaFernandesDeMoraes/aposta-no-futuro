@@ -30,7 +30,15 @@ export const Route = createFileRoute("/perfil")({
         content:
           "Seu progresso, conquistas, economia e evolução na jornada sem apostas.",
       },
+      { property: "og:title", content: "Meu perfil — Aposta no Futuro" },
+      {
+        property: "og:description",
+        content:
+          "Veja sua economia, medalhas conquistadas e evolução ao longo dos dias sem apostar.",
+      },
+      { property: "og:url", content: "https://apostanofuturo.online/perfil" },
     ],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/perfil" }],
   }),
   component: Perfil,
 });

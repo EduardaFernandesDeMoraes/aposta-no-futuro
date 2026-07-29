@@ -26,7 +26,15 @@ export const Route = createFileRoute("/simulador")({
         content:
           "Calcule quanto você deixa de perder ao não apostar e o que esse dinheiro pode se tornar.",
       },
+      { property: "og:title", content: "Simulador — Aposta no Futuro" },
+      {
+        property: "og:description",
+        content:
+          "Descubra em tempo real quanto você deixa de perder e o que esse dinheiro pode virar.",
+      },
+      { property: "og:url", content: "https://apostanofuturo.online/simulador" },
     ],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/simulador" }],
   }),
   component: Simulador,
 });

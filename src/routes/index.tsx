@@ -26,13 +26,21 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Início | Aposta no Futuro" },
+      { title: "Aposta no Futuro — Sua jornada livre de apostas" },
       {
         name: "description",
         content:
           "Acompanhe em tempo real seus dias livres de apostas, conquistas e próximos passos.",
       },
+      { property: "og:title", content: "Aposta no Futuro — Sua jornada livre de apostas" },
+      {
+        property: "og:description",
+        content:
+          "Acompanhe em tempo real seus dias livres de apostas, conquistas e próximos passos.",
+      },
+      { property: "og:url", content: "https://apostanofuturo.online/" },
     ],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/" }],
   }),
   component: Home,
 });
@@ -141,7 +149,7 @@ function Home() {
   }
 
   return (
-    <AppShell title="Aposta no Futuro">
+    <AppShell title="Aposta no Futuro — Sua jornada livre">
       {/* Greeting */}
       <div className="flex items-center gap-2 pb-1">
         <Sparkles className="h-4 w-4 text-magenta" />
