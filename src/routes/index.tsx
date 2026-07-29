@@ -384,7 +384,7 @@ function ShortcutCard({
       >
         {icon}
       </div>
-      <div className="mt-auto pt-3 text-sm font-semibold leading-tight text-navy">
+      <div className="mt-3 text-sm font-semibold leading-tight text-navy">
         {title}
       </div>
     </Link>
