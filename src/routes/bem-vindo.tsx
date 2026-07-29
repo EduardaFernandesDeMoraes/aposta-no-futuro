@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowRight, Calendar, HandHeart, PiggyBank, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { OnboardingGate } from "@/components/onboarding-gate";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export const Route = createFileRoute("/bem-vindo")({
@@ -23,8 +24,16 @@ export const Route = createFileRoute("/bem-vindo")({
     ],
     links: [{ rel: "canonical", href: "https://apostanofuturo.online/bem-vindo" }],
   }),
-  component: Onboarding,
+  component: OnboardingRoute,
 });
+
+function OnboardingRoute() {
+  return (
+    <OnboardingGate expect="new">
+      <Onboarding />
+    </OnboardingGate>
+  );
+}
 
 type Profile = {
   name: string;
@@ -65,10 +74,6 @@ function Onboarding() {
   const [date, setDate] = useState(
     profile.firstFreeDay || new Date().toISOString().slice(0, 10),
   );
-
-  useEffect(() => {
-    if (profile.onboarded) navigate({ to: "/" });
-  }, [profile.onboarded, navigate]);
 
   const isLast = step === STEPS.length;
 

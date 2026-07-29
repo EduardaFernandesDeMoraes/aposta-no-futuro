@@ -22,6 +22,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { OnboardingGate } from "@/components/onboarding-gate";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -42,8 +43,16 @@ export const Route = createFileRoute("/")({
     ],
     links: [{ rel: "canonical", href: "https://apostanofuturo.online/" }],
   }),
-  component: Home,
+  component: HomeRoute,
 });
+
+function HomeRoute() {
+  return (
+    <OnboardingGate expect="onboarded">
+      <Home />
+    </OnboardingGate>
+  );
+}
 
 type Profile = {
   name: string;
@@ -107,10 +116,6 @@ function Home() {
   const [now, setNow] = useState(() => Date.now());
   const [restartOpen, setRestartOpen] = useState(false);
   const [celebration, setCelebration] = useState<Milestone | null>(null);
-
-  useEffect(() => {
-    if (!profile.onboarded) navigate({ to: "/bem-vindo" });
-  }, [profile.onboarded, navigate]);
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(Date.now()), 1000 * 30);
