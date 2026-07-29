@@ -182,7 +182,7 @@ function Forum({
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
   const [draft, setDraft] = useState("");
   const canSend = draft.trim().length > 0;
-  const { ref: composerRef, height: composerH, navH } = useComposerHeight();
+  const { ref: composerRef, pad: listPad, navH } = useComposerHeight();
   const listRef = useRef<HTMLDivElement>(null);
 
   const room = ROOMS.find((r) => r.id === activeRoom)!;
@@ -257,7 +257,7 @@ function Forum({
       <div
         ref={listRef}
         className="flex flex-col gap-3"
-        style={{ paddingBottom: composerH + 16 }}
+        style={{ paddingBottom: listPad }}
       >
         {messages.map((m, i) => (
           <div
@@ -459,7 +459,7 @@ function MentorChat({
 }) {
   const [draft, setDraft] = useState("");
   const canSend = draft.trim().length > 0;
-  const { ref: composerRef, height: composerH, navH } = useComposerHeight();
+  const { ref: composerRef, pad: listPad, navH } = useComposerHeight();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -513,7 +513,7 @@ function MentorChat({
         ))}
       </div>
 
-      <div style={{ paddingBottom: composerH + 16 }}>
+      <div style={{ paddingBottom: listPad }}>
         <p className="rounded-xl bg-slate-50 p-2 text-center text-[11px] text-slate-500">
           Mentores são voluntários e não substituem atendimento profissional.
         </p>
