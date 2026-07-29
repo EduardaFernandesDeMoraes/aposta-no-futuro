@@ -203,3 +203,38 @@ function FinalStep({
     </div>
   );
 }
+
+function OptionalTooltip() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <span className="relative inline-flex">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
+        className="inline-flex items-center gap-1 rounded-full bg-teal/10 px-2 py-0.5 text-[10px] font-semibold text-teal outline-none transition-all duration-200 hover:bg-teal/20 focus-visible:ring-2 focus-visible:ring-teal/40"
+        aria-describedby="opcional-tooltip"
+      >
+        opcional
+        <HelpCircle className="h-3 w-3" aria-hidden="true" />
+      </button>
+
+      <span
+        id="opcional-tooltip"
+        role="tooltip"
+        className={`pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-44 -translate-x-1/2 rounded-xl bg-[#0d6b60] px-3 py-2 text-center text-xs leading-snug text-white shadow-soft transition-all duration-200 ${
+          open
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-1 opacity-0"
+        }`}
+      >
+        Pode deixar em branco. Só você vê isso.
+        <span className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-[#0d6b60]" />
+      </span>
+    </span>
+  );
+}
