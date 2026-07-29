@@ -326,7 +326,7 @@ function ChatSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="h-[85dvh] rounded-t-3xl border-0 p-0"
+        className="h-[80dvh] rounded-t-3xl border-0 p-0 sm:h-[85dvh]"
       >
         <SheetHeader className="sr-only">
           <SheetTitle>Xande — assistente virtual</SheetTitle>
