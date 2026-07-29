@@ -176,7 +176,7 @@ function Forum({
       </div>
 
       {/* Seletor de salas */}
-      <div className="-mx-4 overflow-x-auto px-4">
+      <div className="-mx-4 overflow-x-auto no-scrollbar px-4">
         <div className="flex gap-2 pb-1">
           {ROOMS.map((r) => {
             const active = r.id === activeRoom;
@@ -231,7 +231,8 @@ function Forum({
       </div>
 
       {/* Composer */}
-      <div className="sticky bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom)+0.5rem)] z-10 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-[0_4px_20px_-6px_rgba(22,35,60,0.18)] backdrop-blur">
+      <div className="sticky bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] z-20 -mx-4 -mb-4 bg-background px-4 pb-3 pt-2">
+        <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_4px_20px_-6px_rgba(22,35,60,0.18)]">
 
 
 
@@ -447,7 +448,8 @@ function MentorChat({
         Mentores são voluntários e não substituem atendimento profissional.
       </p>
 
-      <div className="sticky bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom)+0.5rem)] z-10 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-[0_4px_20px_-6px_rgba(22,35,60,0.18)] backdrop-blur">
+      <div className="sticky bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] z-20 -mx-4 -mb-4 bg-background px-4 pb-3 pt-2">
+        <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_4px_20px_-6px_rgba(22,35,60,0.18)]">
         <div className="flex items-end gap-2">
           <Textarea
             value={draft}
