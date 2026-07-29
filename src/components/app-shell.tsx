@@ -351,10 +351,10 @@ function ChatSheet({
             </div>
             <button
               onClick={() => onOpenChange(false)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
+              className="inline-flex h-11 w-11 items-center justify-center text-white transition-colors hover:text-white/80"
               aria-label="Fechar"
             >
-              <X className="h-5 w-5" strokeWidth={2.5} />
+              <X className="h-6 w-6" strokeWidth={2.5} />
             </button>
           </div>
 
