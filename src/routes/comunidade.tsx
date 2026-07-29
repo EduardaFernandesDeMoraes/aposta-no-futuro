@@ -448,12 +448,14 @@ function MentorChat({
   onBack: () => void;
 }) {
   const [draft, setDraft] = useState("");
+  const canSend = draft.trim().length > 0;
   const { ref: composerRef, height: composerH, navH } = useComposerHeight();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: "end" });
   }, [messages.length]);
+
 
   const send = () => {
     const text = draft.trim();
