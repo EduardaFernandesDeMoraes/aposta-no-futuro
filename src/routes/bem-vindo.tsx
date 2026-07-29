@@ -106,7 +106,7 @@ function Onboarding() {
           )}
         </div>
 
-        <div className="mt-10 flex-1">
+        <div className={isLast ? "mt-6" : "mt-10 flex-1"}>
           {!isLast ? (
             <StepView step={step} />
           ) : (
@@ -121,11 +121,12 @@ function Onboarding() {
 
         <Button
           onClick={next}
-          className="h-12 w-full rounded-full bg-[#0d6b60] text-base font-semibold text-white shadow-soft transition-all duration-200 hover:bg-[#0a5a51]"
+          className="mt-8 h-12 w-full rounded-full bg-[#0d6b60] text-base font-semibold text-white shadow-soft transition-all duration-200 hover:bg-[#0a5a51] active:scale-[0.97] active:opacity-90"
         >
           {isLast ? "Começar minha jornada" : "Continuar"}
           <ArrowRight className="ml-1 h-5 w-5" />
         </Button>
+
 
         <p className="mt-4 text-center text-[11px] text-muted-foreground">
           Este app é um apoio e não substitui tratamento profissional. Em
