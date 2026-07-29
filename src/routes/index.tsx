@@ -177,7 +177,7 @@ function Home() {
 
         <button
           onClick={() => setRestartOpen(true)}
-          className="mt-5 inline-flex items-center gap-2 rounded-full bg-coral px-4 py-2 text-sm font-semibold text-coral-foreground shadow-soft transition-transform active:scale-95"
+          className="mt-5 inline-flex items-center gap-2 rounded-full bg-coral px-4 py-2 text-sm font-semibold text-coral-foreground shadow-soft transition-all duration-200 ease-out hover:bg-[#eb4436] active:scale-95"
         >
           <RefreshCw className="h-4 w-4" />
           Recomecei hoje

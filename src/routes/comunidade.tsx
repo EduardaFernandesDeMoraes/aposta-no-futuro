@@ -372,7 +372,7 @@ function Mentores() {
             <Button
               type="button"
               onClick={() => setActive(m)}
-              className="mt-3 w-full rounded-full bg-[#16BFAC] text-white hover:bg-[#12a595]"
+              className="mt-3 w-full rounded-full bg-[#16BFAC] text-white transition-all duration-200 hover:bg-[#14ac9b]"
             >
               Conversar
             </Button>
