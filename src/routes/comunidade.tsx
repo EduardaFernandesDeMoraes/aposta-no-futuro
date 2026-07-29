@@ -533,15 +533,17 @@ function MentorChat({
             <button
               type="button"
               onClick={send}
-              disabled={!draft.trim()}
+              disabled={!canSend}
+              aria-disabled={!canSend}
               aria-label="Enviar mensagem"
               className={cn(
-                "flex h-12 w-12 flex-none items-center justify-center rounded-full text-white transition-all duration-150 ease-out",
-                draft.trim()
-                  ? "bg-[#16BFAC] shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92] [@media(hover:hover)]:cursor-pointer"
-                  : "cursor-not-allowed bg-[#16BFAC] opacity-40",
+                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-all duration-150 ease-out",
+                canSend
+                  ? "cursor-pointer opacity-100 shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92]"
+                  : "cursor-not-allowed opacity-40",
               )}
             >
+
               <Send className="h-5 w-5" />
             </button>
           </div>
