@@ -83,7 +83,8 @@ function Onboarding() {
 
   return (
     <div className="min-h-dvh bg-background">
-      <div className="mx-auto flex min-h-dvh max-w-md flex-col px-6 pb-8 pt-10">
+      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-6 pb-8 pt-10">
+        <h1 className="sr-only">Bem-vindo ao Aposta no Futuro</h1>
         <div className="flex items-center justify-between">
           <div className="flex gap-1.5">
             {[0, 1, 2, 3].map((i) => (
@@ -98,7 +99,7 @@ function Onboarding() {
           {!isLast && (
             <button
               onClick={() => setStep(STEPS.length)}
-              className="text-xs font-medium text-muted-foreground"
+              className="text-xs font-medium text-navy/80 underline underline-offset-2"
             >
               Pular
             </button>
@@ -130,7 +131,7 @@ function Onboarding() {
           Este app é um apoio e não substitui tratamento profissional. Em
           crise, ligue 188 (CVV).
         </p>
-      </div>
+      </main>
     </div>
   );
 }
