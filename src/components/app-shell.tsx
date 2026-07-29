@@ -349,8 +349,8 @@ function ChatSheet({
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border bg-navy px-4 py-3 text-navy-foreground">
             <div className="flex items-center gap-2.5">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-teal text-lg font-bold text-teal-foreground">
-                X
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-teal">
+                <Sparkles className="h-5 w-5" color="#E1F5EE" strokeWidth={2.2} />
               </div>
               <div>
                 <div className="text-sm font-semibold">Xande IA</div>
