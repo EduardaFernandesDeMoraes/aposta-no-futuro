@@ -246,7 +246,7 @@ function Forum({
             type="button"
             onClick={send}
             disabled={!draft.trim()}
-            className="h-11 rounded-full bg-[#16BFAC] px-4 text-white hover:bg-[#12a595] disabled:opacity-50"
+            className="h-11 rounded-full bg-[#16BFAC] px-4 text-white transition-all duration-200 hover:bg-[#14ac9b] disabled:opacity-50"
           >
             <Send className="h-4 w-4" />
           </Button>
@@ -459,7 +459,7 @@ function MentorChat({
             type="button"
             onClick={send}
             disabled={!draft.trim()}
-            className="h-11 rounded-full bg-[#16BFAC] px-4 text-white hover:bg-[#12a595] disabled:opacity-50"
+            className="h-11 rounded-full bg-[#16BFAC] px-4 text-white transition-all duration-200 hover:bg-[#14ac9b] disabled:opacity-50"
           >
             <Send className="h-4 w-4" />
           </Button>

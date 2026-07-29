@@ -285,7 +285,7 @@ function Home() {
           <DialogFooter className="mt-2 flex-col gap-2 sm:flex-col">
             <Button
               onClick={handleRestart}
-              className="w-full rounded-full bg-teal text-teal-foreground hover:bg-teal/90"
+              className="w-full rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
             >
               Sim, recomeçar agora
             </Button>
@@ -319,7 +319,7 @@ function Home() {
           </DialogHeader>
           <Button
             onClick={() => setCelebration(null)}
-            className="mt-2 w-full rounded-full bg-teal text-teal-foreground hover:bg-teal/90"
+            className="mt-2 w-full rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
           >
             Obrigado 💚
           </Button>

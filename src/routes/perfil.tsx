@@ -327,7 +327,7 @@ function Perfil() {
       <section className="mt-5">
         <Button
           onClick={handleShare}
-          className="w-full rounded-full bg-magenta py-6 text-base font-semibold text-white shadow-soft hover:bg-magenta/90"
+          className="w-full rounded-full bg-magenta py-6 text-base font-semibold text-white shadow-soft transition-all duration-200 hover:bg-[#d11570]"
         >
           <Share2 className="mr-2 h-5 w-5" />
           Compartilhar minha conquista
@@ -396,7 +396,7 @@ function Perfil() {
             </Button>
             <Button
               onClick={() => setShareOpen(false)}
-              className="flex-1 rounded-full bg-teal text-teal-foreground hover:bg-teal/90"
+              className="flex-1 rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
             >
               Fechar
             </Button>

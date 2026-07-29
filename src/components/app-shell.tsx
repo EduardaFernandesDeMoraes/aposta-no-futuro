@@ -65,7 +65,7 @@ export function AppShell({
             <button
               onClick={() => setChatOpen(true)}
               aria-label="Falar com a Xande IA"
-              className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95"
+              className="relative inline-flex h-11 w-11 items-center justify-center transition-all duration-200 ease-out hover:opacity-90 active:scale-95"
             >
               <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-teal">
                 <Sparkles className="h-4 w-4 text-[#E1F5EE]" strokeWidth={2.2} />
@@ -74,7 +74,7 @@ export function AppShell({
             <button
               onClick={() => navigate({ to: "/ajuda" })}
               aria-label="Preciso de ajuda"
-              className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-full sm:bg-coral sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-coral-foreground sm:shadow-soft"
+              className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-full sm:bg-coral sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-coral-foreground sm:shadow-soft sm:hover:bg-[#eb4436]"
             >
               <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-coral animate-[pulse-scale_3.5s_ease-in-out_infinite] sm:animate-none sm:contents">
                 <Phone className="h-[18px] w-[18px] text-white sm:h-4 sm:w-4" strokeWidth={2.5} />
@@ -112,8 +112,8 @@ export function AppShell({
                 <Link
                   to={tab.to}
                   className={cn(
-                    "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
-                    active ? "text-teal" : "text-white/70",
+                    "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-all duration-200 ease-out hover:text-teal active:scale-95",
+                    active ? "text-teal" : "text-white/70 hover:text-white",
                   )}
                 >
                   <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 2} />
@@ -434,10 +434,10 @@ function ChatSheet({
                     key={q.id}
                     onClick={() => handleQuick(q.id)}
                     className={cn(
-                      "max-w-[90%] rounded-full px-4 py-2 text-left text-xs font-semibold transition-colors active:scale-95",
+                      "max-w-[90%] rounded-full px-4 py-2 text-left text-xs font-semibold transition-all duration-200 ease-out active:scale-95",
                       q.id === "ajuda"
-                        ? "bg-coral text-white shadow-card"
-                        : "border border-teal/40 bg-teal/10 text-teal",
+                        ? "bg-coral text-white shadow-card hover:bg-[#eb4436]"
+                        : "border border-teal/40 bg-white text-teal hover:bg-[#E1F5EE]",
                     )}
                   >
                     {q.label}
@@ -464,7 +464,7 @@ function ChatSheet({
               type="submit"
               aria-label="Enviar mensagem"
               disabled={!draft.trim()}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal text-teal-foreground transition-opacity active:scale-95 disabled:opacity-40"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal text-teal-foreground transition-all duration-200 ease-out hover:bg-[#14ac9b] active:scale-95 disabled:opacity-40"
             >
               <Send className="h-5 w-5" strokeWidth={2.2} />
             </button>
@@ -574,7 +574,7 @@ function StrategyBtn({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3 text-left transition-transform active:scale-[0.98]"
+      className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3 text-left transition-all duration-200 ease-out hover:bg-[#E1F5EE] hover:border-teal/40 active:scale-[0.98]"
     >
       <div className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl bg-teal/10 text-teal">
         {icon}
@@ -607,7 +607,7 @@ function RestartCard({
       <div className="flex flex-col gap-2">
         <Button
           onClick={onRestart}
-          className="w-full rounded-full bg-coral text-coral-foreground hover:bg-coral/90"
+          className="w-full rounded-full bg-coral text-coral-foreground transition-all duration-200 hover:bg-[#eb4436]"
         >
           <RotateCcw className="mr-2 h-4 w-4" />
           Reiniciar meu contador
@@ -629,7 +629,7 @@ function HelpCard() {
     <div className="space-y-2">
       <a
         href="tel:188"
-        className="flex items-center gap-3 rounded-2xl bg-coral p-3 text-coral-foreground shadow-soft"
+        className="flex items-center gap-3 rounded-2xl bg-coral p-3 text-coral-foreground shadow-soft transition-all duration-200 hover:bg-[#eb4436]"
       >
         <div className="grid h-10 w-10 place-items-center rounded-full bg-white/20">
           <Phone className="h-4 w-4" />

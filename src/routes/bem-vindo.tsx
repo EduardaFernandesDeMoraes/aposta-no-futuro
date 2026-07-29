@@ -121,7 +121,7 @@ function Onboarding() {
 
         <Button
           onClick={next}
-          className="h-12 w-full rounded-full bg-[#0d6b60] text-base font-semibold text-white shadow-soft hover:bg-[#094e46]"
+          className="h-12 w-full rounded-full bg-[#0d6b60] text-base font-semibold text-white shadow-soft transition-all duration-200 hover:bg-[#0a5a51]"
         >
           {isLast ? "Começar minha jornada" : "Continuar"}
           <ArrowRight className="ml-1 h-5 w-5" />

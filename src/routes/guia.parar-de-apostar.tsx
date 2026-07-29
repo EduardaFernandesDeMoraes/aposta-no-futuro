@@ -197,7 +197,7 @@ function GuiaPararDeApostar() {
             <div className="mt-3">
               <Button
                 asChild
-                className="h-10 rounded-full bg-coral text-coral-foreground hover:bg-coral/90"
+                className="h-10 rounded-full bg-coral text-coral-foreground transition-all duration-200 hover:bg-[#eb4436]"
               >
                 <Link to="/ajuda">Ver canais de apoio</Link>
               </Button>
