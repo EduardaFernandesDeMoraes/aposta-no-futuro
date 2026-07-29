@@ -423,6 +423,12 @@ function MentorChat({
   onBack: () => void;
 }) {
   const [draft, setDraft] = useState("");
+  const { ref: composerRef, height: composerH } = useComposerHeight();
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ block: "end" });
+  }, [messages.length]);
 
   const send = () => {
     const text = draft.trim();
@@ -454,7 +460,7 @@ function MentorChat({
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {messages.map((m, i) => (
           <div
             key={i}
@@ -470,29 +476,35 @@ function MentorChat({
         ))}
       </div>
 
-      <p className="rounded-xl bg-slate-50 p-2 text-center text-[11px] text-slate-500">
-        Mentores são voluntários e não substituem atendimento profissional.
-      </p>
+      <div style={{ paddingBottom: composerH + 12 }}>
+        <p className="rounded-xl bg-slate-50 p-2 text-center text-[11px] text-slate-500">
+          Mentores são voluntários e não substituem atendimento profissional.
+        </p>
+        <div ref={bottomRef} />
+      </div>
 
-      <div className="sticky bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] z-20 -mx-4 -mb-4 bg-background px-4 pb-3 pt-2">
-        <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_4px_20px_-6px_rgba(22,35,60,0.18)]">
-        <div className="flex items-end gap-2">
-          <Textarea
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            placeholder="Escreva aqui…"
-            rows={2}
-            className="min-h-[44px] resize-none rounded-2xl border-slate-200 text-sm"
-          />
-          <Button
-            type="button"
-            onClick={send}
-            disabled={!draft.trim()}
-            className="h-11 rounded-full bg-[#16BFAC] px-4 text-white transition-all duration-200 hover:bg-[#14ac9b] disabled:opacity-50"
-          >
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
+      <div
+        ref={composerRef}
+        className="fixed inset-x-0 bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] z-20 border-t border-slate-200 bg-white"
+      >
+        <div className="mx-auto w-full max-w-md px-4 pb-3 pt-2.5">
+          <div className="flex items-end gap-2">
+            <Textarea
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder="Escreva aqui…"
+              rows={2}
+              className="min-h-[44px] resize-none rounded-2xl border-slate-200 text-sm"
+            />
+            <Button
+              type="button"
+              onClick={send}
+              disabled={!draft.trim()}
+              className="h-11 rounded-full bg-[#16BFAC] px-4 text-white transition-all duration-200 hover:bg-[#14ac9b] disabled:opacity-50"
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
