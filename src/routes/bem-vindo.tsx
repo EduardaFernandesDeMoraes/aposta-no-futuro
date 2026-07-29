@@ -13,7 +13,15 @@ export const Route = createFileRoute("/bem-vindo")({
         content:
           "Comece sua jornada livre das apostas com o Aposta no Futuro.",
       },
+      { property: "og:title", content: "Bem-vindo ao Aposta no Futuro" },
+      {
+        property: "og:description",
+        content:
+          "Um app acolhedor pra você começar sua jornada livre das apostas online.",
+      },
+      { property: "og:url", content: "https://apostanofuturo.online/bem-vindo" },
     ],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/bem-vindo" }],
   }),
   component: Onboarding,
 });

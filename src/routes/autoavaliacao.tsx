@@ -24,7 +24,15 @@ export const Route = createFileRoute("/autoavaliacao")({
         content:
           "Teste rápido e anônimo baseado no PGSI para você entender melhor sua relação com apostas.",
       },
+      { property: "og:title", content: "Autoavaliação PGSI — Aposta no Futuro" },
+      {
+        property: "og:description",
+        content:
+          "Questionário PGSI de 9 perguntas, anônimo e sem julgamento, pra entender sua relação com apostas.",
+      },
+      { property: "og:url", content: "https://apostanofuturo.online/autoavaliacao" },
     ],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/autoavaliacao" }],
   }),
   component: Autoavaliacao,
 });
