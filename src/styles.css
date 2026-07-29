@@ -103,13 +103,24 @@
   html,
   body {
     font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
-    background-color: #16233c;
+    background-color: var(--background);
     color: var(--color-foreground);
     overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
   }
 
 }
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
 
 @keyframes pulse-scale {
   0%, 100% { transform: scale(1); }

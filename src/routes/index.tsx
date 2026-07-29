@@ -193,7 +193,7 @@ function Home() {
           </span>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4">
           {MILESTONES.map((m) => {
             const achieved = days >= m.days;
             return (
