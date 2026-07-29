@@ -141,7 +141,7 @@ npm run format    # formata o código com Prettier
   Desenvolvimento, publicação e domínio próprio. Dados salvos localmente no dispositivo.
 
 - [ ] **Fase 2 — Piloto real**
-  Oficina e roda de conversa na unidade Espro, grupo-piloto voluntário e migração para contas na nuvem, permitindo acompanhar resultados de forma ancode--writeônima e com consentimento.
+  Oficina e roda de conversa na unidade Espro, grupo-piloto voluntário e migração para contas na nuvem, permitindo acompanhar resultados de forma anônima e com consentimento.
 
 - [ ] **Fase 3 — Escala**
   Evolução da assistente para uma IA real, parcerias com universidades, incubadoras e editais de fomento.
