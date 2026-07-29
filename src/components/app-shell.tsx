@@ -48,8 +48,31 @@ export function AppShell({
   children: ReactNode;
 }) {
   const [chatOpen, setChatOpen] = useState(false);
+  const [fabVisible, setFabVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  const scrollTimeoutRef = useRef<number | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y > lastScrollY.current && y > 20) {
+        setFabVisible(false);
+      } else {
+        setFabVisible(true);
+      }
+      lastScrollY.current = y;
+      if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = window.setTimeout(() => setFabVisible(true), 300);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
+
 
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
