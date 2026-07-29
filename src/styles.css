@@ -102,10 +102,12 @@
   html,
   body {
     font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
-    background-color: var(--color-background);
+    background-color: #16233c;
     color: var(--color-foreground);
+    overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
   }
+
 }
 
 #lovable-badge {
