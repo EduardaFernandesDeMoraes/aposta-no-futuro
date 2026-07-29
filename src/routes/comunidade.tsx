@@ -290,18 +290,17 @@ function Forum({
               disabled={!draft.trim()}
               aria-label="Enviar mensagem"
               className={cn(
-                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-transform duration-100 ease-out",
+                "flex h-12 w-12 flex-none items-center justify-center rounded-full text-white transition-all duration-150 ease-out",
                 draft.trim()
-                  ? "shadow-md active:scale-[0.92]"
-                  : "cursor-not-allowed opacity-40",
+                  ? "bg-[#16BFAC] shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92] [@media(hover:hover)]:cursor-pointer"
+                  : "cursor-not-allowed bg-[#16BFAC] opacity-40",
               )}
             >
               <Send className="h-5 w-5" />
             </button>
           </div>
-          <p className="mt-1.5 text-[11px] leading-snug text-slate-400">
-            Você aparece como <strong>{nick}</strong> · sem dados pessoais ou
-            links
+          <p className="mt-1.5 text-xs leading-snug text-slate-400">
+            Você aparece como <strong>{nick}</strong> · Sem dados pessoais
           </p>
         </div>
       </div>
@@ -531,10 +530,10 @@ function MentorChat({
               disabled={!draft.trim()}
               aria-label="Enviar mensagem"
               className={cn(
-                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-transform duration-100 ease-out",
+                "flex h-12 w-12 flex-none items-center justify-center rounded-full text-white transition-all duration-150 ease-out",
                 draft.trim()
-                  ? "shadow-md active:scale-[0.92]"
-                  : "cursor-not-allowed opacity-40",
+                  ? "bg-[#16BFAC] shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92] [@media(hover:hover)]:cursor-pointer"
+                  : "cursor-not-allowed bg-[#16BFAC] opacity-40",
               )}
             >
               <Send className="h-5 w-5" />
