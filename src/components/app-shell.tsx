@@ -7,7 +7,7 @@ import {
   Trophy,
   User,
   LifeBuoy,
-  ChevronLeft,
+  Sparkles,
   ChevronRight,
   Phone,
 
@@ -49,28 +49,8 @@ export function AppShell({
   children: ReactNode;
 }) {
   const [chatOpen, setChatOpen] = useState(false);
-  const [scrolling, setScrolling] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    let timer: number | undefined;
-    const onScroll = () => {
-      setScrolling(true);
-      if (timer) window.clearTimeout(timer);
-      timer = window.setTimeout(() => setScrolling(false), 1500);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (timer) window.clearTimeout(timer);
-    };
-  }, []);
-
-  useEffect(() => {
-    setScrolling(false);
-  }, [location.pathname]);
-
 
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
@@ -80,13 +60,24 @@ export function AppShell({
           <h1 className="truncate text-lg font-semibold tracking-tight">
             {title}
           </h1>
-          <button
-            onClick={() => navigate({ to: "/ajuda" })}
-            className="inline-flex items-center gap-1.5 rounded-full bg-coral px-3 py-1.5 text-xs font-semibold text-coral-foreground shadow-soft transition-transform active:scale-95"
-          >
-            <LifeBuoy className="h-3.5 w-3.5" />
-            Preciso de ajuda
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setChatOpen(true)}
+              aria-label="Falar com a Xande IA"
+              className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95"
+            >
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-teal">
+                <Sparkles className="h-[18px] w-[18px] text-[#E1F5EE]" strokeWidth={2.2} />
+              </span>
+            </button>
+            <button
+              onClick={() => navigate({ to: "/ajuda" })}
+              className="inline-flex items-center gap-1.5 rounded-full bg-coral px-3 py-1.5 text-xs font-semibold text-coral-foreground shadow-soft transition-transform active:scale-95"
+            >
+              <LifeBuoy className="h-3.5 w-3.5" />
+              Preciso de ajuda
+            </button>
+          </div>
         </div>
       </header>
 
@@ -98,26 +89,7 @@ export function AppShell({
         {children}
       </main>
 
-      {/* Side tab to open chat */}
-      {!chatOpen && (
-        <button
-          onClick={() => setChatOpen(true)}
-          aria-label="Abrir assistente virtual Xande IA"
-          style={{
-            transform: scrolling ? "translateX(16px)" : "translateX(0)",
-            opacity: scrolling ? 0.5 : 0.9,
-          }}
-          className="fixed right-0 bottom-[calc(8.4rem+env(safe-area-inset-bottom))] z-40 flex h-14 w-[22px] items-center justify-center rounded-l-xl bg-teal text-white shadow-soft transition-[transform,opacity] duration-[250ms] ease-out"
-        >
-          <span className="absolute -left-6 top-[-8px] bottom-[-8px] right-[-16px]" aria-hidden="true" />
-          <ChevronLeft
-            className="h-4 w-4 transition-opacity duration-[250ms]"
-            strokeWidth={2.5}
-            style={{ opacity: scrolling ? 0 : 1 }}
-          />
-        </button>
 
-      )}
 
 
 
