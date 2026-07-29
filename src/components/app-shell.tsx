@@ -75,7 +75,7 @@ export function AppShell({
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
       {/* Top bar */}
-      <header className="sticky top-0 z-30 bg-navy text-navy-foreground shadow-soft">
+      <header className="sticky top-0 z-30 bg-navy text-navy-foreground shadow-soft pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex max-w-md items-center justify-between gap-3 px-4 py-3">
           <h1 className="truncate text-lg font-semibold tracking-tight">
             {title}
