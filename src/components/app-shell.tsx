@@ -461,7 +461,7 @@ function ChatSheet({
               onChange={(e) => setDraft(e.target.value)}
               placeholder="Escreva o que você está sentindo..."
               aria-label="Escreva sua mensagem para o Xande"
-              className="min-w-0 flex-1 rounded-full border border-border bg-background px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground focus:border-teal"
+              className="min-w-0 flex-1 rounded-full border border-border bg-background px-4 py-2.5 text-base outline-none md:text-sm placeholder:text-muted-foreground focus:border-teal"
             />
             <button
               type="submit"

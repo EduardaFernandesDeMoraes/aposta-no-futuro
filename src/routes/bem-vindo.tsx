@@ -187,7 +187,7 @@ function FinalStep({
             onChange={(e) => onName(e.target.value)}
             placeholder="Digite um nome ou deixe em branco"
             aria-describedby="name-help"
-            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm outline-none transition-colors duration-200 focus:border-teal"
+            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-base outline-none md:text-sm transition-colors duration-200 focus:border-teal"
           />
           <span
             id="name-help"
@@ -205,7 +205,7 @@ function FinalStep({
             type="date"
             value={date}
             onChange={(e) => onDate(e.target.value)}
-            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm outline-none focus:border-teal"
+            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-base outline-none md:text-sm focus:border-teal"
           />
         </label>
       </div>

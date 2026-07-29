@@ -318,7 +318,7 @@ function Forum({
               }}
               placeholder="Escreva aqui…"
               rows={1}
-              className="h-12 min-h-12 flex-1 resize-none rounded-2xl border-slate-200 py-3.5 text-sm leading-tight"
+              className="h-12 min-h-12 flex-1 resize-none rounded-2xl border-slate-200 py-3.5 text-base leading-tight md:text-sm"
             />
             <button
               type="button"
@@ -566,7 +566,7 @@ function MentorChat({
               }}
               placeholder="Escreva aqui…"
               rows={1}
-              className="h-12 min-h-12 flex-1 resize-none rounded-2xl border-slate-200 py-3.5 text-sm leading-tight"
+              className="h-12 min-h-12 flex-1 resize-none rounded-2xl border-slate-200 py-3.5 text-base leading-tight md:text-sm"
             />
             <button
               type="button"
