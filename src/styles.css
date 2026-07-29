@@ -127,7 +127,13 @@
 
 /* Hover REAL apenas em dispositivos com mouse: garante que nenhum estado
    de hover fique "preso" após o toque em telas touch. */
-@custom-variant hover (@media (hover: hover) and (pointer: fine) { &:hover { @slot } });
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
 
 /* Feedback de toque no mobile: mesma cor do hover (um tom mais escuro da
    cor base do elemento) + scale(0.97) + transição de 100ms. */
