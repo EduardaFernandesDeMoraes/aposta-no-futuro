@@ -73,6 +73,12 @@ export function AppShell({
     };
   }, []);
 
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    setFabVisible(true);
+  }, [location.pathname]);
+
+
 
 
 
