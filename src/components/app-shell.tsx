@@ -73,7 +73,7 @@ export function AppShell({
       {/* Content */}
       <main
         key={location.pathname}
-        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(11rem+env(safe-area-inset-bottom))] pt-4 animate-fade-in"
+        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-4 animate-fade-in"
       >
         {children}
       </main>
@@ -83,7 +83,7 @@ export function AppShell({
         <button
           onClick={() => setChatOpen(true)}
           aria-label="Abrir assistente virtual Xande IA"
-          className="fixed right-0 bottom-[calc(9.5rem+env(safe-area-inset-bottom))] z-40 flex h-14 w-[22px] items-center justify-center rounded-l-xl bg-teal text-white opacity-90 shadow-soft transition-opacity duration-200 hover:opacity-100 active:opacity-100"
+          className="fixed right-0 bottom-[calc(8.4rem+env(safe-area-inset-bottom))] z-40 flex h-14 w-[22px] items-center justify-center rounded-l-xl bg-teal text-white opacity-90 shadow-soft transition-opacity duration-200 hover:opacity-100 active:opacity-100"
         >
           <ChevronLeft className="h-4 w-4" strokeWidth={2.5} />
         </button>
