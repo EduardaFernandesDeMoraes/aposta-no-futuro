@@ -100,7 +100,7 @@ export function AppShell({
 
       {/* Bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-navy text-navy-foreground pb-[env(safe-area-inset-bottom)]">
-        <ul className="mx-auto grid max-w-md grid-cols-5">
+        <ul className="mx-auto flex max-w-md items-center justify-evenly px-2">
           {TABS.map((tab) => {
             const active =
               tab.to === "/"
@@ -108,11 +108,11 @@ export function AppShell({
                 : location.pathname.startsWith(tab.to);
             const Icon = tab.icon;
             return (
-              <li key={tab.to}>
+              <li key={tab.to} className="flex-1">
                 <Link
                   to={tab.to}
                   className={cn(
-                    "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-all duration-200 ease-out hover:text-teal active:scale-95",
+                    "flex flex-col items-center justify-center gap-1 py-2.5 text-[11px] font-medium transition-all duration-200 ease-out hover:text-teal active:scale-95",
                     active ? "text-teal" : "text-white/70 hover:text-white",
                   )}
                 >
