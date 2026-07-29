@@ -231,7 +231,7 @@ function Forum({
 
       {/* Cabeçalho da sala */}
       <div
-        className="rounded-2xl p-4 text-white shadow-sm"
+        className="w-full rounded-2xl border border-transparent p-4 text-white shadow-sm"
         style={{ backgroundColor: room.color }}
       >
         <p className="text-xs uppercase tracking-wide opacity-80">Sala</p>
@@ -242,11 +242,14 @@ function Forum({
       </div>
 
       {/* Mensagens */}
-      <div className="space-y-3" style={{ paddingBottom: composerH + 12 }}>
+      <div
+        className="flex flex-col gap-3"
+        style={{ paddingBottom: composerH + 16 }}
+      >
         {messages.map((m, i) => (
           <div
             key={`${m.nick}-${i}`}
-            className="rounded-2xl border border-slate-200 bg-white p-3"
+            className="w-full rounded-2xl border border-slate-200 bg-white p-3"
           >
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-[#16233C]">{m.nick}</span>
@@ -266,30 +269,43 @@ function Forum({
         className="fixed inset-x-0 z-20 border-t border-slate-200 bg-white"
         style={{ bottom: navH }}
       >
-        <div className="mx-auto w-full max-w-md px-4 pb-3 pt-2.5">
-          <div className="flex items-end gap-2">
+        <div className="mx-auto w-full max-w-md px-4 pb-3 pt-3">
+          <div className="flex items-center gap-2">
             <Textarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  send();
+                }
+              }}
               placeholder="Escreva aqui…"
-              rows={2}
-              className="min-h-[44px] resize-none rounded-2xl border-slate-200 text-sm"
+              rows={1}
+              className="h-12 min-h-12 flex-1 resize-none rounded-2xl border-slate-200 py-3.5 text-sm leading-tight"
             />
-            <Button
+            <button
               type="button"
               onClick={send}
               disabled={!draft.trim()}
-              className="h-11 rounded-full bg-[#16BFAC] px-4 text-white transition-all duration-200 hover:bg-[#14ac9b] disabled:opacity-50"
+              aria-label="Enviar mensagem"
+              className={cn(
+                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-transform duration-100 ease-out",
+                draft.trim()
+                  ? "shadow-md active:scale-[0.92]"
+                  : "cursor-not-allowed opacity-40",
+              )}
             >
-              <Send className="h-4 w-4" />
-            </Button>
+              <Send className="h-5 w-5" />
+            </button>
           </div>
-          <p className="mt-1.5 text-[11px] text-slate-400">
-            Você aparece como <strong>{nick}</strong>. Nada de dados pessoais nem
-            links, tá?
+          <p className="mt-1.5 truncate text-xs text-slate-400">
+            Você aparece como <strong>{nick}</strong> · sem dados pessoais ou
+            links
           </p>
         </div>
       </div>
+
     </div>
   );
 }
