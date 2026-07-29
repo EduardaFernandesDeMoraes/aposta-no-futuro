@@ -97,28 +97,55 @@ function pickNick(seed: string) {
   return NICKS[h % NICKS.length];
 }
 
-/** Mede o composer fixo e a barra de navegação para reservar espaço na lista. */
+/** Mede o composer fixo, a barra de navegação e o espaço abaixo da lista
+ *  para deixar exatamente 16px entre a última mensagem e o composer. */
 function useComposerHeight() {
   const ref = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(96);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [pad, setPad] = useState(96);
   const [navH, setNavH] = useState(62);
+  const measureRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const el = ref.current;
     const nav = document.querySelector("nav");
+    const main = document.querySelector("main");
     const update = () => {
-      if (el) setHeight(el.offsetHeight);
-      if (nav) setNavH(nav.getBoundingClientRect().height);
+      const composerH = el?.offsetHeight ?? 0;
+      const h = nav?.getBoundingClientRect().height ?? 0;
+      setNavH(h);
+
+      const list = listRef.current;
+      const lastCard = list?.lastElementChild as HTMLElement | null;
+      if (!list || !lastCard) return;
+
+      const docH = document.documentElement.scrollHeight;
+      const lastBottomAbs =
+        lastCard.getBoundingClientRect().bottom + window.scrollY;
+      const currentPad = parseFloat(getComputedStyle(list).paddingBottom) || 0;
+      // tudo que existe no documento abaixo da lista (padding do main etc.)
+      const below = docH - (lastBottomAbs + currentPad);
+
+      setPad(Math.max(0, composerH + h + 16 - below));
     };
+
+    measureRef.current = update;
     update();
     const ro = new ResizeObserver(update);
     if (el) ro.observe(el);
     if (nav) ro.observe(nav);
+    if (main) ro.observe(main);
+
     return () => ro.disconnect();
   }, []);
 
-  return { ref, height, navH };
+  const measure = () => measureRef.current();
+
+  return { ref, listRef, pad, navH, measure };
 }
+
+
+
 
 function Comunidade() {
   const [posts, setPosts] = useLocalStorage<Record<string, Msg[]>>(
@@ -171,8 +198,14 @@ function Forum({
 }) {
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
   const [draft, setDraft] = useState("");
-  const { ref: composerRef, height: composerH, navH } = useComposerHeight();
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const canSend = draft.trim().length > 0;
+  const {
+    ref: composerRef,
+    listRef,
+    pad: listPad,
+    navH,
+    measure,
+  } = useComposerHeight();
 
   const room = ROOMS.find((r) => r.id === activeRoom)!;
   const messages = useMemo(() => {
@@ -180,8 +213,10 @@ function Forum({
   }, [activeRoom, posts]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ block: "end" });
+    measure();
+    listRef.current?.lastElementChild?.scrollIntoView({ block: "end" });
   }, [activeRoom, messages.length]);
+
 
   const send = () => {
     const text = draft.trim();
@@ -192,6 +227,7 @@ function Forum({
     }));
     setDraft("");
   };
+
 
   return (
     <div className="space-y-4">
@@ -243,8 +279,9 @@ function Forum({
 
       {/* Mensagens */}
       <div
+        ref={listRef}
         className="flex flex-col gap-3"
-        style={{ paddingBottom: composerH + 16 }}
+        style={{ paddingBottom: listPad }}
       >
         {messages.map((m, i) => (
           <div
@@ -260,7 +297,6 @@ function Forum({
             </p>
           </div>
         ))}
-        <div ref={bottomRef} />
       </div>
 
       {/* Composer fixo, acima da barra de navegação */}
@@ -287,18 +323,20 @@ function Forum({
             <button
               type="button"
               onClick={send}
-              disabled={!draft.trim()}
+              disabled={!canSend}
+              aria-disabled={!canSend}
               aria-label="Enviar mensagem"
               className={cn(
-                "flex h-12 w-12 flex-none items-center justify-center rounded-full text-white transition-all duration-150 ease-out",
-                draft.trim()
-                  ? "bg-[#16BFAC] shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92] [@media(hover:hover)]:cursor-pointer"
-                  : "cursor-not-allowed bg-[#16BFAC] opacity-40",
+                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-all duration-150 ease-out",
+                canSend
+                  ? "cursor-pointer opacity-100 shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92]"
+                  : "cursor-not-allowed opacity-40",
               )}
             >
               <Send className="h-5 w-5" />
             </button>
           </div>
+
           <p className="mt-1.5 text-xs leading-snug text-slate-400">
             Você aparece como <strong>{nick}</strong> · Sem dados pessoais
           </p>
@@ -444,12 +482,21 @@ function MentorChat({
   onBack: () => void;
 }) {
   const [draft, setDraft] = useState("");
-  const { ref: composerRef, height: composerH, navH } = useComposerHeight();
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const canSend = draft.trim().length > 0;
+  const {
+    ref: composerRef,
+    listRef,
+    pad: listPad,
+    navH,
+    measure,
+  } = useComposerHeight();
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ block: "end" });
+    measure();
+    listRef.current?.lastElementChild?.scrollIntoView({ block: "end" });
   }, [messages.length]);
+
+
 
   const send = () => {
     const text = draft.trim();
@@ -481,7 +528,7 @@ function MentorChat({
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div ref={listRef} className="space-y-3" style={{ paddingBottom: listPad }}>
         {messages.map((m, i) => (
           <div
             key={i}
@@ -495,14 +542,11 @@ function MentorChat({
             {m.text}
           </div>
         ))}
-      </div>
-
-      <div style={{ paddingBottom: composerH + 16 }}>
         <p className="rounded-xl bg-slate-50 p-2 text-center text-[11px] text-slate-500">
           Mentores são voluntários e não substituem atendimento profissional.
         </p>
-        <div ref={bottomRef} />
       </div>
+
 
       <div
         ref={composerRef}
@@ -527,15 +571,17 @@ function MentorChat({
             <button
               type="button"
               onClick={send}
-              disabled={!draft.trim()}
+              disabled={!canSend}
+              aria-disabled={!canSend}
               aria-label="Enviar mensagem"
               className={cn(
-                "flex h-12 w-12 flex-none items-center justify-center rounded-full text-white transition-all duration-150 ease-out",
-                draft.trim()
-                  ? "bg-[#16BFAC] shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92] [@media(hover:hover)]:cursor-pointer"
-                  : "cursor-not-allowed bg-[#16BFAC] opacity-40",
+                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-all duration-150 ease-out",
+                canSend
+                  ? "cursor-pointer opacity-100 shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92]"
+                  : "cursor-not-allowed opacity-40",
               )}
             >
+
               <Send className="h-5 w-5" />
             </button>
           </div>
