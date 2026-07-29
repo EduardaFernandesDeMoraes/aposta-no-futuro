@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowRight, Calendar, HandHeart, PiggyBank, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OnboardingGate } from "@/components/onboarding-gate";

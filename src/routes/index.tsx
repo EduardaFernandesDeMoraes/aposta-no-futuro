@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import confetti from "canvas-confetti";
 import {
@@ -103,7 +103,6 @@ function celebrate() {
 }
 
 function Home() {
-  const navigate = useNavigate();
   const [profile, setProfile] = useLocalStorage<Profile>("anf.profile", {
     name: "",
     firstFreeDay: "",
