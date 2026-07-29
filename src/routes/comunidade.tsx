@@ -257,7 +257,9 @@ function Forum({
           Você aparece como <strong>{nick}</strong>. Nada de dados pessoais nem
           links, tá?
         </p>
+        </div>
       </div>
+
     </div>
   );
 }
