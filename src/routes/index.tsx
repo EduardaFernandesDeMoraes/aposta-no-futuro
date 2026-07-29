@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online. Contador de dias livres, simulador financeiro, autoavaliação e comunidade de apoio.",
+          "Aplicativo gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online. Contador de dias livres, simulador financeiro, autoavaliação e comunidade de apoio.",
       },
       {
         property: "og:title",
@@ -44,14 +44,17 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online.",
+          "Aplicativo gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online. Contador de dias livres, simulador financeiro, autoavaliação e comunidade de apoio.",
       },
-      { property: "og:url", content: "https://apostanofuturo.online/" },
+      { property: "og:url", content: "https://www.apostanofuturo.online" },
       {
         property: "og:image",
-        content: "https://apostanofuturo.online/og-image.jpg",
+        content: "https://www.apostanofuturo.online/og-image.jpg",
       },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
@@ -61,14 +64,14 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content:
-          "Aplicativo web gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online.",
+          "Aplicativo gratuito e anônimo que ajuda jovens a prevenir e enfrentar o vício em apostas online. Contador de dias livres, simulador financeiro, autoavaliação e comunidade de apoio.",
       },
       {
         name: "twitter:image",
-        content: "https://apostanofuturo.online/og-image.jpg",
+        content: "https://www.apostanofuturo.online/og-image.jpg",
       },
     ],
-    links: [{ rel: "canonical", href: "https://apostanofuturo.online/" }],
+    links: [{ rel: "canonical", href: "https://www.apostanofuturo.online/" }],
   }),
   component: HomeRoute,
 });
