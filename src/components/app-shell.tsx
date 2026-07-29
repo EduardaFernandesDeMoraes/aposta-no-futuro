@@ -6,7 +6,7 @@ import {
   Users,
   Trophy,
   User,
-  LifeBuoy,
+  
   Sparkles,
   ChevronRight,
   Phone,
