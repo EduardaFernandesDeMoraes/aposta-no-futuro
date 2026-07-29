@@ -102,6 +102,7 @@ function pickNick(seed: string) {
 function useComposerHeight() {
   const ref = useRef<HTMLDivElement>(null);
   const [pad, setPad] = useState(96);
+  const [navH, setNavH] = useState(62);
 
   useEffect(() => {
     const el = ref.current;
@@ -109,11 +110,12 @@ function useComposerHeight() {
     const main = document.querySelector("main");
     const update = () => {
       const composerH = el?.offsetHeight ?? 0;
-      const navH = nav?.getBoundingClientRect().height ?? 0;
+      const h = nav?.getBoundingClientRect().height ?? 0;
       const mainPad = main
         ? parseFloat(getComputedStyle(main).paddingBottom) || 0
         : 0;
-      setPad(Math.max(0, composerH + navH + 16 - mainPad));
+      setNavH(h);
+      setPad(Math.max(0, composerH + h + 16 - mainPad));
     };
     update();
     const ro = new ResizeObserver(update);
@@ -123,12 +125,9 @@ function useComposerHeight() {
     return () => ro.disconnect();
   }, []);
 
-  const navH = (typeof document !== "undefined"
-    ? document.querySelector("nav")?.getBoundingClientRect().height
-    : 0) ?? 0;
-
   return { ref, pad, navH };
 }
+
 
 
 function Comunidade() {
