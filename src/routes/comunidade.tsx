@@ -97,22 +97,27 @@ function pickNick(seed: string) {
   return NICKS[h % NICKS.length];
 }
 
-/** Mede a altura do composer fixo para reservar espaço na lista. */
+/** Mede o composer fixo e a barra de navegação para reservar espaço na lista. */
 function useComposerHeight() {
   const ref = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(96);
+  const [navH, setNavH] = useState(62);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const update = () => setHeight(el.offsetHeight);
+    const nav = document.querySelector("nav");
+    const update = () => {
+      if (el) setHeight(el.offsetHeight);
+      if (nav) setNavH(nav.getBoundingClientRect().height);
+    };
     update();
     const ro = new ResizeObserver(update);
-    ro.observe(el);
+    if (el) ro.observe(el);
+    if (nav) ro.observe(nav);
     return () => ro.disconnect();
   }, []);
 
-  return { ref, height };
+  return { ref, height, navH };
 }
 
 function Comunidade() {
