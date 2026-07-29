@@ -182,6 +182,7 @@ function ChatSheet({
   ]);
   const [quick, setQuick] = useState<QuickReply[]>(INITIAL_QUICK);
   const [typing, setTyping] = useState(false);
+  const [draft, setDraft] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
