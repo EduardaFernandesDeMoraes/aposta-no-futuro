@@ -104,6 +104,7 @@ function useComposerHeight() {
   const listRef = useRef<HTMLDivElement>(null);
   const [pad, setPad] = useState(96);
   const [navH, setNavH] = useState(62);
+  const measureRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const el = ref.current;
@@ -115,9 +116,8 @@ function useComposerHeight() {
       setNavH(h);
 
       const list = listRef.current;
-      if (!list) return;
-      const lastCard = list.lastElementChild as HTMLElement | null;
-      if (!lastCard) return;
+      const lastCard = list?.lastElementChild as HTMLElement | null;
+      if (!list || !lastCard) return;
 
       const docH = document.documentElement.scrollHeight;
       const lastBottomAbs =
@@ -129,6 +129,7 @@ function useComposerHeight() {
       setPad(Math.max(0, composerH + h + 16 - below));
     };
 
+    measureRef.current = update;
     update();
     const ro = new ResizeObserver(update);
     if (el) ro.observe(el);
@@ -138,8 +139,11 @@ function useComposerHeight() {
     return () => ro.disconnect();
   }, []);
 
-  return { ref, pad, navH };
+  const measure = () => measureRef.current();
+
+  return { ref, listRef, pad, navH, measure };
 }
+
 
 
 
