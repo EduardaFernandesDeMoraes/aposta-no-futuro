@@ -66,23 +66,22 @@ export function AppShell({
               aria-label="Falar com a Xande IA"
               className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95"
             >
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-teal">
-                <Sparkles className="h-[18px] w-[18px] text-[#E1F5EE]" strokeWidth={2.2} />
+              <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-teal">
+                <Sparkles className="h-4 w-4 text-[#E1F5EE]" strokeWidth={2.2} />
               </span>
             </button>
             <button
               onClick={() => navigate({ to: "/ajuda" })}
               aria-label="Preciso de ajuda"
-              className="inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-full sm:bg-coral sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-coral-foreground sm:shadow-soft"
+              className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-full sm:bg-coral sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-coral-foreground sm:shadow-soft"
             >
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-coral sm:contents">
-                <LifeBuoy className="h-[18px] w-[18px] text-coral-foreground sm:h-4 sm:w-4" />
+              <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-coral animate-[pulse-scale_3.5s_ease-in-out_infinite] sm:animate-none sm:contents">
+                <Phone className="h-[18px] w-[18px] text-white sm:h-4 sm:w-4" strokeWidth={2.5} />
               </span>
               <span className="hidden whitespace-nowrap sm:inline">Preciso de ajuda</span>
             </button>
           </div>
         </div>
-
       </header>
 
       {/* Content */}
