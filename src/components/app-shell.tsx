@@ -373,7 +373,7 @@ function ChatSheet({
           {/* Messages */}
           <div
             ref={scrollRef}
-            className="flex-1 space-y-4 overflow-y-auto bg-background p-4 pb-8"
+            className="flex-1 space-y-4 overflow-y-auto bg-[#F0FAF7] p-4 pb-6"
           >
             {messages.map((m) => (
               <MessageBubble key={m.id} from={m.from}>
@@ -388,28 +388,51 @@ function ChatSheet({
                 <Dot delay={0.3} />
               </div>
             )}
-            <div className="h-1" />
-          </div>
 
-          {/* Quick replies */}
-          {quick.length > 0 && !typing && (
-            <div className="border-t border-border bg-card px-3 py-3">
-              <div className="mb-2 text-[11px] font-medium text-muted-foreground">
-                Toque numa resposta rápida:
-              </div>
-              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+            {/* Quick replies — inline, logo abaixo da mensagem do Xande */}
+            {quick.length > 0 && !typing && (
+              <div className="flex flex-col items-start gap-2 pl-1">
                 {quick.map((q) => (
                   <button
                     key={q.id}
                     onClick={() => handleQuick(q.id)}
-                    className="rounded-full border border-teal/40 bg-teal/10 px-3 py-2 text-xs font-semibold text-teal transition-colors active:scale-95 sm:w-auto"
+                    className={cn(
+                      "max-w-[90%] rounded-full px-4 py-2 text-left text-xs font-semibold transition-colors active:scale-95",
+                      q.id === "ajuda"
+                        ? "bg-coral text-white shadow-card"
+                        : "border border-teal/40 bg-teal/10 text-teal",
+                    )}
                   >
                     {q.label}
                   </button>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+            <div className="h-1" />
+          </div>
+
+          {/* Campo de digitação */}
+          <form
+            onSubmit={handleSend}
+            className="flex items-center gap-2 border-t border-border bg-card px-3 py-2.5"
+          >
+            <input
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder="Escreva o que você está sentindo..."
+              aria-label="Escreva sua mensagem para o Xande"
+              className="min-w-0 flex-1 rounded-full border border-border bg-background px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground focus:border-teal"
+            />
+            <button
+              type="submit"
+              aria-label="Enviar mensagem"
+              disabled={!draft.trim()}
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal text-teal-foreground transition-opacity active:scale-95 disabled:opacity-40"
+            >
+              <Send className="h-5 w-5" strokeWidth={2.2} />
+            </button>
+          </form>
+
 
           {/* Disclaimer */}
           <div className="border-t border-border bg-background px-4 py-2 text-center text-[10px] text-muted-foreground">
