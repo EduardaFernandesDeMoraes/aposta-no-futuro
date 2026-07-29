@@ -183,18 +183,10 @@ function Home() {
     <AppShell title="Aposta no Futuro" titleAs="p">
 
       {/* Título principal da página */}
-      <div className="pb-3">
-        <h1 className="leading-tight tracking-tight">
-          <span className="block text-2xl font-bold text-navy">
-            Aposta no Futuro
-          </span>
-          <span className="mt-0.5 block text-sm font-normal text-navy/70">
-            apoio anônimo e gratuito contra o vício em apostas
-          </span>
-        </h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">
+      <div className="pb-5">
+        <h1 className="text-xl font-bold leading-tight tracking-tight text-navy sm:text-2xl">
           Menos apostas. Mais futuro. Essa é a nossa aposta.
-        </p>
+        </h1>
       </div>
 
       {/* Greeting */}
