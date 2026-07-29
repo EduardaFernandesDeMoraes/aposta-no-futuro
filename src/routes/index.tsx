@@ -157,9 +157,13 @@ function Home() {
 
       {/* Título principal da página */}
       <div className="pb-3">
-        <h1 className="text-xl font-bold leading-tight tracking-tight text-navy">
-          Aposta no Futuro — apoio gratuito e anônimo para jovens que querem
-          parar de apostar
+        <h1 className="leading-tight tracking-tight">
+          <span className="block text-2xl font-bold text-navy">
+            Aposta no Futuro
+          </span>
+          <span className="mt-0.5 block text-sm font-normal text-navy/70">
+            apoio anônimo e gratuito contra o vício em apostas
+          </span>
         </h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
           Menos apostas. Mais futuro. Essa é a nossa aposta.
