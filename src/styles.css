@@ -130,3 +130,13 @@
 #lovable-badge {
   display: none !important;
 }
+
+/* Evita o zoom automático do iOS Safari ao focar campos editáveis:
+   qualquer input/textarea/select no mobile usa no mínimo 16px. */
+@media (max-width: 767.98px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
