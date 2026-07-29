@@ -149,7 +149,8 @@ function Home() {
   }
 
   return (
-    <AppShell title="Aposta no Futuro — Sua jornada livre">
+    <AppShell title="Aposta no Futuro">
+
       {/* Greeting */}
       <div className="flex items-center gap-2 pb-1">
         <Sparkles className="h-4 w-4 text-magenta" />
