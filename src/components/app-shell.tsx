@@ -100,7 +100,7 @@ export function AppShell({
 
       {/* Bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-navy text-navy-foreground pb-[env(safe-area-inset-bottom)]">
-        <ul className="mx-auto grid w-full grid-cols-5 items-center">
+        <ul className="grid w-full grid-cols-5 items-center px-0">
           {TABS.map((tab) => {
             const active =
               tab.to === "/"
@@ -110,16 +110,16 @@ export function AppShell({
             return (
               <li
                 key={tab.to}
-                className="flex h-full w-full flex-col items-center justify-center"
+                className="flex min-w-0 w-full flex-col items-center justify-center"
               >
                 <Link
                   to={tab.to}
                   className={cn(
-                    "flex h-full w-full flex-col items-center justify-center gap-1 py-2 text-[11px] font-medium leading-none transition-all duration-200 ease-out hover:text-teal active:scale-95",
+                    "flex h-full w-full min-w-0 flex-col items-center justify-center gap-1 py-2 text-xs font-medium leading-none transition-all duration-200 ease-out hover:text-teal active:scale-95",
                     active ? "text-teal" : "text-white/70 hover:text-white",
                   )}
                 >
-                  <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 2} />
+                  <Icon className="h-5 w-5 shrink-0" strokeWidth={active ? 2.4 : 2} />
                   {tab.label}
                 </Link>
               </li>
