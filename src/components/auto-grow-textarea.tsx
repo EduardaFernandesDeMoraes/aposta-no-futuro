@@ -45,8 +45,8 @@ export const AutoGrowTextarea = forwardRef<
         "no-scrollbar block w-full resize-none overflow-y-auto text-base leading-6 md:text-base",
         className,
       )}
-      style={{ height: MIN_H, maxHeight: MAX_H, ...props.style }}
       {...props}
+      style={{ height: MIN_H, maxHeight: MAX_H, ...props.style }}
     />
   );
 });
