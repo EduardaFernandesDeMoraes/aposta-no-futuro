@@ -12,6 +12,43 @@ export const Route = createFileRoute("/ajuda")({
         content:
           "Canais de apoio gratuito e sigiloso: CVV 188 e CAPS. Você não está sozinho.",
       },
+      { property: "og:title", content: "Apoio — Aposta no Futuro" },
+      {
+        property: "og:description",
+        content:
+          "Canais gratuitos e sigilosos de apoio emocional: CVV 188 e CAPS. Pedir ajuda é um ato de força.",
+      },
+      { property: "og:url", content: "https://apostanofuturo.online/ajuda" },
+    ],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/ajuda" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "O que é o CVV e como funciona o 188?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "O CVV (Centro de Valorização da Vida) oferece apoio emocional gratuito e sigiloso 24 horas por dia pelo telefone 188 e pelo chat no site cvv.org.br.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Como encontrar o CAPS mais próximo?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Ligue para a UBS (Unidade Básica de Saúde) do seu bairro e peça o endereço do CAPS mais próximo, ou busque no site da sua Prefeitura por 'CAPS + nome do município'. O atendimento é gratuito pelo SUS.",
+              },
+            },
+          ],
+        }),
+      },
     ],
   }),
   component: AjudaPage,
@@ -33,9 +70,9 @@ function AjudaPage() {
         <div className="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-full bg-teal/10 text-2xl">
           💚
         </div>
-        <h1 className="text-lg font-bold text-navy">
+        <h2 className="text-lg font-bold text-navy">
           Você não está sozinho(a)
-        </h1>
+        </h2>
         <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
           Pedir ajuda é um ato de força. Respira. Estamos com você.
         </p>
