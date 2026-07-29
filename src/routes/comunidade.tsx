@@ -299,7 +299,7 @@ function Forum({
               <Send className="h-5 w-5" />
             </button>
           </div>
-          <p className="mt-1.5 truncate text-[10px] leading-none text-slate-400">
+          <p className="mt-1.5 text-[11px] leading-snug text-slate-400">
             Você aparece como <strong>{nick}</strong> · sem dados pessoais ou
             links
           </p>
