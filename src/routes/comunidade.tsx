@@ -498,7 +498,7 @@ function MentorChat({
         ))}
       </div>
 
-      <div style={{ paddingBottom: composerH + 12 }}>
+      <div style={{ paddingBottom: composerH + 16 }}>
         <p className="rounded-xl bg-slate-50 p-2 text-center text-[11px] text-slate-500">
           Mentores são voluntários e não substituem atendimento profissional.
         </p>
@@ -510,26 +510,39 @@ function MentorChat({
         className="fixed inset-x-0 z-20 border-t border-slate-200 bg-white"
         style={{ bottom: navH }}
       >
-        <div className="mx-auto w-full max-w-md px-4 pb-3 pt-2.5">
-          <div className="flex items-end gap-2">
+        <div className="mx-auto w-full max-w-md px-4 pb-3 pt-3">
+          <div className="flex items-center gap-2">
             <Textarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  send();
+                }
+              }}
               placeholder="Escreva aqui…"
-              rows={2}
-              className="min-h-[44px] resize-none rounded-2xl border-slate-200 text-sm"
+              rows={1}
+              className="h-12 min-h-12 flex-1 resize-none rounded-2xl border-slate-200 py-3.5 text-sm leading-tight"
             />
-            <Button
+            <button
               type="button"
               onClick={send}
               disabled={!draft.trim()}
-              className="h-11 rounded-full bg-[#16BFAC] px-4 text-white transition-all duration-200 hover:bg-[#14ac9b] disabled:opacity-50"
+              aria-label="Enviar mensagem"
+              className={cn(
+                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-transform duration-100 ease-out",
+                draft.trim()
+                  ? "shadow-md active:scale-[0.92]"
+                  : "cursor-not-allowed opacity-40",
+              )}
             >
-              <Send className="h-4 w-4" />
-            </Button>
+              <Send className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </div>
+
     </div>
 
   );
