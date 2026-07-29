@@ -177,7 +177,7 @@ function Home() {
 
         <button
           onClick={() => setRestartOpen(true)}
-          className="mt-5 inline-flex items-center gap-2 rounded-full bg-coral px-4 py-2 text-sm font-semibold text-coral-foreground shadow-soft transition-transform active:scale-95"
+          className="mt-5 inline-flex items-center gap-2 rounded-full bg-coral px-4 py-2 text-sm font-semibold text-coral-foreground shadow-soft transition-all duration-200 ease-out hover:bg-[#eb4436] active:scale-95"
         >
           <RefreshCw className="h-4 w-4" />
           Recomecei hoje
@@ -235,28 +235,32 @@ function Home() {
         <h2 className="mb-3 text-sm font-semibold text-navy">
           Continue sua jornada
         </h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 items-stretch gap-3">
           <ShortcutCard
             to="/autoavaliacao"
             color="bg-magenta/10 text-magenta"
+            hover="hover:bg-magenta/5 hover:border-magenta/30"
             icon={<ClipboardCheck className="h-5 w-5" />}
-            title="Fazer minha autoavaliação"
+            title="Fazer autoavaliação"
           />
           <ShortcutCard
             to="/simulador"
             color="bg-teal/10 text-teal"
+            hover="hover:bg-teal/5 hover:border-teal/30"
             icon={<Calculator className="h-5 w-5" />}
-            title="Ver meu simulador"
+            title="Ver simulador"
           />
           <ShortcutCard
             to="/desafios"
             color="bg-gold/15 text-gold"
+            hover="hover:bg-gold/10 hover:border-gold/30"
             icon={<Trophy className="h-5 w-5" />}
-            title="Desafio de hoje"
+            title="Ver desafio de hoje"
           />
           <ShortcutCard
             to="/comunidade"
             color="bg-cyan/10 text-cyan"
+            hover="hover:bg-cyan/5 hover:border-cyan/30"
             icon={<Users className="h-5 w-5" />}
             title="Falar com a comunidade"
           />
@@ -281,7 +285,7 @@ function Home() {
           <DialogFooter className="mt-2 flex-col gap-2 sm:flex-col">
             <Button
               onClick={handleRestart}
-              className="w-full rounded-full bg-teal text-teal-foreground hover:bg-teal/90"
+              className="w-full rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
             >
               Sim, recomeçar agora
             </Button>
@@ -315,7 +319,7 @@ function Home() {
           </DialogHeader>
           <Button
             onClick={() => setCelebration(null)}
-            className="mt-2 w-full rounded-full bg-teal text-teal-foreground hover:bg-teal/90"
+            className="mt-2 w-full rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
           >
             Obrigado 💚
           </Button>
@@ -354,22 +358,27 @@ function TimeBlock({
 function ShortcutCard({
   to,
   color,
+  hover,
   icon,
   title,
 }: {
   to: string;
   color: string;
+  hover?: string;
   icon: React.ReactNode;
   title: string;
 }) {
   return (
     <Link
       to={to}
-      className="group rounded-2xl border border-border bg-card p-4 shadow-card transition-transform active:scale-[0.98]"
+      className={cn(
+        "group flex h-full min-h-[124px] flex-col rounded-2xl border border-border bg-card p-4 text-left shadow-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-soft active:translate-y-0 active:scale-[0.98]",
+        hover,
+      )}
     >
       <div
         className={cn(
-          "grid h-10 w-10 place-items-center rounded-xl",
+          "grid h-10 w-10 place-items-center rounded-xl transition-colors duration-200",
           color,
         )}
       >

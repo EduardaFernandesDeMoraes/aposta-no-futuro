@@ -268,7 +268,7 @@ function Autoavaliacao() {
           type="button"
           onClick={goNext}
           disabled={currentAnswer === null}
-          className="ml-auto rounded-full bg-teal text-teal-foreground hover:bg-teal/90"
+          className="ml-auto rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
         >
           {isLast ? "Ver resultado" : "Próxima"}
           <ArrowRight className="ml-1 h-4 w-4" />

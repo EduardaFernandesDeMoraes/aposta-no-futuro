@@ -178,7 +178,7 @@ function AjudaPage() {
       <div className="mt-8 text-center">
         <Button
           asChild
-          className="rounded-full bg-navy px-6 text-navy-foreground hover:bg-navy/90"
+          className="rounded-full bg-navy px-6 text-navy-foreground transition-all duration-200 hover:bg-navy/90"
         >
           <Link to="/comunidade">Ir para a Comunidade</Link>
         </Button>

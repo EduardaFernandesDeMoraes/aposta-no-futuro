@@ -155,7 +155,7 @@ function Simulador() {
         )}
         <Button
           type="submit"
-          className="mt-4 h-12 w-full rounded-full bg-teal text-base font-semibold text-teal-foreground hover:bg-teal/90"
+          className="mt-4 h-12 w-full rounded-full bg-teal text-base font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
         >
           Calcular
         </Button>
