@@ -44,11 +44,15 @@ const TABS: Tab[] = [
 
 export function AppShell({
   title,
+  titleAs = "h1",
   children,
 }: {
   title: string;
+  /** Use "p" quando a página já define o seu próprio <h1> no conteúdo. */
+  titleAs?: "h1" | "p";
   children: ReactNode;
 }) {
+  const TitleTag = titleAs;
   const [chatOpen, setChatOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,9 +62,9 @@ export function AppShell({
       {/* Top bar */}
       <header className="sticky top-0 z-30 bg-navy text-navy-foreground shadow-soft pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex min-h-14 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-[1100px]">
-          <h1 className="min-w-0 flex-1 text-base font-semibold tracking-tight sm:text-lg">
+          <TitleTag className="min-w-0 flex-1 text-base font-semibold tracking-tight sm:text-lg">
             {title}
-          </h1>
+          </TitleTag>
           <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
             <button
               onClick={() => setChatOpen(true)}
