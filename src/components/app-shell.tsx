@@ -115,12 +115,12 @@ export function AppShell({
                 <Link
                   to={tab.to}
                   className={cn(
-                    "flex h-full w-full min-w-0 flex-col items-center justify-center gap-1 py-2 text-xs font-medium leading-none transition-all duration-200 ease-out hover:text-teal active:scale-95",
+                    "flex h-full w-full min-w-0 flex-col items-center justify-center gap-1 overflow-hidden px-1 py-2 text-[10px] font-medium leading-none transition-all duration-200 ease-out hover:text-teal active:scale-95 sm:text-xs",
                     active ? "text-teal" : "text-white/70 hover:text-white",
                   )}
                 >
                   <Icon className="h-5 w-5 shrink-0" strokeWidth={active ? 2.4 : 2} />
-                  {tab.label}
+                  <span className="w-full truncate text-center">{tab.label}</span>
                 </Link>
               </li>
             );
