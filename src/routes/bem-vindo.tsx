@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Calendar, HandHeart, PiggyBank } from "lucide-react";
+import { ArrowRight, Calendar, HandHeart, PiggyBank, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
