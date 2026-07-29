@@ -88,7 +88,7 @@ export function AppShell({
       {/* Content */}
       <main
         key={location.pathname}
-        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-4 animate-fade-in"
+        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(var(--nav-h)+env(safe-area-inset-bottom))] pt-4 animate-fade-in"
       >
         {children}
       </main>

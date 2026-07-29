@@ -52,6 +52,7 @@
 
 :root {
   --radius: 1rem;
+  --nav-h: 62px;
 
   --background: #f7fafc;
   --foreground: #16233c;
