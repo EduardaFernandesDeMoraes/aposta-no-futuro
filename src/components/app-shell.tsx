@@ -106,10 +106,15 @@ export function AppShell({
       <button
         onClick={() => setChatOpen(true)}
         aria-label="Abrir assistente virtual"
-        className="fixed bottom-24 right-4 z-40 grid h-14 w-14 place-items-center rounded-full bg-teal text-teal-foreground shadow-[0_8px_24px_-6px_rgba(22,191,172,0.6)] transition-transform active:scale-95"
+        aria-hidden={!fabVisible}
+        className={cn(
+          "fixed bottom-24 right-4 z-40 grid h-14 w-14 place-items-center rounded-full bg-teal text-teal-foreground shadow-[0_8px_24px_-6px_rgba(22,191,172,0.6)] transition-all duration-300 ease-out active:scale-95",
+          fabVisible ? "translate-y-0 opacity-100 pointer-events-auto" : "translate-y-8 opacity-0 pointer-events-none"
+        )}
       >
         <MessageCircle className="h-6 w-6" />
       </button>
+
 
       {/* Bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-navy text-navy-foreground pb-[env(safe-area-inset-bottom)]">
