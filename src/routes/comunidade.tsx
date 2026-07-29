@@ -114,9 +114,17 @@ function useComposerHeight() {
       const mainPad = main
         ? parseFloat(getComputedStyle(main).paddingBottom) || 0
         : 0;
+      // espaço extra abaixo do <main> no documento (wrappers/safe-area)
+      const mainBottom = main
+        ? main.getBoundingClientRect().bottom + window.scrollY
+        : 0;
+      const extra = main
+        ? Math.max(0, document.documentElement.scrollHeight - mainBottom)
+        : 0;
       setNavH(h);
-      setPad(Math.max(0, composerH + h + 16 - mainPad));
+      setPad(Math.max(0, composerH + h + 16 - mainPad - extra));
     };
+
     update();
     const ro = new ResizeObserver(update);
     if (el) ro.observe(el);
