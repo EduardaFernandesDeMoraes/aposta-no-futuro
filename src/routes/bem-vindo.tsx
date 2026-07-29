@@ -218,11 +218,12 @@ function FinalStep({
           )}
         </label>
 
-        <label className="block">
+        <label className="block" htmlFor="primeiro-dia-livre">
           <span className="mb-1.5 block text-sm font-medium text-navy">
             Meu primeiro dia livre de apostas
           </span>
           <input
+            id="primeiro-dia-livre"
             type="date"
             value={date}
             onChange={(e) => onDate(e.target.value)}

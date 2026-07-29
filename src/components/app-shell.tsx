@@ -64,7 +64,7 @@ export function AppShell({
           <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
             <button
               onClick={() => setChatOpen(true)}
-              aria-label="Falar com a Xande IA"
+              aria-label="Falar com a Xande"
               className="relative inline-flex h-11 w-11 items-center justify-center transition-all duration-200 ease-out hover:opacity-90 active:scale-95"
             >
               <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-teal">
@@ -73,7 +73,7 @@ export function AppShell({
             </button>
             <button
               onClick={() => navigate({ to: "/ajuda" })}
-              aria-label="Preciso de ajuda"
+              aria-label="Preciso de ajuda agora"
               className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-full sm:bg-coral sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-coral-foreground sm:shadow-soft sm:hover:bg-[#eb4436]"
             >
               <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-coral animate-[pulse-scale_3.5s_ease-in-out_infinite] sm:animate-none sm:contents">
