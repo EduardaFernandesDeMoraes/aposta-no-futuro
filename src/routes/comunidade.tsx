@@ -231,7 +231,7 @@ function Forum({
       </div>
 
       {/* Composer */}
-      <div className="sticky bottom-[calc(env(safe-area-inset-bottom))] -mx-4 -mb-[1px] border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur">
+      <div className="sticky bottom-[calc(var(--nav-h)+env(safe-area-inset-bottom))] -mx-4 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur">
 
 
         <div className="flex items-end gap-2">
