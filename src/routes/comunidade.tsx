@@ -171,8 +171,9 @@ function Forum({
 }) {
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
   const [draft, setDraft] = useState("");
+  const canSend = draft.trim().length > 0;
   const { ref: composerRef, height: composerH, navH } = useComposerHeight();
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const room = ROOMS.find((r) => r.id === activeRoom)!;
   const messages = useMemo(() => {
@@ -180,7 +181,7 @@ function Forum({
   }, [activeRoom, posts]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ block: "end" });
+    listRef.current?.lastElementChild?.scrollIntoView({ block: "end" });
   }, [activeRoom, messages.length]);
 
   const send = () => {
@@ -192,6 +193,7 @@ function Forum({
     }));
     setDraft("");
   };
+
 
   return (
     <div className="space-y-4">
