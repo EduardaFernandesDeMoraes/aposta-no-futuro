@@ -178,19 +178,14 @@ function FinalStep({
         <label className="block">
           <span className="mb-1.5 flex items-center gap-2 text-sm font-medium text-navy">
             Como podemos te chamar?
-            <span className="rounded-full bg-teal/10 px-2 py-0.5 text-[10px] font-semibold text-teal">
-              opcional
-            </span>
+            <OptionalTooltip />
           </span>
           <input
             value={name}
             onChange={(e) => onName(e.target.value)}
             placeholder="Como quer ser chamado?"
-            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm outline-none focus:border-teal"
+            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm outline-none transition-colors duration-200 focus:border-teal"
           />
-          <span className="mt-1.5 block text-xs text-muted-foreground">
-            Pode deixar em branco. Só você vê isso.
-          </span>
         </label>
 
         <label className="block">
