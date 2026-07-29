@@ -469,7 +469,9 @@ function MentorChat({
             <Send className="h-4 w-4" />
           </Button>
         </div>
+        </div>
       </div>
     </div>
+
   );
 }
