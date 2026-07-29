@@ -330,24 +330,24 @@ function ChatSheet({
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
-        side="bottom"
-        className="h-[80dvh] rounded-t-3xl border-0 p-0 sm:h-[85dvh]"
+        side="right"
+        className="w-[82%] max-w-md border-0 p-0 sm:w-[420px] [&>button]:hidden"
       >
         <SheetHeader className="sr-only">
-          <SheetTitle>Xande — assistente virtual</SheetTitle>
+          <SheetTitle>Xande IA — assistente virtual</SheetTitle>
           <SheetDescription>
             Converse com o Xande, o assistente acolhedor do Aposta no Futuro.
           </SheetDescription>
         </SheetHeader>
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between rounded-t-3xl border-b border-border bg-navy px-4 py-3 text-navy-foreground">
+          <div className="flex items-center justify-between border-b border-border bg-navy px-4 py-3 text-navy-foreground">
             <div className="flex items-center gap-2.5">
               <div className="grid h-10 w-10 place-items-center rounded-full bg-teal text-lg font-bold text-teal-foreground">
                 X
               </div>
               <div>
-                <div className="text-sm font-semibold">Xande</div>
+                <div className="text-sm font-semibold">Xande IA</div>
                 <div className="flex items-center gap-1.5 text-[11px] text-white/70">
                   <span className="h-1.5 w-1.5 rounded-full bg-teal" />
                   Aqui com você, sem julgamento.
@@ -359,9 +359,10 @@ function ChatSheet({
               className="inline-flex h-11 w-11 items-center justify-center text-white transition-colors hover:text-white/80"
               aria-label="Fechar"
             >
-              <X className="h-6 w-6" strokeWidth={2.5} />
+              <ChevronRight className="h-6 w-6" strokeWidth={2.5} />
             </button>
           </div>
+
 
           {/* Messages */}
           <div
