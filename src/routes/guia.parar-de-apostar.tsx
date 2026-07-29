@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/guia/parar-de-apostar")({
   head: () => ({
     meta: [
-      { title: "Como parar de apostar online — Guia prático | Aposta no Futuro" },
+      { title: "Como parar de apostar online: Guia | Aposta no Futuro" },
       {
         name: "description",
         content:
