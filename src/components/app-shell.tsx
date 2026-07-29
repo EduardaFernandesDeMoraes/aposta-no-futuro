@@ -1,3 +1,4 @@
+import { AutoGrowTextarea } from "@/components/auto-grow-textarea";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
@@ -463,12 +464,18 @@ function ChatSheet({
             onSubmit={handleSend}
             className="flex items-center gap-2 border-t border-border bg-card px-4 py-2.5"
           >
-            <input
+            <AutoGrowTextarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend(e as unknown as React.FormEvent);
+                }
+              }}
               placeholder="Como você está?"
               aria-label="Escreva sua mensagem para o Xande"
-              className="min-w-0 flex-1 truncate rounded-full border border-border bg-background px-4 py-2.5 text-base outline-none md:text-sm placeholder:text-muted-foreground focus:border-teal"
+              className="min-w-0 flex-1 rounded-3xl border border-border bg-background px-4 py-3 outline-none placeholder:text-muted-foreground focus:border-teal"
             />
             <button
               type="submit"

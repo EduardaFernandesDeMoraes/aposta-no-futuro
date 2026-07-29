@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ShieldAlert, Send, ArrowLeft, Info } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
+import { AutoGrowTextarea } from "@/components/auto-grow-textarea";
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
@@ -307,7 +307,7 @@ function Forum({
       >
         <div className="mx-auto w-full max-w-md px-4 pb-3 pt-3">
           <div className="flex items-center gap-2">
-            <Textarea
+            <AutoGrowTextarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {
@@ -318,8 +318,7 @@ function Forum({
               }}
               placeholder="Escreva aqui…"
               aria-label="Escrever mensagem na comunidade"
-              rows={1}
-              className="h-12 min-h-12 flex-1 resize-none rounded-2xl border-slate-200 py-3.5 text-base leading-tight md:text-sm"
+              className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-transparent px-3 py-3 outline-none placeholder:text-slate-400 focus:border-[#16BFAC]"
             />
             <button
               type="button"
@@ -556,7 +555,7 @@ function MentorChat({
       >
         <div className="mx-auto w-full max-w-md px-4 pb-3 pt-3">
           <div className="flex items-center gap-2">
-            <Textarea
+            <AutoGrowTextarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {
@@ -567,8 +566,7 @@ function MentorChat({
               }}
               placeholder="Escreva aqui…"
               aria-label="Escrever mensagem na comunidade"
-              rows={1}
-              className="h-12 min-h-12 flex-1 resize-none rounded-2xl border-slate-200 py-3.5 text-base leading-tight md:text-sm"
+              className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-transparent px-3 py-3 outline-none placeholder:text-slate-400 focus:border-[#16BFAC]"
             />
             <button
               type="button"
