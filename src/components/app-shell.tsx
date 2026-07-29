@@ -49,8 +49,28 @@ export function AppShell({
   children: ReactNode;
 }) {
   const [chatOpen, setChatOpen] = useState(false);
+  const [scrolling, setScrolling] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let timer: number | undefined;
+    const onScroll = () => {
+      setScrolling(true);
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(() => setScrolling(false), 1500);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (timer) window.clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    setScrolling(false);
+  }, [location.pathname]);
+
 
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
