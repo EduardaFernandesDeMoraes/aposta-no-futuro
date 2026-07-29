@@ -334,6 +334,42 @@ function ChatSheet({
     }
   }
 
+  function matchIntent(text: string): QuickId | null {
+    const t = text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    if (/(vontade|apostar|jogar|impulso|fissura|tentac)/.test(t)) return "vontade";
+    if (/(recai|apostei|joguei|recaida|escorreg|voltei a apostar)/.test(t))
+      return "recaida";
+    if (/(progresso|contador|dias|conquista|evolu)/.test(t)) return "progresso";
+    if (/(ajuda|socorro|cvv|caps|desesper|nao aguento|sozinh)/.test(t))
+      return "ajuda";
+    return null;
+  }
+
+  function handleSend(e: React.FormEvent) {
+    e.preventDefault();
+    const text = draft.trim();
+    if (!text) return;
+    setDraft("");
+    const intent = matchIntent(text);
+    if (intent) {
+      handleQuick(intent, text);
+      return;
+    }
+    pushUser(text);
+    respondAfter(700, () => {
+      pushXande({
+        text:
+          "Obrigado por compartilhar isso comigo. O que você sente é válido e você não precisa passar por isso sozinho(a). 💚 Se quiser, me conta mais — ou escolhe uma dessas opções:",
+      });
+      setQuick(INITIAL_QUICK);
+    });
+  }
+
+
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
