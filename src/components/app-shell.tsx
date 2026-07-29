@@ -7,9 +7,10 @@ import {
   Trophy,
   User,
   LifeBuoy,
-  MessageCircle,
+  ChevronLeft,
+  ChevronRight,
   Phone,
-  X,
+
   RotateCcw,
   Wind,
   Timer,
