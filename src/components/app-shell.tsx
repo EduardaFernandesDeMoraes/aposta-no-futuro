@@ -56,11 +56,11 @@ export function AppShell({
     <div className="min-h-dvh bg-background text-navy flex flex-col">
       {/* Top bar */}
       <header className="sticky top-0 z-30 bg-navy text-navy-foreground shadow-soft pt-[env(safe-area-inset-top)]">
-        <div className="mx-auto flex max-w-md items-center justify-between gap-3 px-4 py-3">
-          <h1 className="truncate text-lg font-semibold tracking-tight">
+        <div className="mx-auto flex min-h-14 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-[1100px]">
+          <h1 className="min-w-0 flex-1 text-base font-semibold tracking-tight sm:text-lg">
             {title}
           </h1>
-          <div className="flex items-center gap-1">
+          <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
             <button
               onClick={() => setChatOpen(true)}
               aria-label="Falar com a Xande IA"
@@ -72,13 +72,17 @@ export function AppShell({
             </button>
             <button
               onClick={() => navigate({ to: "/ajuda" })}
-              className="inline-flex items-center gap-1.5 rounded-full bg-coral px-3 py-1.5 text-xs font-semibold text-coral-foreground shadow-soft transition-transform active:scale-95"
+              aria-label="Preciso de ajuda"
+              className="inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-full sm:bg-coral sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-coral-foreground sm:shadow-soft"
             >
-              <LifeBuoy className="h-3.5 w-3.5" />
-              Preciso de ajuda
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-coral sm:contents">
+                <LifeBuoy className="h-[18px] w-[18px] text-coral-foreground sm:h-4 sm:w-4" />
+              </span>
+              <span className="hidden whitespace-nowrap sm:inline">Preciso de ajuda</span>
             </button>
           </div>
         </div>
+
       </header>
 
       {/* Content */}
