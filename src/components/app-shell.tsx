@@ -100,7 +100,7 @@ export function AppShell({
 
       {/* Bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-navy text-navy-foreground pb-[env(safe-area-inset-bottom)]">
-        <ul className="mx-auto flex max-w-md items-center justify-evenly px-2">
+        <ul className="mx-auto grid grid-cols-5 max-w-md">
           {TABS.map((tab) => {
             const active =
               tab.to === "/"
@@ -108,7 +108,7 @@ export function AppShell({
                 : location.pathname.startsWith(tab.to);
             const Icon = tab.icon;
             return (
-              <li key={tab.to} className="flex-1">
+              <li key={tab.to}>
                 <Link
                   to={tab.to}
                   className={cn(
