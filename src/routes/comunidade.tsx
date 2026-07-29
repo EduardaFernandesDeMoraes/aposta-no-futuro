@@ -97,28 +97,39 @@ function pickNick(seed: string) {
   return NICKS[h % NICKS.length];
 }
 
-/** Mede o composer fixo e a barra de navegação para reservar espaço na lista. */
+/** Mede o composer fixo, a barra de navegação e o padding do main
+ *  para reservar exatamente 16px entre a última mensagem e o composer. */
 function useComposerHeight() {
   const ref = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(96);
-  const [navH, setNavH] = useState(62);
+  const [pad, setPad] = useState(96);
 
   useEffect(() => {
     const el = ref.current;
     const nav = document.querySelector("nav");
+    const main = document.querySelector("main");
     const update = () => {
-      if (el) setHeight(el.offsetHeight);
-      if (nav) setNavH(nav.getBoundingClientRect().height);
+      const composerH = el?.offsetHeight ?? 0;
+      const navH = nav?.getBoundingClientRect().height ?? 0;
+      const mainPad = main
+        ? parseFloat(getComputedStyle(main).paddingBottom) || 0
+        : 0;
+      setPad(Math.max(0, composerH + navH + 16 - mainPad));
     };
     update();
     const ro = new ResizeObserver(update);
     if (el) ro.observe(el);
     if (nav) ro.observe(nav);
+    if (main) ro.observe(main);
     return () => ro.disconnect();
   }, []);
 
-  return { ref, height, navH };
+  const navH = (typeof document !== "undefined"
+    ? document.querySelector("nav")?.getBoundingClientRect().height
+    : 0) ?? 0;
+
+  return { ref, pad, navH };
 }
+
 
 function Comunidade() {
   const [posts, setPosts] = useLocalStorage<Record<string, Msg[]>>(
