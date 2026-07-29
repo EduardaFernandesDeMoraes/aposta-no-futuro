@@ -528,7 +528,7 @@ function MentorChat({
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div ref={listRef} className="space-y-3" style={{ paddingBottom: listPad }}>
         {messages.map((m, i) => (
           <div
             key={i}
@@ -542,14 +542,11 @@ function MentorChat({
             {m.text}
           </div>
         ))}
-      </div>
-
-      <div style={{ paddingBottom: listPad }}>
         <p className="rounded-xl bg-slate-50 p-2 text-center text-[11px] text-slate-500">
           Mentores são voluntários e não substituem atendimento profissional.
         </p>
-        <div ref={bottomRef} />
       </div>
+
 
       <div
         ref={composerRef}
