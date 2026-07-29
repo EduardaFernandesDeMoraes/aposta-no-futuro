@@ -44,11 +44,15 @@ const TABS: Tab[] = [
 
 export function AppShell({
   title,
+  titleAs = "h1",
   children,
 }: {
   title: string;
+  /** Use "p" quando a página já define o seu próprio <h1> no conteúdo. */
+  titleAs?: "h1" | "p";
   children: ReactNode;
 }) {
+  const TitleTag = titleAs;
   const [chatOpen, setChatOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,13 +62,13 @@ export function AppShell({
       {/* Top bar */}
       <header className="sticky top-0 z-30 bg-navy text-navy-foreground shadow-soft pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex min-h-14 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-[1100px]">
-          <h1 className="min-w-0 flex-1 text-base font-semibold tracking-tight sm:text-lg">
+          <TitleTag className="min-w-0 flex-1 text-base font-semibold tracking-tight sm:text-lg">
             {title}
-          </h1>
+          </TitleTag>
           <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
             <button
               onClick={() => setChatOpen(true)}
-              aria-label="Falar com a Xande IA"
+              aria-label="Falar com a Xande"
               className="relative inline-flex h-11 w-11 items-center justify-center transition-all duration-200 ease-out hover:opacity-90 active:scale-95"
             >
               <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-teal">
@@ -73,7 +77,7 @@ export function AppShell({
             </button>
             <button
               onClick={() => navigate({ to: "/ajuda" })}
-              aria-label="Preciso de ajuda"
+              aria-label="Preciso de ajuda agora"
               className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-full sm:bg-coral sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-coral-foreground sm:shadow-soft sm:hover:bg-[#eb4436]"
             >
               <span className="grid h-[38px] w-[38px] place-items-center rounded-full bg-coral animate-[pulse-scale_3.5s_ease-in-out_infinite] sm:animate-none sm:contents">

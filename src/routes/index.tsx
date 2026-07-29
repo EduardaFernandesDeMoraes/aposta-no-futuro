@@ -153,7 +153,18 @@ function Home() {
   }
 
   return (
-    <AppShell title="Aposta no Futuro">
+    <AppShell title="Aposta no Futuro" titleAs="p">
+
+      {/* Título principal da página */}
+      <div className="pb-3">
+        <h1 className="text-xl font-bold leading-tight tracking-tight text-navy">
+          Aposta no Futuro — apoio gratuito e anônimo para jovens que querem
+          parar de apostar
+        </h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          Menos apostas. Mais futuro. Essa é a nossa aposta.
+        </p>
+      </div>
 
       {/* Greeting */}
       <div className="flex items-center gap-2 pb-1">
