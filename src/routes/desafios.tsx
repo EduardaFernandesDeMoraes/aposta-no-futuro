@@ -124,6 +124,24 @@ function Desafios() {
   const progress = Math.round((completedCount / total) * 100);
   const earnedMedals = Math.floor(completedCount / 3);
 
+  const completedCount = useMemo(
+    () => Object.values(state.completed).filter(Boolean).length,
+    [state.completed],
+  );
+  const total = CHALLENGES.length;
+  const progress = Math.round((completedCount / total) * 100);
+
+  // Marcos das medalhas: a cada 3 desafios + uma final ao completar todos.
+  const milestones = useMemo(() => {
+    const marks: number[] = [];
+    for (let n = 3; n < total; n += 3) marks.push(n);
+    marks.push(total);
+    return marks;
+  }, [total]);
+
+  const earnedMedals = milestones.filter((m) => completedCount >= m).length;
+  const allDone = completedCount === total && total > 0;
+
   const prevMedals = useRef(state.medals);
   useEffect(() => {
     if (earnedMedals > prevMedals.current) {
@@ -183,11 +201,11 @@ function Desafios() {
 
           {/* Medalhas por trio */}
           <div className="mt-4 flex items-center gap-2">
-            {Array.from({ length: Math.ceil(total / 3) }).map((_, i) => {
-              const unlocked = i < earnedMedals;
+            {milestones.map((m, i) => {
+              const unlocked = completedCount >= m;
               return (
                 <div
-                  key={i}
+                  key={m}
                   className={cn(
                     "flex h-9 w-9 items-center justify-center rounded-full border-2 text-lg transition",
                     unlocked
@@ -197,7 +215,7 @@ function Desafios() {
                   title={
                     unlocked
                       ? `Medalha ${i + 1} conquistada`
-                      : `Complete ${(i + 1) * 3} desafios`
+                      : `Complete ${m} desafios`
                   }
                 >
                   🏅
@@ -207,9 +225,15 @@ function Desafios() {
           </div>
 
           <p className="mt-3 flex items-center gap-1 text-xs opacity-90">
-            <Sparkles className="h-3.5 w-3.5" />A cada 3 desafios, você ganha
-            uma medalha dourada.
+            <Sparkles className="h-3.5 w-3.5" />
+            Medalhas a cada 3 desafios — e uma dourada ao completar todos.
           </p>
+
+          {allDone && (
+            <p className="mt-3 rounded-2xl bg-white/15 px-3 py-2 text-sm font-semibold">
+              🎉 Você completou todos os desafios. Isso é muito!
+            </p>
+          )}
         </section>
 
         {/* Lista */}
