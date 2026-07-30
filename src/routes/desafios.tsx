@@ -116,13 +116,6 @@ function Desafios() {
     INITIAL,
   );
 
-  const completedCount = useMemo(
-    () => Object.values(state.completed).filter(Boolean).length,
-    [state.completed],
-  );
-  const total = CHALLENGES.length;
-  const progress = Math.round((completedCount / total) * 100);
-  const earnedMedals = Math.floor(completedCount / 3);
 
   const completedCount = useMemo(
     () => Object.values(state.completed).filter(Boolean).length,
