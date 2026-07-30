@@ -18,7 +18,9 @@ import {
   Timer,
   Heart,
 } from "lucide-react";
+import logoMark from "@/assets/logo-maos-coracao.svg.asset.json";
 import { cn } from "@/lib/utils";
+
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import {
@@ -63,9 +65,21 @@ export function AppShell({
       {/* Top bar */}
       <header className="sticky top-0 z-30 bg-navy text-navy-foreground shadow-soft pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex min-h-14 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-[1100px]">
-          <TitleTag className="min-w-0 flex-1 text-base font-semibold tracking-tight sm:text-lg">
-            {title}
-          </TitleTag>
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <img
+              src={logoMark.url}
+              alt=""
+              aria-hidden="true"
+              width={28}
+              height={28}
+              className="h-7 w-7 shrink-0 select-none"
+              draggable={false}
+            />
+            <TitleTag className="min-w-0 truncate text-base font-semibold tracking-tight sm:text-lg">
+              {title}
+            </TitleTag>
+          </div>
+
           <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
             <button
               onClick={() => setChatOpen(true)}
