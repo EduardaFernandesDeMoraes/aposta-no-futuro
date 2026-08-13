@@ -107,7 +107,11 @@
     color: var(--color-foreground);
     overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
+    /* Nenhuma tela pode arrastar para os lados. */
+    overflow-x: hidden;
+    max-width: 100%;
   }
+
 
   /* Remove o retângulo cinza/azul padrão do toque no mobile, que conflita
      com o feedback :active da identidade visual. */
