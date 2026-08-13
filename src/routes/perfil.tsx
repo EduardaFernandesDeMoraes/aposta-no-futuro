@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useRef, useState } from "react";
 import {
   Area,
@@ -403,6 +403,16 @@ function Perfil() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <nav className="mt-6 flex items-center justify-center gap-3 text-sm">
+        <Link to="/privacidade" className="font-medium text-teal underline underline-offset-2">
+          Privacidade
+        </Link>
+        <span aria-hidden="true" className="text-muted-foreground">·</span>
+        <Link to="/termos" className="font-medium text-teal underline underline-offset-2">
+          Termos de uso
+        </Link>
+      </nav>
     </AppShell>
   );
 }

@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { UMAMI_SRC, UMAMI_WEBSITE_ID } from "../lib/analytics";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -103,6 +104,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
     scripts: [
+      ...(UMAMI_WEBSITE_ID
+        ? [{ src: UMAMI_SRC, defer: true, "data-website-id": UMAMI_WEBSITE_ID }]
+        : []),
       {
         type: "application/ld+json",
         children: JSON.stringify({

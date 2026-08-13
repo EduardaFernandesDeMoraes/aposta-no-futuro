@@ -175,6 +175,10 @@ function Home() {
 
   const phrase = useMemo(() => encourage(totalMinutes), [totalMinutes]);
 
+  useEffect(() => {
+    track(EVENTS.homeView);
+  }, []);
+
   function handleRestart() {
     const iso = new Date().toISOString();
     setProfile({ ...profile, firstFreeDay: iso });
