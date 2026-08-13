@@ -1,5 +1,4 @@
 import { SiteFooter } from "@/components/site-footer";
-import { track, EVENTS } from "@/lib/analytics";
 import { AutoGrowTextarea } from "@/components/auto-grow-textarea";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
