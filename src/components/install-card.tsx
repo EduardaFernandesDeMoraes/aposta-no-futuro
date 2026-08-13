@@ -57,7 +57,6 @@ export function InstallCard({ className = "" }: { className?: string }) {
     if (isIOS()) {
       setIos(true);
       setVisible(true);
-      window.addEventListener("appinstalled", onInstalled);
       return () => window.removeEventListener("appinstalled", onInstalled);
     }
 

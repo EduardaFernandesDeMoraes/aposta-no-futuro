@@ -314,6 +314,8 @@ function Home() {
         </div>
       </section>
 
+      <InstallCard className="mt-4" />
+
       {/* Restart dialog */}
       <Dialog open={restartOpen} onOpenChange={setRestartOpen}>
         <DialogContent className="max-w-sm rounded-3xl">
