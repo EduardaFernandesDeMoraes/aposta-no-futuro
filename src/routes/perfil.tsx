@@ -51,7 +51,7 @@ type Profile = {
 
 type Saved = { weekly: number; calculatedAt: string } | null;
 
-type DesafiosState = {
+type MetasState = {
   completed: Record<string, boolean>;
   points: number;
   medals: number;
@@ -82,7 +82,7 @@ function Perfil() {
     onboarded: false,
   });
   const [saved] = useLocalStorage<Saved>("anf.simulador", null);
-  const [desafios] = useLocalStorage<DesafiosState>("anf.desafios", {
+  const [metas] = useLocalStorage<MetasState>("anf.desafios", {
     completed: {},
     points: 0,
     medals: 0,
@@ -98,7 +98,7 @@ function Perfil() {
   const weekly = saved?.weekly ?? 0;
   const moneySaved = Math.round((weekly * days) / 7);
 
-  const completedCount = Object.values(desafios.completed).filter(Boolean)
+  const completedCount = Object.values(metas.completed).filter(Boolean)
     .length;
   const totalChallenges = 8;
   const challengeProgress = Math.round((completedCount / totalChallenges) * 100);
@@ -199,7 +199,7 @@ function Perfil() {
         <div className="flex items-center justify-between">
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-wider text-teal">
-              Desafios concluídos
+              Metas concluídas
             </div>
             <div className="mt-1 text-2xl font-bold text-navy tabular-nums">
               {completedCount}
@@ -219,7 +219,7 @@ function Perfil() {
           />
         </div>
         <div className="mt-2 text-xs text-muted-foreground">
-          {desafios.points} pontos · {Math.floor(completedCount / 3)} medalhas
+          {metas.points} pontos · {Math.floor(completedCount / 3)} medalhas
           de missão
         </div>
       </section>

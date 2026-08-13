@@ -298,11 +298,11 @@ function Home() {
             title="Ver simulador"
           />
           <ShortcutCard
-            to="/desafios"
+            to="/metas"
             color="bg-gold/15 text-gold"
             hover="hover:bg-gold/10 hover:border-gold/30"
             icon={<Trophy className="h-5 w-5" />}
-            title="Ver desafio de hoje"
+            title="Ver meta de hoje"
           />
           <ShortcutCard
             to="/comunidade"

@@ -59,7 +59,7 @@ const STEPS = [
     icon: HandHeart,
     color: "bg-coral",
     title: "Você não caminha sozinho",
-    text: "Uma comunidade acolhedora, desafios e apoio quando precisar.",
+    text: "Uma comunidade acolhedora, metas e apoio quando precisar.",
   },
 ] as const;
 

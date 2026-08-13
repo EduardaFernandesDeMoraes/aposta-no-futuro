@@ -42,7 +42,7 @@ const TABS: Tab[] = [
   { to: "/", label: "Início", icon: Home },
   { to: "/simulador", label: "Simulador", icon: Calculator },
   { to: "/comunidade", label: "Comunidade", icon: Users },
-  { to: "/desafios", label: "Desafios", icon: Trophy },
+  { to: "/metas", label: "Metas", icon: Trophy },
   { to: "/perfil", label: "Perfil", icon: User },
 ];
 
