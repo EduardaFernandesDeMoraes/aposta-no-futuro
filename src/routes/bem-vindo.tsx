@@ -91,7 +91,7 @@ function Onboarding() {
 
   return (
     <div className="min-h-dvh bg-background">
-      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-6 pb-8 pt-10">
+      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+2rem)] pt-10">
         <h1 className="sr-only">Bem-vindo ao Aposta no Futuro</h1>
         <div className="flex items-center justify-between">
           <div className="flex gap-1.5">
@@ -114,7 +114,12 @@ function Onboarding() {
           )}
         </div>
 
-        <div className={isLast ? "mt-6" : "mt-10 flex-1"}>
+        <div
+          className={
+            isLast ? "mt-6" : "mt-10 flex flex-1 flex-col justify-center"
+          }
+        >
+
           {!isLast ? (
             <StepView step={step} />
           ) : (
@@ -155,7 +160,7 @@ function StepView({ step }: { step: number }) {
       >
         <Icon className="h-12 w-12" strokeWidth={2.2} />
       </div>
-      <h2 className="mt-8 text-2xl font-bold leading-tight text-navy">
+      <h2 className="mt-8 text-balance text-2xl font-bold leading-tight text-navy">
         {s.title}
       </h2>
       <p className="mt-3 max-w-xs text-sm text-muted-foreground">{s.text}</p>
@@ -191,7 +196,7 @@ function FinalStep({
         </span>
         <p className="text-sm font-medium leading-snug text-navy">
           Seu nome é opcional. Ele não é salvo em nenhum servidor e não é
-          enviado a ninguém — fica só no seu aparelho.
+          enviado a ninguém: fica só no seu aparelho.
         </p>
       </div>
 
@@ -207,7 +212,7 @@ function FinalStep({
             id="onboarding-name"
             value={name}
             onChange={(e) => onName(e.target.value)}
-            placeholder="Ex.: Alex — ou deixe em branco"
+            placeholder="Ex.: Alex (ou deixe em branco)"
             aria-describedby="name-help"
             className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-base outline-none md:text-sm transition-colors duration-200 focus:border-teal"
           />

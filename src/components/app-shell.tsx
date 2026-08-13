@@ -110,15 +110,11 @@ export function AppShell({
       {/* Content */}
       <main
         key={location.pathname}
-        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1rem)] pt-4 animate-fade-in"
+        className="mx-auto flex w-full max-w-md flex-1 flex-col px-4 pb-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1rem)] pt-4 animate-fade-in"
       >
-        {children}
+        <div className="flex-1">{children}</div>
         <SiteFooter />
       </main>
-
-
-
-
 
 
       {/* Bottom nav */}
@@ -252,7 +248,7 @@ function ChatSheet({
       respondAfter(700, () => {
         pushXande({
           text:
-            "Que bem que você veio falar comigo antes. Esse impulso passa — a gente só precisa segurar juntos por alguns minutos. 💚",
+            "Que bem que você veio falar comigo antes. Esse impulso passa: a gente só precisa segurar juntos por alguns minutos. 💚",
         });
         window.setTimeout(() => {
           pushXande({
@@ -297,7 +293,7 @@ function ChatSheet({
       respondAfter(700, () => {
         pushXande({
           text:
-            "Respira. Isso não apaga o seu esforço. Recaída faz parte do processo pra muita gente — e você teve coragem de me contar. 💚",
+            "Respira. Isso não apaga o seu esforço. Recaída faz parte do processo pra muita gente, e você teve coragem de me contar. 💚",
         });
         window.setTimeout(() => {
           pushXande({
@@ -403,7 +399,7 @@ function ChatSheet({
     if (RISK_RE.test(normalize(text))) {
       pushUser(text);
       pushCrisis(
-        "Sinto muito que você esteja passando por isso — você merece apoio de gente preparada agora. Ligue para o CVV 188 (24h, gratuito e sigiloso) ou procure um CAPS.",
+        "Sinto muito que você esteja passando por isso. Você merece apoio de gente preparada agora. Ligue para o CVV 188 (24h, gratuito e sigiloso) ou procure um CAPS.",
       );
       return;
     }
@@ -431,7 +427,7 @@ function ChatSheet({
         className="fixed inset-0 z-[100] h-[100dvh] w-full max-w-none overflow-hidden border-0 bg-background p-0 sm:left-auto sm:w-[420px] sm:max-w-md [&>button]:hidden"
       >
         <SheetHeader className="sr-only">
-          <SheetTitle>Xande IA — assistente virtual</SheetTitle>
+          <SheetTitle>Xande IA: assistente virtual</SheetTitle>
           <SheetDescription>
             Converse com o Xande, o assistente acolhedor do Aposta no Futuro.
           </SheetDescription>
@@ -685,7 +681,7 @@ function RestartCard({
         Todo recomeço conta
       </div>
       <div className="text-xs text-muted-foreground">
-        Se quiser, eu reinicio seu contador de dias livres agora — do jeito
+        Se quiser, eu reinicio seu contador de dias livres agora, do jeito
         certo, sem culpa.
       </div>
       <div className="flex flex-col gap-2">
@@ -719,7 +715,7 @@ function HelpCard() {
           <Phone className="h-4 w-4" />
         </div>
         <div>
-          <div className="text-sm font-semibold">CVV — Ligar 188</div>
+          <div className="text-sm font-semibold">CVV: ligar 188</div>
           <div className="text-[11px] opacity-90">
             24h · gratuito · sigiloso
           </div>
@@ -732,7 +728,7 @@ function HelpCard() {
         className="block rounded-2xl border border-border bg-background p-3"
       >
         <div className="text-sm font-semibold text-navy">
-          CAPS — encontrar a unidade mais próxima
+          CAPS: encontrar a unidade mais próxima
         </div>
         <div className="mt-0.5 text-[11px] text-muted-foreground">
           Atendimento gratuito do SUS, incluindo dependências. Procure a

@@ -219,7 +219,7 @@ function Desafios() {
 
           <p className="mt-3 flex items-center gap-1 text-xs opacity-90">
             <Sparkles className="h-3.5 w-3.5" />
-            Medalhas a cada 3 desafios — e uma dourada ao completar todos.
+            Medalhas a cada 3 desafios, e uma dourada ao completar todos.
           </p>
 
           {allDone && (

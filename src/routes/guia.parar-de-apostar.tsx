@@ -56,7 +56,7 @@ const STEPS = [
     n: 1,
     title: "Reconheça o padrão sem se julgar",
     text:
-      "Apostar demais não é falha de caráter — é um comportamento que vicia. Perceber é o primeiro passo. Você pode começar fazendo a autoavaliação PGSI aqui no app.",
+      "Apostar demais não é falha de caráter: é um comportamento que vicia. Perceber é o primeiro passo. Você pode começar fazendo a autoavaliação PGSI aqui no app.",
   },
   {
     n: 2,
@@ -68,7 +68,7 @@ const STEPS = [
     n: 3,
     title: "Diga em voz alta pra alguém de confiança",
     text:
-      "Contar pra uma pessoa querida tira o peso do segredo. Você não precisa detalhar tudo — só dizer 'estou tentando parar de apostar' já muda o jogo.",
+      "Contar pra uma pessoa querida tira o peso do segredo. Você não precisa detalhar tudo, basta dizer 'estou tentando parar de apostar' já muda o jogo.",
   },
   {
     n: 4,
@@ -80,13 +80,13 @@ const STEPS = [
     n: 5,
     title: "Transforme o dinheiro em algo visível",
     text:
-      "Use o Simulador pra ver quanto você deixa de perder por semana, mês e ano. Direcione parte disso pra uma meta concreta — mesmo pequena. Ver o valor crescer motiva a continuar.",
+      "Use o Simulador pra ver quanto você deixa de perder por semana, mês e ano. Direcione parte disso pra uma meta concreta, mesmo que pequena. Ver o valor crescer motiva a continuar.",
   },
   {
     n: 6,
     title: "Busque apoio profissional quando precisar",
     text:
-      "Ligue 188 (CVV, 24h e gratuito) se estiver em crise. Para acompanhamento, procure o CAPS mais próximo pelo SUS — atendimento gratuito e sigiloso.",
+      "Ligue 188 (CVV, 24h e gratuito) se estiver em crise. Para acompanhamento, procure o CAPS mais próximo pelo SUS, com atendimento gratuito e sigiloso.",
   },
   {
     n: 7,
@@ -112,11 +112,11 @@ function GuiaPararDeApostar() {
           Guia prático
         </p>
         <h2 className="mt-1 text-xl font-bold leading-tight text-navy">
-          Como parar de apostar online — 7 passos pra recomeçar
+          Como parar de apostar online: 7 passos pra recomeçar
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Um caminho passo a passo, sem julgamento, pra quem decidiu sair do
-          ciclo das bets. Vai no seu ritmo — cada passo já é uma vitória.
+          ciclo das bets. Vai no seu ritmo: cada passo já é uma vitória.
         </p>
       </header>
 

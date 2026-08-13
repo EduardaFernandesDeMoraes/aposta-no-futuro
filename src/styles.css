@@ -52,7 +52,7 @@
 
 :root {
   --radius: 1rem;
-  --nav-h: 62px;
+  --nav-h: 52px;
 
   --background: #f7fafc;
   --foreground: #16233c;
@@ -107,7 +107,11 @@
     color: var(--color-foreground);
     overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
+    /* Nenhuma tela pode arrastar para os lados. */
+    overflow-x: hidden;
+    max-width: 100%;
   }
+
 
   /* Remove o retângulo cinza/azul padrão do toque no mobile, que conflita
      com o feedback :active da identidade visual. */
@@ -181,6 +185,19 @@
   }
 }
 
+/* Barras de rolagem nunca aparecem, mas a rolagem continua funcionando. */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+
+
 
 @keyframes pulse-scale {
   0%, 100% { transform: scale(1); }
@@ -207,4 +224,15 @@ textarea::placeholder {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+/* Ritmo tipográfico: títulos não deixam palavra órfã na última linha e
+   parágrafos evitam linhas finais muito curtas. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
 }
