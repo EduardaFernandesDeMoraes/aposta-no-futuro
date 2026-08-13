@@ -216,7 +216,7 @@ function Comunidade() {
           )}
         </TabsContent>
       </Tabs>
-      {(previewForum || previewMentores) && <SensitiveFooter />}
+      {(previewForum || previewMentores) && <SensitiveFooter className="!mt-6" />}
     </AppShell>
   );
 }
