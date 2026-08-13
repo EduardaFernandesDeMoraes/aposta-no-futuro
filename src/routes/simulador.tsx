@@ -169,10 +169,10 @@ function Simulador() {
           {/* Result cards */}
           <section className="mt-6">
             <h2 className="mb-3 text-sm font-semibold text-navy">
-              Quanto você deixa de perder
+              Economia estimada
             </h2>
             <div className="grid grid-cols-2 gap-3">
-              {rows.map((r, i) => (
+              {rows.map((r) => (
                 <div
                   key={r.key}
                   className={cn(
@@ -192,6 +192,11 @@ function Simulador() {
                 </div>
               ))}
             </div>
+            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+              Estimativa baseada no valor que você informou, sem considerar
+              juros ou variações. Serve para dar noção de grandeza, não como
+              previsão financeira.
+            </p>
           </section>
 
           {/* Chart */}
