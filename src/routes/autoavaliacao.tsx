@@ -158,7 +158,7 @@ function Autoavaliacao() {
         answers: answers.map((a) => a ?? 0),
         at: new Date().toISOString(),
       });
-      track(EVENTS.assessmentDone, { faixa: tierFor(finalScore).label });
+      track(EVENTS.assessmentDone);
       setFinished(true);
       return;
     }
