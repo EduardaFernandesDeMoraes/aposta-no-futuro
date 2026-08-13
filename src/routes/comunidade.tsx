@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ShieldAlert, Send, Info, Eye } from "lucide-react";
+import { ShieldAlert, Send, Info, Eye, Lock, Users, ArrowLeft } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
