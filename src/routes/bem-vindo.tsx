@@ -114,7 +114,12 @@ function Onboarding() {
           )}
         </div>
 
-        <div className={isLast ? "mt-6" : "mt-10 flex-1"}>
+        <div
+          className={
+            isLast ? "mt-6" : "mt-10 flex flex-1 flex-col justify-center"
+          }
+        >
+
           {!isLast ? (
             <StepView step={step} />
           ) : (
