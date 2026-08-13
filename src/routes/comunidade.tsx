@@ -389,7 +389,7 @@ function Mentores({ onBack }: { onBack: () => void }) {
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-semibold text-[#16233C]">
-                    {m.name} —{" "}
+                    {m.name} ·{" "}
                     <span className="font-normal text-slate-600">
                       {m.timeLabel}
                     </span>

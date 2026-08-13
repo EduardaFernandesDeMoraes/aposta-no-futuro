@@ -361,7 +361,7 @@ function Home() {
               Você conquistou {celebration?.label}!
             </DialogTitle>
             <DialogDescription className="text-center">
-              Isso é muito grande. Respira, sente esse orgulho — você merece.
+              Isso é muito grande. Respira, sente esse orgulho, você merece.
             </DialogDescription>
           </DialogHeader>
           <Button

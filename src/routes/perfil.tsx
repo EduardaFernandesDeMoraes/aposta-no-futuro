@@ -121,7 +121,7 @@ function Perfil() {
   const cardRef = useRef<HTMLDivElement>(null);
 
   async function handleShare() {
-    const text = `Estou há ${days} ${days === 1 ? "dia" : "dias"} sem apostar 💚\nUm dia de cada vez — Aposta no Futuro.`;
+    const text = `Estou há ${days} ${days === 1 ? "dia" : "dias"} sem apostar 💚\nUm dia de cada vez. Aposta no Futuro.`;
     try {
       if (navigator.share) {
         await navigator.share({ title: "Minha conquista", text });
@@ -134,7 +134,7 @@ function Perfil() {
   }
 
   async function copyText() {
-    const text = `Estou há ${days} ${days === 1 ? "dia" : "dias"} sem apostar 💚 — Aposta no Futuro.`;
+    const text = `Estou há ${days} ${days === 1 ? "dia" : "dias"} sem apostar 💚 · Aposta no Futuro.`;
     try {
       await navigator.clipboard.writeText(text);
     } catch {

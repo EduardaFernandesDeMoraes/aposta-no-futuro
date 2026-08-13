@@ -191,7 +191,7 @@ function FinalStep({
         </span>
         <p className="text-sm font-medium leading-snug text-navy">
           Seu nome é opcional. Ele não é salvo em nenhum servidor e não é
-          enviado a ninguém — fica só no seu aparelho.
+          enviado a ninguém: fica só no seu aparelho.
         </p>
       </div>
 
@@ -207,7 +207,7 @@ function FinalStep({
             id="onboarding-name"
             value={name}
             onChange={(e) => onName(e.target.value)}
-            placeholder="Ex.: Alex — ou deixe em branco"
+            placeholder="Ex.: Alex (ou deixe em branco)"
             aria-describedby="name-help"
             className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-base outline-none md:text-sm transition-colors duration-200 focus:border-teal"
           />

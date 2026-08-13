@@ -93,7 +93,7 @@ function AjudaPage() {
             Atendimento imediato
           </div>
           <h2 className="mt-2 text-xl font-bold text-white">
-            CVV — Centro de Valorização da Vida
+            CVV: Centro de Valorização da Vida
           </h2>
           <p className="mt-1 text-sm text-white/95">
             Atendimento 24 horas, gratuito e sigiloso. Pode ligar ou conversar
@@ -137,7 +137,7 @@ function AjudaPage() {
           </div>
           <div>
             <h2 className="text-base font-bold text-navy">
-              CAPS — Centros de Atenção Psicossocial
+              CAPS: Centros de Atenção Psicossocial
             </h2>
             <p className="text-[11px] text-muted-foreground">
               Gratuito pelo SUS
@@ -148,7 +148,7 @@ function AjudaPage() {
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           Os CAPS oferecem atendimento psicossocial gratuito, incluindo
           acompanhamento para dependências. Procure a unidade mais próxima do
-          seu município — você pode buscar no site da Prefeitura ou na UBS da
+          seu município. Você pode buscar no site da Prefeitura ou na UBS da
           sua região.
         </p>
 

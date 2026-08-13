@@ -339,7 +339,7 @@ function Result({
               <Phone className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-sm font-semibold">CVV — Ligar 188</div>
+              <div className="text-sm font-semibold">CVV: ligar 188</div>
               <div className="text-[11px] opacity-90">
                 24h · gratuito · sigiloso
               </div>
