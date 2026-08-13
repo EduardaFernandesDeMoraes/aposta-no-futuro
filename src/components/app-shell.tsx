@@ -1,3 +1,5 @@
+import { SiteFooter } from "@/components/site-footer";
+import { track, EVENTS } from "@/lib/analytics";
 import { AutoGrowTextarea } from "@/components/auto-grow-textarea";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -91,7 +93,10 @@ export function AppShell({
               </span>
             </button>
             <button
-              onClick={() => navigate({ to: "/ajuda" })}
+              onClick={() => {
+                track(EVENTS.helpClick);
+                navigate({ to: "/ajuda" });
+              }}
               aria-label="Preciso de ajuda agora"
               className="relative inline-flex h-11 w-11 items-center justify-center transition-transform active:scale-95 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-full sm:bg-coral sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-coral-foreground sm:shadow-soft sm:hover:bg-[#eb4436]"
             >
@@ -110,6 +115,7 @@ export function AppShell({
         className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1rem)] pt-4 animate-fade-in"
       >
         {children}
+        <SiteFooter />
       </main>
 
 

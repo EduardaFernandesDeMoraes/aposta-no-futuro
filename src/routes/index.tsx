@@ -1,3 +1,4 @@
+import { track, EVENTS } from "@/lib/analytics";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import confetti from "canvas-confetti";
@@ -177,6 +178,7 @@ function Home() {
   function handleRestart() {
     const iso = new Date().toISOString();
     setProfile({ ...profile, firstFreeDay: iso });
+    track(EVENTS.counterStarted);
     setLastMilestone(0);
     setNow(Date.now());
     setRestartOpen(false);
