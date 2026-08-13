@@ -4,7 +4,8 @@
  */
 export const UMAMI_WEBSITE_ID =
   (import.meta.env['VITE_UMAMI_WEBSITE_ID'] as string | undefined) ??
-  "b5f960a-7f16-4358-ba39-6edb0d107da4";
+  "7b5f960a-7f16-4358-ba39-6edb0d107da4";
+
 
 export const UMAMI_SRC =
   (import.meta.env['VITE_UMAMI_SRC'] as string | undefined) ??
