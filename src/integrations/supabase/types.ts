@@ -35,6 +35,27 @@ export type Database = {
         }
         Relationships: []
       }
+      lista_espera: {
+        Row: {
+          criado_em: string
+          email: string
+          id: string
+          origem: string
+        }
+        Insert: {
+          criado_em?: string
+          email: string
+          id?: string
+          origem?: string
+        }
+        Update: {
+          criado_em?: string
+          email?: string
+          id?: string
+          origem?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

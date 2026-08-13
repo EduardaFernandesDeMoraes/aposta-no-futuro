@@ -37,15 +37,20 @@ export function WaitlistCard({
     setError(null);
     setSending(true);
     const { error: dbError } = await supabase
-      .from("community_waitlist")
-      .insert({ email: parsed.data, wants_to_mentor: wantsToMentor });
+      .from("lista_espera")
+      .insert({
+        email: parsed.data.toLowerCase(),
+        origem: wantsToMentor ? "mentor" : "comunidade",
+      });
     setSending(false);
-    if (dbError) {
-      setError("Não consegui salvar agora. Tente de novo em instantes.");
+    // 23505 = e-mail já cadastrado: tratamos como sucesso.
+    if (dbError && dbError.code !== "23505") {
+      setError("Não consegui salvar agora. Verifique sua conexão e tente de novo.");
       return;
     }
     track(EVENTS.waitlistSignup, { mentor: wantsToMentor });
     setDone(true);
+
   };
 
   if (done) {
