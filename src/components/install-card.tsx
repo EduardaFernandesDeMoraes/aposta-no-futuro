@@ -1,11 +1,19 @@
-import { useEffect, useState } from "react";
-import { Download, Share, PlusSquare, Check, Smartphone } from "lucide-react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import {
+  Download,
+  Share,
+  PlusSquare,
+  Check,
+  Smartphone,
+  MoreVertical,
+} from "lucide-react";
 import { track, trackOnce } from "@/lib/analytics";
-
-type BeforeInstallPromptEvent = Event & {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-};
+import {
+  getInstallPrompt,
+  getInstalled,
+  runInstallPrompt,
+  subscribeInstallPrompt,
+} from "@/lib/install-prompt";
 
 const DISMISS_KEY = "anf.instalar.dispensado";
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
@@ -37,40 +45,37 @@ function dismissedRecently() {
   }
 }
 
-/** Card que ajuda a instalar o app na tela inicial (Android nativo / iOS passo a passo). */
+/** Card que ajuda a instalar o app na tela inicial. */
 export function InstallCard({ className = "" }: { className?: string }) {
-  const [visible, setVisible] = useState(false);
-  const [ios, setIos] = useState(false);
-  const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(
-    null,
+  // Estado global: o evento pode ter sido capturado antes desta tela montar.
+  const prompt = useSyncExternalStore(
+    subscribeInstallPrompt,
+    getInstallPrompt,
+    () => null,
+  );
+  const installedNow = useSyncExternalStore(
+    subscribeInstallPrompt,
+    getInstalled,
+    () => false,
   );
 
+  const [mounted, setMounted] = useState(false);
+  const [ios, setIos] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
   useEffect(() => {
-    if (isStandalone() || dismissedRecently()) return;
-
-    const onInstalled = () => {
-      track("instalar_concluido");
-      setVisible(false);
-    };
-    window.addEventListener("appinstalled", onInstalled);
-
-    if (isIOS()) {
-      setIos(true);
-      setVisible(true);
-      return () => window.removeEventListener("appinstalled", onInstalled);
-    }
-
-    const onPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferred(e as BeforeInstallPromptEvent);
-      setVisible(true);
-    };
-    window.addEventListener("beforeinstallprompt", onPrompt);
-    return () => {
-      window.removeEventListener("beforeinstallprompt", onPrompt);
-      window.removeEventListener("appinstalled", onInstalled);
-    };
+    setIos(isIOS());
+    setDismissed(isStandalone() || dismissedRecently());
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (installedNow) track("instalar_concluido");
+  }, [installedNow]);
+
+  // O card aparece sempre que o app não está instalado nem dispensado.
+  // Sem o evento nativo, mostramos as instruções manuais (fallback).
+  const visible = mounted && !dismissed && !installedNow;
 
   useEffect(() => {
     if (visible) trackOnce("instalar_card_exibido");
@@ -84,20 +89,12 @@ export function InstallCard({ className = "" }: { className?: string }) {
     } catch {
       /* ignora */
     }
-    setVisible(false);
+    setDismissed(true);
   }
 
   async function install() {
     track("instalar_clicado");
-    if (!deferred) return;
-    try {
-      await deferred.prompt();
-      await deferred.userChoice;
-    } catch {
-      /* ignora */
-    }
-    setDeferred(null);
-    setVisible(false);
+    await runInstallPrompt();
   }
 
   return (
@@ -135,7 +132,7 @@ export function InstallCard({ className = "" }: { className?: string }) {
             text="Toque em “Adicionar”."
           />
         </ol>
-      ) : (
+      ) : prompt ? (
         <button
           type="button"
           onClick={install}
@@ -144,6 +141,21 @@ export function InstallCard({ className = "" }: { className?: string }) {
           <Download className="h-4 w-4" />
           Adicionar agora
         </button>
+      ) : (
+        <ol className="mt-4 space-y-2">
+          <Step
+            icon={<MoreVertical className="h-4 w-4" />}
+            text="Toque no menu do navegador (três pontos, no canto superior)."
+          />
+          <Step
+            icon={<PlusSquare className="h-4 w-4" />}
+            text="Escolha “Adicionar à tela inicial” (ou “Instalar aplicativo”)."
+          />
+          <Step
+            icon={<Check className="h-4 w-4" />}
+            text="Confirme em “Adicionar”."
+          />
+        </ol>
       )}
 
       <button
