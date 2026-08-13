@@ -12,6 +12,10 @@ export function SiteFooter() {
         <Link to="/termos" className="font-medium underline underline-offset-2">
           Termos de uso
         </Link>
+        <span aria-hidden="true">·</span>
+        <Link to="/sobre" className="font-medium underline underline-offset-2">
+          Sobre nós
+        </Link>
       </nav>
       <p className="mt-2">
         Contato:{" "}
