@@ -707,13 +707,19 @@ function HelpCard() {
           </div>
         </div>
       </a>
-      <div className="rounded-2xl border border-border bg-background p-3">
+      <a
+        href="https://www.google.com/search?q=CAPS+mais+pr%C3%B3ximo+de+mim"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block rounded-2xl border border-border bg-background p-3"
+      >
         <div className="text-sm font-semibold text-navy">
-          CAPS — Centro de Atenção Psicossocial
+          CAPS — encontrar a unidade mais próxima
         </div>
         <div className="mt-0.5 text-[11px] text-muted-foreground">
           Atendimento gratuito do SUS, incluindo dependências. Procure a
           unidade do seu município.
+
         </div>
       </div>
     </div>
