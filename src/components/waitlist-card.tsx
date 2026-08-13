@@ -53,7 +53,7 @@ export function WaitlistCard({
       setError("Não consegui salvar agora. Verifique sua conexão e tente de novo.");
       return;
     }
-    track(EVENTS.waitlistSignup, { mentor: wantsToMentor });
+    track(EVENTS.waitlistSignup);
     setDone(true);
 
   };

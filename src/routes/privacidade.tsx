@@ -78,9 +78,9 @@ function Privacidade() {
 
       <Section title="Medição de uso (sem cookies)">
         <p>
-          Usamos uma ferramenta de estatística que respeita a privacidade, sem
-          cookies e sem identificar pessoas. Ela só conta quantas visitas cada
-          tela recebe, de forma anônima e agregada.
+          Usamos uma ferramenta de medição anônima e sem cookies (Umami) para
+          saber quantas pessoas acessam o app e quais recursos são mais usados.
+          Ela não coleta dados pessoais e não identifica ninguém.
         </p>
       </Section>
 

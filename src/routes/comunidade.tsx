@@ -5,6 +5,7 @@ import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { WaitlistCard } from "@/components/waitlist-card";
+import { track, EVENTS } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/comunidade")({
@@ -197,7 +198,10 @@ function Comunidade() {
           {previewForum ? (
             <Forum onBack={() => setPreviewForum(false)} />
           ) : (
-            <LockScreen onPreview={() => setPreviewForum(true)} />
+            <LockScreen onPreview={() => {
+                track(EVENTS.communityPreview);
+                setPreviewForum(true);
+              }} />
           )}
         </TabsContent>
 
@@ -205,7 +209,10 @@ function Comunidade() {
           {previewMentores ? (
             <Mentores onBack={() => setPreviewMentores(false)} />
           ) : (
-            <LockScreen mentor onPreview={() => setPreviewMentores(true)} />
+            <LockScreen mentor onPreview={() => {
+                track(EVENTS.communityPreview);
+                setPreviewMentores(true);
+              }} />
           )}
         </TabsContent>
       </Tabs>
