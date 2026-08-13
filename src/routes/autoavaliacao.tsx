@@ -305,11 +305,84 @@ function Result({
   onRestart: () => void;
 }) {
   const tier = tierFor(score);
+  const isHighRisk = score >= 8;
+  const helpBox = (
+    <section className="space-y-3">
+      <div
+        className={cn(
+          "rounded-3xl border p-5 shadow-card",
+          isHighRisk ? "border-coral/30 bg-coral/5" : "border-border bg-card",
+        )}
+      >
+        <div
+          className={cn(
+            "flex items-center gap-2",
+            isHighRisk ? "text-coral" : "text-navy",
+          )}
+        >
+          <LifeBuoy className="h-5 w-5" />
+          <span className="text-sm font-bold">
+            {isHighRisk ? "Cuidado de você é prioridade" : "Cuidar de você também é uma opção"}
+          </span>
+        </div>
+        <p className="mt-2 text-xs text-navy/80">
+          {isHighRisk
+            ? "Suas respostas indicam sinais que merecem atenção. Conversar com um profissional de saúde ou com um canal de apoio pode fazer diferença."
+            : "Se quiser conversar, o CVV e os CAPS do SUS são gratuitos, sigilosos e acolhedores. Não precisa estar em crise para pedir apoio."}
+        </p>
+        <div className="mt-3 space-y-2">
+          <a
+            href="tel:188"
+            className="flex items-center gap-3 rounded-2xl bg-coral p-3 text-coral-foreground shadow-soft"
+          >
+            <div className="grid h-10 w-10 place-items-center rounded-full bg-white/20">
+              <Phone className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold">CVV — Ligar 188</div>
+              <div className="text-[11px] opacity-90">
+                24h · gratuito · sigiloso
+              </div>
+            </div>
+          </a>
+          <div className="rounded-2xl border border-border bg-card p-3">
+            <div className="text-sm font-semibold text-navy">
+              CAPS mais próximo
+            </div>
+            <div className="mt-0.5 text-[11px] text-muted-foreground">
+              Procure o CAPS do seu município pelo SUS.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Link
+        to="/comunidade"
+        className="flex items-center gap-3 rounded-2xl bg-magenta p-4 text-white shadow-soft active:scale-[0.99]"
+      >
+        <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white/20">
+          <Users className="h-5 w-5" />
+        </div>
+        <div className="flex-1">
+          <div className="text-sm font-semibold">
+            Você não precisa passar por isso sozinho(a)
+          </div>
+          <div className="text-[11px] opacity-90">
+            Entre na lista de espera da Comunidade.
+          </div>
+        </div>
+        <ArrowRight className="h-5 w-5" />
+      </Link>
+    </section>
+  );
+
   return (
     <AppShell title="Seu resultado">
+      {isHighRisk && helpBox}
+
       <section
         className={cn(
-          "rounded-3xl p-6 shadow-card border border-border",
+          "rounded-3xl border border-border p-6 shadow-card",
           tier.bg,
         )}
       >
@@ -330,62 +403,7 @@ function Result({
         </p>
       </section>
 
-      {tier.showHelp && (
-        <section className="mt-5 space-y-3">
-          <div className="rounded-3xl border border-coral/30 bg-coral/5 p-5 shadow-card">
-            <div className="flex items-center gap-2 text-coral">
-              <LifeBuoy className="h-5 w-5" />
-              <span className="text-sm font-bold">Precisa de apoio agora?</span>
-            </div>
-            <p className="mt-2 text-xs text-navy/80">
-              Falar ajuda. O CVV atende 24h, é gratuito e sigiloso. Os CAPS do
-              SUS atendem gratuitamente para saúde mental.
-            </p>
-            <div className="mt-3 space-y-2">
-              <a
-                href="tel:188"
-                className="flex items-center gap-3 rounded-2xl bg-coral p-3 text-coral-foreground shadow-soft"
-              >
-                <div className="grid h-10 w-10 place-items-center rounded-full bg-white/20">
-                  <Phone className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold">CVV — Ligar 188</div>
-                  <div className="text-[11px] opacity-90">
-                    24h · gratuito · sigiloso
-                  </div>
-                </div>
-              </a>
-              <div className="rounded-2xl border border-border bg-card p-3">
-                <div className="text-sm font-semibold text-navy">
-                  CAPS mais próximo
-                </div>
-                <div className="mt-0.5 text-[11px] text-muted-foreground">
-                  Procure o CAPS do seu município pelo SUS.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Link
-            to="/comunidade"
-            className="flex items-center gap-3 rounded-2xl bg-magenta p-4 text-white shadow-soft active:scale-[0.99]"
-          >
-            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white/20">
-              <Users className="h-5 w-5" />
-            </div>
-            <div className="flex-1">
-              <div className="text-sm font-semibold">
-                Você não precisa passar por isso sozinho(a)
-              </div>
-              <div className="text-[11px] opacity-90">
-                Entre na Comunidade e converse com quem entende.
-              </div>
-            </div>
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-        </section>
-      )}
+      {!isHighRisk && <div className="mt-5">{helpBox}</div>}
 
       <div className="mt-5 flex flex-col gap-2">
         <Button
@@ -407,7 +425,8 @@ function Result({
       <p className="mt-6 flex items-start gap-2 rounded-2xl bg-secondary p-3 text-[11px] text-muted-foreground">
         <Info className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
         Isto não é um diagnóstico médico. É uma ferramenta educativa baseada
-        no PGSI (Problem Gambling Severity Index).
+        no PGSI (Problem Gambling Severity Index). Suas respostas ficam só no
+        seu aparelho.
       </p>
       <SensitiveFooter />
     </AppShell>
