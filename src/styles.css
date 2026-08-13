@@ -286,3 +286,10 @@ p {
     cursor: text;
   }
 }
+
+/* Fallback para navegadores sem suporte a overflow: clip. */
+@supports not (overflow: clip) {
+  body {
+    overflow-x: hidden;
+  }
+}
