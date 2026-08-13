@@ -1,4 +1,4 @@
-import { track, EVENTS } from "@/lib/analytics";
+import { track, trackOnce, EVENTS } from "@/lib/analytics";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import confetti from "canvas-confetti";
@@ -176,7 +176,7 @@ function Home() {
   const phrase = useMemo(() => encourage(totalMinutes), [totalMinutes]);
 
   useEffect(() => {
-    track(EVENTS.homeView);
+    trackOnce(EVENTS.homeView);
   }, []);
 
   function handleRestart() {

@@ -4,7 +4,7 @@ import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
-import { track, EVENTS } from "@/lib/analytics";
+import { trackOnce, EVENTS } from "@/lib/analytics";
 
 export const Route = createFileRoute("/ajuda")({
   head: () => ({
@@ -59,7 +59,7 @@ export const Route = createFileRoute("/ajuda")({
 
 function AjudaPage() {
   useEffect(() => {
-    track(EVENTS.helpClick);
+    trackOnce(EVENTS.helpClick);
   }, []);
 
   return (
