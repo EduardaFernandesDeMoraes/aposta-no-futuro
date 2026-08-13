@@ -216,7 +216,7 @@ function Comunidade() {
           )}
         </TabsContent>
       </Tabs>
-      {(previewForum || previewMentores) && <SensitiveFooter />}
+      {(previewForum || previewMentores) && <SensitiveFooter className="!mt-6" />}
     </AppShell>
   );
 }
@@ -289,7 +289,6 @@ function Forum({ onBack }: { onBack: () => void }) {
       <div
         ref={listRef}
         className="flex flex-col gap-3"
-        style={{ paddingBottom: navH.current + 24 }}
       >
         {messages.map((m, i) => (
           <div
