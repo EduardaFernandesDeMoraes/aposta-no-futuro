@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ShieldAlert, Send, ArrowLeft, Info } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ShieldAlert, Send, Info, Eye } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { AutoGrowTextarea } from "@/components/auto-grow-textarea";
-import { Button } from "@/components/ui/button";
-import { useLocalStorage } from "@/hooks/use-local-storage";
+import { WaitlistCard } from "@/components/waitlist-card";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/comunidade")({
@@ -15,13 +14,13 @@ export const Route = createFileRoute("/comunidade")({
       {
         name: "description",
         content:
-          "Salas anônimas por tempo sem apostar e mentores pra você não caminhar sozinho.",
+          "Prévia da comunidade: veja exemplos de salas anônimas por tempo sem apostar e entre na lista de espera.",
       },
       { property: "og:title", content: "Comunidade — Aposta no Futuro" },
       {
         property: "og:description",
         content:
-          "Fórum anônimo por tempo de abstinência e mentores voluntários pra você não caminhar sozinho.",
+          "Prévia da comunidade anônima por tempo de abstinência e da rede de mentores voluntários em formação.",
       },
       { property: "og:url", content: "https://apostanofuturo.online/comunidade" },
     ],
@@ -85,20 +84,7 @@ const SEED: Record<string, Msg[]> = {
   ],
 };
 
-const NICKS = [
-  "Colibri82", "MarLivre", "RaioDeSol", "VentoNorte", "LuaCheia",
-  "PedraFirme", "BrisaMansa", "NovoRumo", "SolPoente", "CaminhoLeve",
-  "AuroraAzul", "PassoLeve", "TrilhaNova",
-];
-
-function pickNick(seed: string) {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  return NICKS[h % NICKS.length];
-}
-
-/** Mede o composer fixo, a barra de navegação e o espaço abaixo da lista
- *  para deixar exatamente 16px entre a última mensagem e o composer. */
+/** Mede o composer fixo e a barra de navegação para reservar espaço na lista. */
 function useComposerHeight() {
   const ref = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -123,7 +109,6 @@ function useComposerHeight() {
       const lastBottomAbs =
         lastCard.getBoundingClientRect().bottom + window.scrollY;
       const currentPad = parseFloat(getComputedStyle(list).paddingBottom) || 0;
-      // tudo que existe no documento abaixo da lista (padding do main etc.)
       const below = docH - (lastBottomAbs + currentPad);
 
       setPad(Math.max(0, composerH + h + 16 - below));
@@ -144,19 +129,27 @@ function useComposerHeight() {
   return { ref, listRef, pad, navH, measure };
 }
 
+function PreviewBanner() {
+  return (
+    <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/20 p-3 text-sm text-[#5c3a00]">
+      <Eye className="mt-0.5 h-4 w-4 flex-none text-[#F5A623]" />
+      <p>
+        <strong>Prévia:</strong> as conversas abaixo são exemplos criados para
+        você ver como a comunidade vai funcionar. Ela ainda não está aberta.
+      </p>
+    </div>
+  );
+}
 
-
+function ExampleTag() {
+  return (
+    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+      exemplo
+    </span>
+  );
+}
 
 function Comunidade() {
-  const [posts, setPosts] = useLocalStorage<Record<string, Msg[]>>(
-    "anf.comunidade.posts",
-    {},
-  );
-  const [nick] = useLocalStorage<string>(
-    "anf.comunidade.nick",
-    pickNick(String(Date.now())),
-  );
-
   return (
     <AppShell title="Comunidade">
       <Tabs defaultValue="forum" className="w-full">
@@ -176,7 +169,7 @@ function Comunidade() {
         </TabsList>
 
         <TabsContent value="forum" className="mt-4">
-          <Forum posts={posts} setPosts={setPosts} nick={nick} />
+          <Forum />
         </TabsContent>
 
         <TabsContent value="mentores" className="mt-4">
@@ -187,18 +180,8 @@ function Comunidade() {
   );
 }
 
-function Forum({
-  posts,
-  setPosts,
-  nick,
-}: {
-  posts: Record<string, Msg[]>;
-  setPosts: (u: (p: Record<string, Msg[]>) => Record<string, Msg[]>) => void;
-  nick: string;
-}) {
+function Forum() {
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
-  const [draft, setDraft] = useState("");
-  const canSend = draft.trim().length > 0;
   const {
     ref: composerRef,
     listRef,
@@ -208,30 +191,22 @@ function Forum({
   } = useComposerHeight();
 
   const room = ROOMS.find((r) => r.id === activeRoom)!;
-  const messages = useMemo(() => {
-    return [...(SEED[activeRoom] ?? []), ...(posts[activeRoom] ?? [])];
-  }, [activeRoom, posts]);
+  const messages = SEED[activeRoom] ?? [];
 
   useEffect(() => {
     measure();
-    listRef.current?.lastElementChild?.scrollIntoView({ block: "end" });
-  }, [activeRoom, messages.length]);
-
-
-  const send = () => {
-    const text = draft.trim();
-    if (!text) return;
-    setPosts((p) => ({
-      ...p,
-      [activeRoom]: [...(p[activeRoom] ?? []), { nick, text, when: "agora" }],
-    }));
-    setDraft("");
-  };
-
+  }, [activeRoom]);
 
   return (
     <div className="space-y-4">
-      {/* Aviso */}
+      <PreviewBanner />
+
+      <WaitlistCard
+        title="Quero ser avisado quando abrir"
+        description="Deixe seu e-mail. Vou avisar assim que a comunidade estiver funcionando com pessoas de verdade."
+      />
+
+      {/* Aviso de convivência */}
       <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/10 p-3 text-sm text-[#7a4e00]">
         <ShieldAlert className="mt-0.5 h-4 w-4 flex-none text-[#F5A623]" />
         <p>
@@ -273,11 +248,11 @@ function Forum({
         <p className="text-xs uppercase tracking-wide opacity-80">Sala</p>
         <h2 className="text-lg font-bold">{room.label}</h2>
         <p className="mt-1 text-xs opacity-90">
-          Você entra como <strong>{nick}</strong> · tudo anônimo
+          Quando abrir, tudo será anônimo
         </p>
       </div>
 
-      {/* Mensagens */}
+      {/* Mensagens de exemplo */}
       <div
         ref={listRef}
         className="flex flex-col gap-3"
@@ -286,11 +261,14 @@ function Forum({
         {messages.map((m, i) => (
           <div
             key={`${m.nick}-${i}`}
-            className="w-full rounded-2xl border border-slate-200 bg-white p-3"
+            className="w-full rounded-2xl border border-slate-200 bg-white p-3 opacity-85"
           >
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center justify-between gap-2 text-xs">
               <span className="font-semibold text-[#16233C]">{m.nick}</span>
-              <span className="text-slate-400">{m.when}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">{m.when}</span>
+                <ExampleTag />
+              </div>
             </div>
             <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
               {m.text}
@@ -299,7 +277,7 @@ function Forum({
         ))}
       </div>
 
-      {/* Composer fixo, acima da barra de navegação */}
+      {/* Composer desativado */}
       <div
         ref={composerRef}
         className="fixed inset-x-0 z-20 border-t border-slate-200 bg-white"
@@ -308,41 +286,30 @@ function Forum({
         <div className="mx-auto w-full max-w-md px-4 pb-3 pt-3">
           <div className="flex items-center gap-2">
             <AutoGrowTextarea
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  send();
-                }
-              }}
-              placeholder="Escreva aqui…"
-              aria-label="Escrever mensagem na comunidade"
-              className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-transparent px-3 py-3 outline-none placeholder:text-slate-400 focus:border-[#16BFAC]"
+              value=""
+              readOnly
+              disabled
+              tabIndex={-1}
+              placeholder="A comunidade abre em breve"
+              aria-label="Envio de mensagens indisponível na prévia"
+              className="min-w-0 flex-1 cursor-not-allowed rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-slate-400 outline-none placeholder:text-slate-400"
             />
             <button
               type="button"
-              onClick={send}
-              disabled={!canSend}
-              aria-disabled={!canSend}
-              aria-label="Enviar mensagem"
-              className={cn(
-                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-all duration-150 ease-out",
-                canSend
-                  ? "cursor-pointer opacity-100 shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92]"
-                  : "cursor-not-allowed opacity-40",
-              )}
+              disabled
+              aria-disabled="true"
+              aria-label="Envio indisponível na prévia"
+              className="flex h-12 w-12 flex-none cursor-not-allowed items-center justify-center rounded-full bg-[#16BFAC] text-white opacity-40"
             >
               <Send className="h-5 w-5" />
             </button>
           </div>
 
           <p className="mt-1.5 text-xs leading-snug text-slate-400">
-            Você aparece como <strong>{nick}</strong> · Sem dados pessoais
+            Prévia demonstrativa · envio desativado
           </p>
         </div>
       </div>
-
     </div>
   );
 }
@@ -352,7 +319,6 @@ type Mentor = {
   name: string;
   timeLabel: string;
   bio: string;
-  intro: string;
   color: string;
   initials: string;
 };
@@ -363,8 +329,6 @@ const MENTORES: Mentor[] = [
     name: "Rafa",
     timeLabel: "2 anos livre",
     bio: "Já estive onde você está. Bora conversar.",
-    intro:
-      "Oi! Sou o Rafa, faz 2 anos que parei. Se hoje tá pesado, me conta como você tá chegando aqui — sem julgamento nenhum.",
     color: "#16BFAC",
     initials: "RA",
   },
@@ -373,8 +337,6 @@ const MENTORES: Mentor[] = [
     name: "Juliana",
     timeLabel: "1 ano e 4 meses livre",
     bio: "Um dia de cada vez também funcionou pra mim.",
-    intro:
-      "Oi, sou a Juliana. Comecei igualzinho a você, achando que não ia dar. Me conta um pouco do seu momento — a gente vai devagar.",
     color: "#E8197E",
     initials: "JU",
   },
@@ -383,8 +345,6 @@ const MENTORES: Mentor[] = [
     name: "Marcos",
     timeLabel: "3 anos livre",
     bio: "Recaí várias vezes antes de conseguir. Tá tudo bem recomeçar.",
-    intro:
-      "E aí, sou o Marcos. Antes de firmar esses 3 anos eu recomecei umas 6 vezes. Se você recaiu ou tá com medo de recair, pode desabafar.",
     color: "#1CA0D8",
     initials: "MA",
   },
@@ -393,56 +353,51 @@ const MENTORES: Mentor[] = [
     name: "Bia",
     timeLabel: "1 ano e 8 meses livre",
     bio: "A vida do outro lado é mais leve. Vem conversar.",
-    intro:
-      "Oi, sou a Bia 💚 Faz quase 2 anos. Me conta o que te trouxe aqui hoje — pode ser qualquer coisa, até só um oi.",
     color: "#F5A623",
     initials: "BI",
   },
 ];
 
-type ChatMsg = { from: "mentor" | "me"; text: string };
-
 function Mentores() {
-  const [active, setActive] = useState<Mentor | null>(null);
-  const [chats, setChats] = useLocalStorage<Record<string, ChatMsg[]>>(
-    "anf.comunidade.mentores.chats",
-    {},
-  );
-
-  if (active) {
-    return (
-      <MentorChat
-        mentor={active}
-        messages={chats[active.id] ?? [{ from: "mentor", text: active.intro }]}
-        onSend={(text) =>
-          setChats((c) => {
-            const prev = c[active.id] ?? [{ from: "mentor", text: active.intro }];
-            return { ...c, [active.id]: [...prev, { from: "me", text }] };
-          })
-        }
-        onBack={() => setActive(null)}
-      />
-    );
-  }
+  const [showForm, setShowForm] = useState(false);
 
   return (
     <div className="space-y-4">
+      <PreviewBanner />
+
       <div className="flex items-start gap-2 rounded-2xl bg-[#1CA0D8]/10 p-3 text-sm text-[#0b4f6c]">
         <Info className="mt-0.5 h-4 w-4 flex-none text-[#1CA0D8]" />
         <p>
-          Mentores são <strong>voluntários</strong> com pelo menos 1 ano sem
-          apostar. Eles oferecem escuta e apoio, mas <strong>não substituem
-          atendimento profissional</strong> de saúde.
+          Estamos formando a rede de mentores voluntários (pessoas com 1 ano ou
+          mais livres das apostas). Mentores oferecem escuta e apoio, mas{" "}
+          <strong>não substituem atendimento profissional</strong> de saúde.
         </p>
       </div>
+
+      {showForm ? (
+        <WaitlistCard
+          title="Quero ser mentor"
+          description="Deixe seu e-mail. Vou te chamar quando a rede de mentores voluntários começar."
+          wantsToMentor
+          cta="Quero ser mentor"
+        />
+      ) : (
+        <button
+          type="button"
+          onClick={() => setShowForm(true)}
+          className="w-full rounded-full bg-[#16BFAC] px-4 py-3 font-semibold text-white transition-all duration-200 hover:bg-[#14ac9b]"
+        >
+          Quero ser mentor
+        </button>
+      )}
 
       <div className="space-y-3">
         {MENTORES.map((m) => (
           <div
             key={m.id}
-            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+            className="rounded-2xl border border-slate-200 bg-white p-4 opacity-85 shadow-sm"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-start gap-3">
               <div
                 className="flex h-14 w-14 flex-none items-center justify-center rounded-full text-lg font-bold text-white"
                 style={{ backgroundColor: m.color }}
@@ -450,145 +405,29 @@ function Mentores() {
                 {m.initials}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-semibold text-[#16233C]">
-                  {m.name} — <span className="font-normal text-slate-600">{m.timeLabel}</span>
-                </p>
+                <div className="flex items-start justify-between gap-2">
+                  <p className="font-semibold text-[#16233C]">
+                    {m.name} —{" "}
+                    <span className="font-normal text-slate-600">
+                      {m.timeLabel}
+                    </span>
+                  </p>
+                  <ExampleTag />
+                </div>
                 <p className="mt-0.5 text-sm text-slate-600">{m.bio}</p>
               </div>
             </div>
-            <Button
-              type="button"
-              onClick={() => setActive(m)}
-              className="mt-3 w-full rounded-full bg-[#16BFAC] text-white transition-all duration-200 hover:bg-[#14ac9b]"
-            >
-              Conversar
-            </Button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MentorChat({
-  mentor,
-  messages,
-  onSend,
-  onBack,
-}: {
-  mentor: Mentor;
-  messages: ChatMsg[];
-  onSend: (text: string) => void;
-  onBack: () => void;
-}) {
-  const [draft, setDraft] = useState("");
-  const canSend = draft.trim().length > 0;
-  const {
-    ref: composerRef,
-    listRef,
-    pad: listPad,
-    navH,
-    measure,
-  } = useComposerHeight();
-
-  useEffect(() => {
-    measure();
-    listRef.current?.lastElementChild?.scrollIntoView({ block: "end" });
-  }, [messages.length]);
-
-
-
-  const send = () => {
-    const text = draft.trim();
-    if (!text) return;
-    onSend(text);
-    setDraft("");
-  };
-
-  return (
-    <div className="space-y-3">
-      <button
-        type="button"
-        onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-[#16BFAC]"
-      >
-        <ArrowLeft className="h-4 w-4" /> Voltar para mentores
-      </button>
-
-      <div
-        className="flex items-center gap-3 rounded-2xl p-3 text-white shadow-sm"
-        style={{ backgroundColor: mentor.color }}
-      >
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/20 font-bold">
-          {mentor.initials}
-        </div>
-        <div>
-          <p className="font-semibold">{mentor.name}</p>
-          <p className="text-xs opacity-90">{mentor.timeLabel} · voluntário(a)</p>
-        </div>
-      </div>
-
-      <div ref={listRef} className="space-y-3" style={{ paddingBottom: listPad }}>
-        {messages.map((m, i) => (
-          <div
-            key={i}
-            className={cn(
-              "max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed",
-              m.from === "mentor"
-                ? "bg-slate-100 text-slate-800"
-                : "ml-auto bg-[#16BFAC] text-white",
-            )}
-          >
-            {m.text}
-          </div>
-        ))}
-        <p className="rounded-xl bg-slate-50 p-2 text-center text-[11px] text-slate-500">
-          Mentores são voluntários e não substituem atendimento profissional.
-        </p>
-      </div>
-
-
-      <div
-        ref={composerRef}
-        className="fixed inset-x-0 z-20 border-t border-slate-200 bg-white"
-        style={{ bottom: navH }}
-      >
-        <div className="mx-auto w-full max-w-md px-4 pb-3 pt-3">
-          <div className="flex items-center gap-2">
-            <AutoGrowTextarea
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  send();
-                }
-              }}
-              placeholder="Escreva aqui…"
-              aria-label="Escrever mensagem na comunidade"
-              className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-transparent px-3 py-3 outline-none placeholder:text-slate-400 focus:border-[#16BFAC]"
-            />
             <button
               type="button"
-              onClick={send}
-              disabled={!canSend}
-              aria-disabled={!canSend}
-              aria-label="Enviar mensagem"
-              className={cn(
-                "flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16BFAC] text-white transition-all duration-150 ease-out",
-                canSend
-                  ? "cursor-pointer opacity-100 shadow-md hover:bg-[#12A896] hover:shadow-lg active:scale-[0.92]"
-                  : "cursor-not-allowed opacity-40",
-              )}
+              disabled
+              aria-disabled="true"
+              className="mt-3 w-full cursor-not-allowed rounded-full bg-[#16BFAC] py-2.5 text-sm font-semibold text-white opacity-40"
             >
-
-              <Send className="h-5 w-5" />
+              Em breve
             </button>
           </div>
-        </div>
+        ))}
       </div>
-
     </div>
-
   );
 }
