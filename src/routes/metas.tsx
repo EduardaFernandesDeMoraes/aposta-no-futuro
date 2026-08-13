@@ -6,26 +6,26 @@ import { AppShell } from "@/components/app-shell";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/desafios")({
+export const Route = createFileRoute("/metas")({
   head: () => ({
     meta: [
-      { title: "Desafios | Aposta no Futuro" },
+      { title: "Metas | Aposta no Futuro" },
       {
         name: "description",
         content:
           "Missões pra fortalecer novos hábitos e celebrar cada conquista da sua jornada.",
       },
-      { property: "og:title", content: "Desafios — Aposta no Futuro" },
+      { property: "og:title", content: "Metas — Aposta no Futuro" },
       {
         property: "og:description",
         content:
           "Missões diárias pra fortalecer novos hábitos e celebrar cada passo sem apostar.",
       },
-      { property: "og:url", content: "https://apostanofuturo.online/desafios" },
+      { property: "og:url", content: "https://apostanofuturo.online/metas" },
     ],
-    links: [{ rel: "canonical", href: "https://apostanofuturo.online/desafios" }],
+    links: [{ rel: "canonical", href: "https://apostanofuturo.online/metas" }],
   }),
-  component: Desafios,
+  component: Metas,
 });
 
 type Challenge = {
@@ -102,16 +102,16 @@ const CHALLENGES: Challenge[] = [
   },
 ];
 
-type DesafiosState = {
+type MetasState = {
   completed: Record<string, boolean>;
   points: number;
   medals: number;
 };
 
-const INITIAL: DesafiosState = { completed: {}, points: 0, medals: 0 };
+const INITIAL: MetasState = { completed: {}, points: 0, medals: 0 };
 
-function Desafios() {
-  const [state, setState] = useLocalStorage<DesafiosState>(
+function Metas() {
+  const [state, setState] = useLocalStorage<MetasState>(
     "anf.desafios",
     INITIAL,
   );
@@ -124,7 +124,7 @@ function Desafios() {
   const total = CHALLENGES.length;
   const progress = Math.round((completedCount / total) * 100);
 
-  // Marcos das medalhas: a cada 3 desafios + uma final ao completar todos.
+  // Marcos das medalhas: a cada 3 metas + uma final ao completar todos.
   const milestones = useMemo(() => {
     const marks: number[] = [];
     for (let n = 3; n < total; n += 3) marks.push(n);
@@ -159,7 +159,7 @@ function Desafios() {
   };
 
   return (
-    <AppShell title="Desafios">
+    <AppShell title="Metas">
       <div className="space-y-6 pb-6">
         {/* Progresso */}
         <section className="rounded-3xl bg-gradient-to-br from-[#16BFAC] to-[#1CA0D8] p-5 text-white shadow-lg">
@@ -208,7 +208,7 @@ function Desafios() {
                   title={
                     unlocked
                       ? `Medalha ${i + 1} conquistada`
-                      : `Complete ${m} desafios`
+                      : `Complete ${m} metas`
                   }
                 >
                   🏅
@@ -219,12 +219,12 @@ function Desafios() {
 
           <p className="mt-3 flex items-center gap-1 text-xs opacity-90">
             <Sparkles className="h-3.5 w-3.5" />
-            Medalhas a cada 3 desafios, e uma dourada ao completar todos.
+            Medalhas a cada 3 metas, e uma dourada ao completar todos.
           </p>
 
           {allDone && (
             <p className="mt-3 rounded-2xl bg-white/15 px-3 py-2 text-sm font-semibold">
-              🎉 Você completou todos os desafios. Isso é muito!
+              🎉 Você completou todas as metas. Isso é muito!
             </p>
           )}
         </section>
