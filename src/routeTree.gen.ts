@@ -14,6 +14,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimuladorRouteImport } from './routes/simulador'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as MetasRouteImport } from './routes/metas'
 import { Route as DesafiosRouteImport } from './routes/desafios'
 import { Route as ComunidadeRouteImport } from './routes/comunidade'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
@@ -45,6 +46,11 @@ const PrivacidadeRoute = PrivacidadeRouteImport.update({
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetasRoute = MetasRouteImport.update({
+  id: '/metas',
+  path: '/metas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesafiosRoute = DesafiosRouteImport.update({
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
   '/desafios': typeof DesafiosRoute
+  '/metas': typeof MetasRoute
   '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
   '/simulador': typeof SimuladorRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
   '/desafios': typeof DesafiosRoute
+  '/metas': typeof MetasRoute
   '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
   '/simulador': typeof SimuladorRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/bem-vindo': typeof BemVindoRoute
   '/comunidade': typeof ComunidadeRoute
   '/desafios': typeof DesafiosRoute
+  '/metas': typeof MetasRoute
   '/perfil': typeof PerfilRoute
   '/privacidade': typeof PrivacidadeRoute
   '/simulador': typeof SimuladorRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/comunidade'
     | '/desafios'
+    | '/metas'
     | '/perfil'
     | '/privacidade'
     | '/simulador'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/comunidade'
     | '/desafios'
+    | '/metas'
     | '/perfil'
     | '/privacidade'
     | '/simulador'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/comunidade'
     | '/desafios'
+    | '/metas'
     | '/perfil'
     | '/privacidade'
     | '/simulador'
@@ -178,6 +190,7 @@ export interface RootRouteChildren {
   BemVindoRoute: typeof BemVindoRoute
   ComunidadeRoute: typeof ComunidadeRoute
   DesafiosRoute: typeof DesafiosRoute
+  MetasRoute: typeof MetasRoute
   PerfilRoute: typeof PerfilRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   SimuladorRoute: typeof SimuladorRoute
@@ -221,6 +234,13 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/metas': {
+      id: '/metas'
+      path: '/metas'
+      fullPath: '/metas'
+      preLoaderRoute: typeof MetasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/desafios': {
@@ -282,6 +302,7 @@ const rootRouteChildren: RootRouteChildren = {
   BemVindoRoute: BemVindoRoute,
   ComunidadeRoute: ComunidadeRoute,
   DesafiosRoute: DesafiosRoute,
+  MetasRoute: MetasRoute,
   PerfilRoute: PerfilRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   SimuladorRoute: SimuladorRoute,

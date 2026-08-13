@@ -53,7 +53,7 @@ function Privacidade() {
       <Section title="O que fica só no seu aparelho">
         <p>
           O contador de dias livres, os valores do simulador, o resultado da
-          autoavaliação, os desafios concluídos e o seu nome (se você escrever
+          autoavaliação, as metas concluídas e o seu nome (se você escrever
           um) são salvos no armazenamento local do navegador (localStorage) do
           seu aparelho.
         </p>
