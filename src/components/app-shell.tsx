@@ -431,6 +431,14 @@ function ChatSheet({
             </button>
           </div>
 
+          {/* Aviso permanente sobre a natureza do guia */}
+          <div className="border-b border-border bg-[#F5A623]/15 px-4 py-2 text-[11px] leading-snug text-[#5c3a00]">
+            Sou um guia automático com respostas prontas. Não sou uma pessoa e
+            ninguém está lendo esta conversa.
+          </div>
+
+
+
 
           {/* Messages */}
           <div
