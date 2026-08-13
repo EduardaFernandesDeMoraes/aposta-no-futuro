@@ -117,12 +117,6 @@ export function AppShell({
       </main>
 
 
-
-
-
-
-
-
       {/* Bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-navy text-navy-foreground pb-[env(safe-area-inset-bottom)]">
         <ul className="grid w-full grid-cols-5 items-center gap-0 px-2">
