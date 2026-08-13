@@ -197,10 +197,18 @@ function Autoavaliacao() {
           </div>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-white/85">
-          Este é um teste rápido e anônimo para você se conhecer melhor. Não é
-          um diagnóstico. Pense nos últimos 12 meses.
+          Este é um teste rápido e anônimo para você se conhecer melhor. Pense
+          nos últimos 12 meses.
         </p>
       </section>
+
+      {/* Disclaimer before first question */}
+      <p className="mt-5 flex items-start gap-2 rounded-2xl bg-teal/10 p-3 text-xs leading-relaxed text-navy/90">
+        <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-teal" />
+        Esta é uma triagem baseada em um índice internacional (PGSI). Ela ajuda
+        você a enxergar sinais, mas não é um diagnóstico e não substitui a
+        avaliação de um profissional de saúde.
+      </p>
 
       {/* Progress */}
       <div className="mt-5">
