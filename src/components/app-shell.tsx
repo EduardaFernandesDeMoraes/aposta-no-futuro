@@ -719,9 +719,12 @@ function HelpCard() {
         <div className="mt-0.5 text-[11px] text-muted-foreground">
           Atendimento gratuito do SUS, incluindo dependências. Procure a
           unidade do seu município.
-
         </div>
-      </div>
+      </a>
+      <p className="px-1 text-[11px] leading-snug text-muted-foreground">
+        Se for uma emergência, ligue 192 ou vá ao pronto-socorro mais próximo.
+      </p>
+
     </div>
   );
 }
