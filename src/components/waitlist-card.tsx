@@ -60,13 +60,17 @@ export function WaitlistCard({
 
   if (done) {
     return (
-      <div className="flex items-start gap-3 rounded-2xl border border-[#16BFAC] bg-[#E1F5EE] p-4">
+      <div
+        className={
+          plain
+            ? "flex items-start gap-3 text-left"
+            : "flex items-start gap-3 rounded-2xl border border-[#16BFAC] bg-[#E1F5EE] p-4"
+        }
+      >
         <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-[#16BFAC]" />
         <div>
           <p className="font-semibold text-[#16233C]">Pronto! Você está na lista.</p>
-          <p className="mt-1 text-sm text-slate-600">
-            Assim que a comunidade abrir com pessoas de verdade, eu te aviso.
-          </p>
+          <p className="mt-1 text-sm text-slate-600">{successText}</p>
         </div>
       </div>
     );
@@ -77,17 +81,20 @@ export function WaitlistCard({
   return (
     <form
       onSubmit={submit}
-      className="rounded-2xl border border-[#16BFAC] bg-[#E1F5EE] p-4"
+      className={plain ? "w-full text-left" : "rounded-2xl border border-[#16BFAC] bg-[#E1F5EE] p-4"}
     >
-      <div className="flex items-center gap-2">
-        <Mail className="h-4 w-4 flex-none text-[#16BFAC]" />
-        <h3 className="font-semibold text-[#16233C]">{title}</h3>
-      </div>
-      <p className="mt-1 text-sm text-slate-600">{description}</p>
+      {title && (
+        <div className="flex items-center gap-2">
+          <Mail className="h-4 w-4 flex-none text-[#16BFAC]" />
+          <h3 className="font-semibold text-[#16233C]">{title}</h3>
+        </div>
+      )}
+      {description && <p className="mt-1 text-sm text-slate-600">{description}</p>}
 
       <label htmlFor={inputId} className="sr-only">
         Seu e-mail
       </label>
+
       <input
         id={inputId}
         type="email"
