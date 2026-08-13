@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Instagram, TikTok, Heart } from "lucide-react";
+import { Instagram, Heart } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
 import { track, trackOnce } from "@/lib/analytics";
