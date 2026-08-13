@@ -100,17 +100,30 @@
     border-color: var(--color-border);
   }
 
-  html,
+  html {
+    /* A rolagem vertical da página é sempre do documento. */
+    height: auto;
+    overflow-y: visible;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
     background-color: var(--background);
     color: var(--color-foreground);
-    overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
-    /* Nenhuma tela pode arrastar para os lados. */
-    overflow-x: hidden;
+    /* Nenhuma tela pode arrastar para os lados, mas a rolagem vertical
+       continua sendo a do documento (overflow-x: hidden no <html> quebra
+       o gesto de rolagem no Chrome Android). */
+    overflow-x: clip;
+    overflow-y: visible;
+    position: static;
+    height: auto;
+    min-height: 100dvh;
     max-width: 100%;
+    touch-action: manipulation;
   }
+
 
 
   /* Remove o retângulo cinza/azul padrão do toque no mobile, que conflita
@@ -271,5 +284,12 @@ p {
   input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):not([type="range"]),
   textarea {
     cursor: text;
+  }
+}
+
+/* Fallback para navegadores sem suporte a overflow: clip. */
+@supports not (overflow: clip) {
+  body {
+    overflow-x: hidden;
   }
 }
