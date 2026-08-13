@@ -1,3 +1,4 @@
+import { track, EVENTS } from "@/lib/analytics";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
@@ -102,6 +103,7 @@ function Simulador() {
     setError(null);
     setWeekly(result.data);
     setSaved({ weekly: result.data, calculatedAt: new Date().toISOString() });
+    track(EVENTS.simulatorUsed);
   }
 
   const rows = weekly !== null

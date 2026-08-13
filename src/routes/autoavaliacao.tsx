@@ -1,3 +1,4 @@
+import { track, EVENTS } from "@/lib/analytics";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
@@ -157,6 +158,7 @@ function Autoavaliacao() {
         answers: answers.map((a) => a ?? 0),
         at: new Date().toISOString(),
       });
+      track(EVENTS.assessmentDone, { faixa: tierFor(finalScore).label });
       setFinished(true);
       return;
     }

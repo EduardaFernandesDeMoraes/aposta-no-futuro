@@ -1,3 +1,4 @@
+import { track, EVENTS } from "@/lib/analytics";
 import { useState } from "react";
 import { CheckCircle2, Mail } from "lucide-react";
 import { z } from "zod";
@@ -43,6 +44,7 @@ export function WaitlistCard({
       setError("Não consegui salvar agora. Tente de novo em instantes.");
       return;
     }
+    track(EVENTS.waitlistSignup, { mentor: wantsToMentor });
     setDone(true);
   };
 

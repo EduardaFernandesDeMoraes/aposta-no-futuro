@@ -1,3 +1,4 @@
+import { track, EVENTS } from "@/lib/analytics";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight, Calendar, HandHeart, PiggyBank, ShieldCheck } from "lucide-react";
@@ -80,6 +81,8 @@ function Onboarding() {
   function next() {
     if (isLast) {
       setProfile({ name: name.trim(), firstFreeDay: date, onboarded: true });
+      track(EVENTS.onboardingDone);
+      track(EVENTS.counterStarted);
       navigate({ to: "/" });
     } else {
       setStep((s) => s + 1);
