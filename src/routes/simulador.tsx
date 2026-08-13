@@ -128,7 +128,8 @@ function Simulador() {
           Simulador de economia
         </div>
         <p className="mt-2 text-sm opacity-95">
-          Veja quanto dinheiro volta pro seu bolso quando você não aposta.
+          Veja uma estimativa do quanto você pode deixar de perder ao não
+          apostar.
         </p>
       </div>
 
