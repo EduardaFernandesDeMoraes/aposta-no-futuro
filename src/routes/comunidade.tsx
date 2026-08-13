@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ShieldAlert, Send, Info, Eye } from "lucide-react";
+import { ShieldAlert, Send, Info, Eye, Lock, Users, ArrowLeft } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -132,15 +132,16 @@ function useComposerHeight() {
 
 function PreviewBanner() {
   return (
-    <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/20 p-3 text-sm text-[#5c3a00]">
-      <Eye className="mt-0.5 h-4 w-4 flex-none text-[#F5A623]" />
+    <div className="sticky top-0 z-20 flex items-start gap-2 rounded-2xl bg-[#F5E0B8] p-3 text-sm text-[#5c3a00] shadow-sm">
+      <Eye className="mt-0.5 h-4 w-4 flex-none text-[#B57A00]" />
       <p>
-        <strong>Prévia:</strong> as conversas abaixo são exemplos criados para
-        você ver como a comunidade vai funcionar. Ela ainda não está aberta.
+        <strong>Prévia:</strong> estas conversas são exemplos. A comunidade ainda
+        não está aberta e ninguém está lendo.
       </p>
     </div>
   );
 }
+
 
 function ExampleTag() {
   return (
@@ -150,7 +151,76 @@ function ExampleTag() {
   );
 }
 
+function LockScreen({
+  mentor = false,
+  onPreview,
+}: {
+  mentor?: boolean;
+  onPreview: () => void;
+}) {
+  return (
+    <div className="-mx-4 flex min-h-[calc(100dvh-var(--nav-h,62px)-190px)] flex-col items-center justify-center bg-[#F7FAFC] px-6 py-10 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#E1F5EE]">
+        {mentor ? (
+          <Users className="h-8 w-8 text-[#16BFAC]" />
+        ) : (
+          <Lock className="h-8 w-8 text-[#16BFAC]" />
+        )}
+      </div>
+
+      <h2 className="mt-4 text-xl font-bold text-[#16233C]">
+        {mentor ? "A rede de mentores está em construção" : "A comunidade está em construção"}
+      </h2>
+      <p className="mt-2 max-w-sm text-sm leading-relaxed text-slate-600">
+        Estou formando a rede de pessoas e mentores voluntários. Deixe seu e-mail
+        e eu aviso assim que ela abrir, com gente de verdade do outro lado.
+      </p>
+
+      <div className="mt-5 w-full max-w-sm">
+        <WaitlistCard
+          plain
+          wantsToMentor={mentor}
+          cta={mentor ? "Quero ser mentor" : "Entrar na lista"}
+          successText={
+            mentor
+              ? "Assim que a rede de mentores começar, eu te chamo."
+              : "Assim que a comunidade abrir com pessoas de verdade, eu te aviso."
+          }
+        />
+      </div>
+
+      <div className="mt-6">
+        <button
+          type="button"
+          onClick={onPreview}
+          className="text-[13px] text-[#596273] underline underline-offset-2"
+        >
+          {mentor
+            ? "Ver uma prévia fictícia de como serão os mentores"
+            : "Ver uma prévia fictícia de como será a comunidade"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function BackToLock({ onBack }: { onBack: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onBack}
+      className="flex items-center gap-1.5 text-sm font-semibold text-[#16233C]"
+    >
+      <ArrowLeft className="h-4 w-4" />
+      Voltar
+    </button>
+  );
+}
+
 function Comunidade() {
+  const [previewForum, setPreviewForum] = useState(false);
+  const [previewMentores, setPreviewMentores] = useState(false);
+
   return (
     <AppShell title="Comunidade">
       <Tabs defaultValue="forum" className="w-full">
@@ -170,19 +240,27 @@ function Comunidade() {
         </TabsList>
 
         <TabsContent value="forum" className="mt-4">
-          <Forum />
+          {previewForum ? (
+            <Forum onBack={() => setPreviewForum(false)} />
+          ) : (
+            <LockScreen onPreview={() => setPreviewForum(true)} />
+          )}
         </TabsContent>
 
         <TabsContent value="mentores" className="mt-4">
-          <Mentores />
+          {previewMentores ? (
+            <Mentores onBack={() => setPreviewMentores(false)} />
+          ) : (
+            <LockScreen mentor onPreview={() => setPreviewMentores(true)} />
+          )}
         </TabsContent>
       </Tabs>
-      <SensitiveFooter />
+      {(previewForum || previewMentores) && <SensitiveFooter />}
     </AppShell>
   );
 }
 
-function Forum() {
+function Forum({ onBack }: { onBack: () => void }) {
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
   const {
     ref: composerRef,
@@ -202,11 +280,8 @@ function Forum() {
   return (
     <div className="space-y-4">
       <PreviewBanner />
+      <BackToLock onBack={onBack} />
 
-      <WaitlistCard
-        title="Quero ser avisado quando abrir"
-        description="Deixe seu e-mail. Vou avisar assim que a comunidade estiver funcionando com pessoas de verdade."
-      />
 
       {/* Aviso de convivência */}
       <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/10 p-3 text-sm text-[#7a4e00]">
@@ -360,12 +435,11 @@ const MENTORES: Mentor[] = [
   },
 ];
 
-function Mentores() {
-  const [showForm, setShowForm] = useState(false);
-
+function Mentores({ onBack }: { onBack: () => void }) {
   return (
     <div className="space-y-4">
       <PreviewBanner />
+      <BackToLock onBack={onBack} />
 
       <div className="flex items-start gap-2 rounded-2xl bg-[#1CA0D8]/10 p-3 text-sm text-[#0b4f6c]">
         <Info className="mt-0.5 h-4 w-4 flex-none text-[#1CA0D8]" />
@@ -376,22 +450,6 @@ function Mentores() {
         </p>
       </div>
 
-      {showForm ? (
-        <WaitlistCard
-          title="Quero ser mentor"
-          description="Deixe seu e-mail. Vou te chamar quando a rede de mentores voluntários começar."
-          wantsToMentor
-          cta="Quero ser mentor"
-        />
-      ) : (
-        <button
-          type="button"
-          onClick={() => setShowForm(true)}
-          className="w-full rounded-full bg-[#16BFAC] px-4 py-3 font-semibold text-white transition-all duration-200 hover:bg-[#14ac9b]"
-        >
-          Quero ser mentor
-        </button>
-      )}
 
       <div className="space-y-3">
         {MENTORES.map((m) => (
