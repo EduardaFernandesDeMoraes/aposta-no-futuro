@@ -160,7 +160,7 @@ function StepView({ step }: { step: number }) {
       >
         <Icon className="h-12 w-12" strokeWidth={2.2} />
       </div>
-      <h2 className="mt-8 text-2xl font-bold leading-tight text-navy">
+      <h2 className="mt-8 text-balance text-2xl font-bold leading-tight text-navy">
         {s.title}
       </h2>
       <p className="mt-3 max-w-xs text-sm text-muted-foreground">{s.text}</p>
