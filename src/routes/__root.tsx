@@ -12,6 +12,9 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { UMAMI_SRC, UMAMI_WEBSITE_ID } from "../lib/analytics";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+// Captura o evento de instalação assim que o app carrega (global, não por tela).
+import "../lib/install-prompt";
+
 
 function NotFoundComponent() {
   return (
