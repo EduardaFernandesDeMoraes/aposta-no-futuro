@@ -236,3 +236,40 @@ h3 {
 p {
   text-wrap: pretty;
 }
+
+/* Cursor de mão apenas em contexto de mouse (não afeta touch). */
+@media (hover: hover) and (pointer: fine) {
+  button,
+  a[href],
+  summary,
+  label[for],
+  [role="button"],
+  [role="tab"],
+  [role="link"],
+  [role="option"],
+  [role="menuitem"],
+  [role="switch"],
+  [role="checkbox"],
+  [role="radio"],
+  select,
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="file"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  select:disabled,
+  input:disabled,
+  [aria-disabled="true"],
+  [data-disabled] {
+    cursor: not-allowed;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]):not([type="range"]),
+  textarea {
+    cursor: text;
+  }
+}
