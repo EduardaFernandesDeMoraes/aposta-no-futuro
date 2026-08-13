@@ -78,28 +78,29 @@ const TIERS: Tier[] = [
   {
     min: 0,
     max: 0,
-    label: "Sem sinais de risco",
+    label: "Sem indícios de risco",
     message:
-      "Nenhum sinal de risco por enquanto. Continue cuidando de você.",
+      "Suas respostas não indicam sinais de risco por enquanto. Continue cuidando de você e observando seus hábitos.",
     color: "text-teal",
     bg: "bg-teal/10",
-    showHelp: false,
+    showHelp: true,
   },
   {
     min: 1,
     max: 2,
-    label: "Risco baixo",
-    message: "Risco baixo. Vale ficar atento(a) aos seus hábitos.",
+    label: "Alguns indícios de risco",
+    message:
+      "Suas respostas indicam alguns sinais leves. Pode ser um bom momento para refletir sobre suas apostas e conversar com alguém de confiança.",
     color: "text-cyan",
     bg: "bg-cyan/10",
-    showHelp: false,
+    showHelp: true,
   },
   {
     min: 3,
     max: 7,
-    label: "Risco moderado",
+    label: "Indícios de risco moderado",
     message:
-      "Risco moderado. Pode ser um bom momento para pedir apoio e conversar com alguém de confiança.",
+      "Suas respostas indicam sinais de risco moderado. Pode ser um bom momento para pedir apoio e conversar com alguém de confiança.",
     color: "text-gold",
     bg: "bg-gold/15",
     showHelp: true,
@@ -107,9 +108,9 @@ const TIERS: Tier[] = [
   {
     min: 8,
     max: 27,
-    label: "Risco alto",
+    label: "Indícios de risco alto",
     message:
-      "Risco alto. Você não está sozinho(a). Considere procurar ajuda — isso é um ato de coragem.",
+      "Suas respostas indicam sinais de risco alto. Você não está sozinho(a). Conversar com um profissional ou acessar um canal de apoio é um ato de cuidado.",
     color: "text-coral",
     bg: "bg-coral/10",
     showHelp: true,
