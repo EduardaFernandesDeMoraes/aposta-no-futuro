@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { OnboardingGate } from "@/components/onboarding-gate";
+import { InstallCard } from "@/components/install-card";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -313,6 +314,8 @@ function Home() {
           />
         </div>
       </section>
+
+      <InstallCard className="mt-4" />
 
       {/* Restart dialog */}
       <Dialog open={restartOpen} onOpenChange={setRestartOpen}>
