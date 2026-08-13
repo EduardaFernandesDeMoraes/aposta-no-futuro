@@ -14,7 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      community_waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          wants_to_mentor: boolean
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          wants_to_mentor?: boolean
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          wants_to_mentor?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
