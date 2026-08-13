@@ -262,9 +262,9 @@ function Simulador() {
               <Sparkles className="h-4 w-4" />E se você guardasse?
             </div>
             <p className="mt-2 text-sm opacity-95">
-              Depositando{" "}
+              Se você depositasse aproximadamente{" "}
               <strong className="tabular-nums">{brl(monthly)}</strong> por mês,
-              rendendo cerca de 0,8% ao mês:
+              rendendo cerca de 0,8% ao mês, a projeção seria:
             </p>
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
@@ -283,7 +283,7 @@ function Simulador() {
             <div className="mt-4 flex items-start gap-2 rounded-xl bg-white/10 p-3 text-[11px] leading-snug opacity-95">
               <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
               <span>
-                Estimativa educativa. Não é promessa de rendimento nem
+                Projeção educativa. Não é promessa de rendimento nem
                 recomendação de investimento.
               </span>
             </div>
