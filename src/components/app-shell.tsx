@@ -464,7 +464,7 @@ function ChatSheet({
                 aria-label="Preciso de ajuda agora"
               >
                 <Phone className="h-4 w-4" strokeWidth={2.5} />
-                <span className="hidden xs:inline">Preciso de ajuda</span>
+                <span className="hidden sm:inline">Preciso de ajuda</span>
               </button>
               <button
                 onClick={() => onOpenChange(false)}
@@ -478,7 +478,7 @@ function ChatSheet({
 
 
           {/* Aviso permanente sobre a natureza do guia */}
-          <div className="border-b border-border bg-[#F5A623]/15 px-4 py-2 text-[11px] leading-snug text-[#5c3a00]">
+          <div className="shrink-0 border-b border-border bg-[#F5A623]/15 px-4 py-2 text-[11px] leading-snug text-[#5c3a00]">
             Sou um guia automático com respostas prontas. Não sou uma pessoa e
             ninguém está lendo esta conversa.
           </div>
@@ -489,7 +489,7 @@ function ChatSheet({
           {/* Messages */}
           <div
             ref={scrollRef}
-            className="flex-1 space-y-4 overflow-y-auto bg-[#F0FAF7] p-4 pb-6"
+            className="min-h-0 flex-1 space-y-4 overflow-y-auto bg-[#F0FAF7] p-4 pb-6"
           >
             {messages.map((m) => (
               <MessageBubble key={m.id} from={m.from}>
@@ -530,7 +530,7 @@ function ChatSheet({
           {/* Campo de digitação */}
           <form
             onSubmit={handleSend}
-            className="flex items-center gap-2 border-t border-border bg-card px-4 py-2.5"
+            className="flex shrink-0 items-center gap-2 border-t border-border bg-card px-4 py-2.5"
           >
             <AutoGrowTextarea
               value={draft}
@@ -557,7 +557,7 @@ function ChatSheet({
 
 
           {/* Disclaimer */}
-          <div className="border-t border-border bg-background px-4 py-2 text-center text-[10px] leading-snug text-muted-foreground">
+          <div className="shrink-0 border-t border-border bg-background px-4 py-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] text-center text-[10px] leading-snug text-muted-foreground">
             O Aposta no Futuro não substitui atendimento profissional e não
             oferece apoio em tempo real.
           </div>
