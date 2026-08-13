@@ -204,7 +204,7 @@ function Simulador() {
             <div className="mb-2 flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-teal" />
               <h2 className="text-sm font-semibold text-navy">
-                Seu dinheiro ao longo do tempo
+                Projeção ao longo do tempo
               </h2>
             </div>
             <div className="h-52 w-full">
@@ -234,7 +234,7 @@ function Simulador() {
                   />
                   <Tooltip
                     cursor={{ fill: "rgba(22,191,172,0.08)" }}
-                    formatter={(v: number) => [brl(v), "Economia"]}
+                    formatter={(v: number) => [brl(v), "Economia estimada"]}
                     contentStyle={{
                       borderRadius: 12,
                       border: "1px solid #e3e8ef",
@@ -249,6 +249,11 @@ function Simulador() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
+            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+              Estimativa baseada no valor que você informou, sem considerar
+              juros ou variações. Serve para dar noção de grandeza, não como
+              previsão financeira.
+            </p>
           </section>
 
           {/* Compound scenario */}
