@@ -53,11 +53,21 @@ export const Route = createFileRoute("/")({
         property: "og:image",
         content: "https://apostanofuturo.online/og-image.jpg",
       },
+      {
+        property: "og:image:secure_url",
+        content: "https://apostanofuturo.online/og-image.jpg",
+      },
+      { property: "og:image:type", content: "image/jpeg" },
       { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
+      { property: "og:image:height", content: "640" },
+      {
+        property: "og:image:alt",
+        content: "Aposta no Futuro: apoio anônimo e gratuito contra o vício em apostas",
+      },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
+
       {
         name: "twitter:title",
         content:
