@@ -185,6 +185,19 @@
   }
 }
 
+/* Barras de rolagem nunca aparecem, mas a rolagem continua funcionando. */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+
+
 
 @keyframes pulse-scale {
   0%, 100% { transform: scale(1); }
