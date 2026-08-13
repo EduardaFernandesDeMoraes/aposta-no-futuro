@@ -150,7 +150,76 @@ function ExampleTag() {
   );
 }
 
+function LockScreen({
+  mentor = false,
+  onPreview,
+}: {
+  mentor?: boolean;
+  onPreview: () => void;
+}) {
+  return (
+    <div className="-mx-4 flex min-h-[calc(100dvh-var(--nav-h,62px)-190px)] flex-col items-center justify-center bg-[#F7FAFC] px-6 py-10 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#E1F5EE]">
+        {mentor ? (
+          <Users className="h-8 w-8 text-[#16BFAC]" />
+        ) : (
+          <Lock className="h-8 w-8 text-[#16BFAC]" />
+        )}
+      </div>
+
+      <h2 className="mt-4 text-xl font-bold text-[#16233C]">
+        {mentor ? "A rede de mentores está em construção" : "A comunidade está em construção"}
+      </h2>
+      <p className="mt-2 max-w-sm text-sm leading-relaxed text-slate-600">
+        Estou formando a rede de pessoas e mentores voluntários. Deixe seu e-mail
+        e eu aviso assim que ela abrir, com gente de verdade do outro lado.
+      </p>
+
+      <div className="mt-5 w-full max-w-sm">
+        <WaitlistCard
+          plain
+          wantsToMentor={mentor}
+          cta={mentor ? "Quero ser mentor" : "Entrar na lista"}
+          successText={
+            mentor
+              ? "Assim que a rede de mentores começar, eu te chamo."
+              : "Assim que a comunidade abrir com pessoas de verdade, eu te aviso."
+          }
+        />
+      </div>
+
+      <div className="mt-6">
+        <button
+          type="button"
+          onClick={onPreview}
+          className="text-[13px] text-[#596273] underline underline-offset-2"
+        >
+          {mentor
+            ? "Ver uma prévia fictícia de como serão os mentores"
+            : "Ver uma prévia fictícia de como será a comunidade"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function BackToLock({ onBack }: { onBack: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onBack}
+      className="flex items-center gap-1.5 text-sm font-semibold text-[#16233C]"
+    >
+      <ArrowLeft className="h-4 w-4" />
+      Voltar
+    </button>
+  );
+}
+
 function Comunidade() {
+  const [previewForum, setPreviewForum] = useState(false);
+  const [previewMentores, setPreviewMentores] = useState(false);
+
   return (
     <AppShell title="Comunidade">
       <Tabs defaultValue="forum" className="w-full">
@@ -170,19 +239,27 @@ function Comunidade() {
         </TabsList>
 
         <TabsContent value="forum" className="mt-4">
-          <Forum />
+          {previewForum ? (
+            <Forum onBack={() => setPreviewForum(false)} />
+          ) : (
+            <LockScreen onPreview={() => setPreviewForum(true)} />
+          )}
         </TabsContent>
 
         <TabsContent value="mentores" className="mt-4">
-          <Mentores />
+          {previewMentores ? (
+            <Mentores onBack={() => setPreviewMentores(false)} />
+          ) : (
+            <LockScreen mentor onPreview={() => setPreviewMentores(true)} />
+          )}
         </TabsContent>
       </Tabs>
-      <SensitiveFooter />
+      {(previewForum || previewMentores) && <SensitiveFooter />}
     </AppShell>
   );
 }
 
-function Forum() {
+function Forum({ onBack }: { onBack: () => void }) {
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
   const {
     ref: composerRef,
@@ -202,11 +279,8 @@ function Forum() {
   return (
     <div className="space-y-4">
       <PreviewBanner />
+      <BackToLock onBack={onBack} />
 
-      <WaitlistCard
-        title="Quero ser avisado quando abrir"
-        description="Deixe seu e-mail. Vou avisar assim que a comunidade estiver funcionando com pessoas de verdade."
-      />
 
       {/* Aviso de convivência */}
       <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/10 p-3 text-sm text-[#7a4e00]">
