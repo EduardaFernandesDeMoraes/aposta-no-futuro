@@ -225,3 +225,14 @@ textarea::placeholder {
   overflow: hidden;
   white-space: nowrap;
 }
+
+/* Ritmo tipográfico: títulos não deixam palavra órfã na última linha e
+   parágrafos evitam linhas finais muito curtas. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
