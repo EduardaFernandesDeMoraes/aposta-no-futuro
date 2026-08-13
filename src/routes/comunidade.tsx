@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ShieldAlert, Send, Info, Eye, Lock, Users, ArrowLeft } from "lucide-react";
+import { ShieldAlert, Info, Eye, Lock, Users, ArrowLeft } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { AutoGrowTextarea } from "@/components/auto-grow-textarea";
 import { WaitlistCard } from "@/components/waitlist-card";
 import { cn } from "@/lib/utils";
 
@@ -84,51 +83,6 @@ const SEED: Record<string, Msg[]> = {
     { nick: "CéuAberto", text: "Se estiver difícil hoje, respira. Aqui do outro lado é possível. 💚", when: "há 30 min" },
   ],
 };
-
-/** Mede o composer fixo e a barra de navegação para reservar espaço na lista. */
-function useComposerHeight() {
-  const ref = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
-  const [pad, setPad] = useState(96);
-  const [navH, setNavH] = useState(62);
-  const measureRef = useRef<() => void>(() => {});
-
-  useEffect(() => {
-    const el = ref.current;
-    const nav = document.querySelector("nav");
-    const main = document.querySelector("main");
-    const update = () => {
-      const composerH = el?.offsetHeight ?? 0;
-      const h = nav?.getBoundingClientRect().height ?? 0;
-      setNavH(h);
-
-      const list = listRef.current;
-      const lastCard = list?.lastElementChild as HTMLElement | null;
-      if (!list || !lastCard) return;
-
-      const docH = document.documentElement.scrollHeight;
-      const lastBottomAbs =
-        lastCard.getBoundingClientRect().bottom + window.scrollY;
-      const currentPad = parseFloat(getComputedStyle(list).paddingBottom) || 0;
-      const below = docH - (lastBottomAbs + currentPad);
-
-      setPad(Math.max(0, composerH + h + 16 - below));
-    };
-
-    measureRef.current = update;
-    update();
-    const ro = new ResizeObserver(update);
-    if (el) ro.observe(el);
-    if (nav) ro.observe(nav);
-    if (main) ro.observe(main);
-
-    return () => ro.disconnect();
-  }, []);
-
-  const measure = () => measureRef.current();
-
-  return { ref, listRef, pad, navH, measure };
-}
 
 function PreviewBanner() {
   return (
@@ -262,26 +216,21 @@ function Comunidade() {
 
 function Forum({ onBack }: { onBack: () => void }) {
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
-  const {
-    ref: composerRef,
-    listRef,
-    pad: listPad,
-    navH,
-    measure,
-  } = useComposerHeight();
+  const listRef = useRef<HTMLDivElement>(null);
+  const navH = useRef<number>(62);
 
   const room = ROOMS.find((r) => r.id === activeRoom)!;
   const messages = SEED[activeRoom] ?? [];
 
   useEffect(() => {
-    measure();
-  }, [activeRoom]);
+    const nav = document.querySelector("nav");
+    if (nav) navH.current = nav.getBoundingClientRect().height;
+  }, []);
 
   return (
     <div className="space-y-4">
       <PreviewBanner />
       <BackToLock onBack={onBack} />
-
 
       {/* Aviso de convivência */}
       <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/10 p-3 text-sm text-[#7a4e00]">
@@ -333,7 +282,7 @@ function Forum({ onBack }: { onBack: () => void }) {
       <div
         ref={listRef}
         className="flex flex-col gap-3"
-        style={{ paddingBottom: listPad }}
+        style={{ paddingBottom: navH.current + 24 }}
       >
         {messages.map((m, i) => (
           <div
@@ -352,40 +301,6 @@ function Forum({ onBack }: { onBack: () => void }) {
             </p>
           </div>
         ))}
-      </div>
-
-      {/* Composer desativado */}
-      <div
-        ref={composerRef}
-        className="fixed inset-x-0 z-20 border-t border-slate-200 bg-white"
-        style={{ bottom: navH }}
-      >
-        <div className="mx-auto w-full max-w-md px-4 pb-3 pt-3">
-          <div className="flex items-center gap-2">
-            <AutoGrowTextarea
-              value=""
-              readOnly
-              disabled
-              tabIndex={-1}
-              placeholder="A comunidade abre em breve"
-              aria-label="Envio de mensagens indisponível na prévia"
-              className="min-w-0 flex-1 cursor-not-allowed rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-slate-400 outline-none placeholder:text-slate-400"
-            />
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              aria-label="Envio indisponível na prévia"
-              className="flex h-12 w-12 flex-none cursor-not-allowed items-center justify-center rounded-full bg-[#16BFAC] text-white opacity-40"
-            >
-              <Send className="h-5 w-5" />
-            </button>
-          </div>
-
-          <p className="mt-1.5 text-xs leading-snug text-slate-400">
-            Prévia demonstrativa · envio desativado
-          </p>
-        </div>
       </div>
     </div>
   );
