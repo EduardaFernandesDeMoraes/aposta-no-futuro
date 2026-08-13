@@ -110,11 +110,13 @@ export function AppShell({
       {/* Content */}
       <main
         key={location.pathname}
-        className="mx-auto w-full max-w-md flex-1 px-4 pb-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1rem)] pt-4 animate-fade-in"
+        className="mx-auto flex w-full max-w-md flex-1 flex-col px-4 pb-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1rem)] pt-4 animate-fade-in"
       >
-        {children}
+        <div className="flex-1">{children}</div>
         <SiteFooter />
       </main>
+
+
 
 
 
