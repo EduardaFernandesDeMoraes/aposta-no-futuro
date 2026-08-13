@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Instagram, Heart } from "lucide-react";
+import { Instagram, TikTok, Heart } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
 import { track, trackOnce } from "@/lib/analytics";
@@ -128,26 +128,34 @@ function Sobre() {
       </section>
 
       <section className="mt-5 rounded-2xl bg-[#16233C] p-5 text-white shadow-card">
-        <div className="flex items-center gap-3">
-          <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-white/10">
-            <Instagram className="h-5 w-5 text-white" />
-          </span>
-          <div className="min-w-0">
-            <h2 className="text-sm font-semibold">Acompanhe no Instagram</h2>
-            <p className="mt-0.5 truncate text-sm text-white/80">
-              @apostanofuturo.oficial
-            </p>
-          </div>
+        <h2 className="text-sm font-semibold">Acompanhe o projeto</h2>
+        <p className="mt-0.5 text-sm text-white/80">
+          Conteúdo e apoio todos os dias.
+        </p>
+        <div className="mt-4 flex flex-col gap-3">
+          <a
+            href="https://instagram.com/apostanofuturo.oficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("instagram_clicado")}
+            aria-label="Abrir o Instagram do Aposta no Futuro"
+            className="flex min-h-[52px] w-full items-center gap-3 rounded-full bg-teal px-4 text-sm font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b] active:scale-95"
+          >
+            <Instagram className="h-6 w-6 flex-none" />
+            <span>@apostanofuturo.oficial</span>
+          </a>
+          <a
+            href="https://tiktok.com/@apostanofuturo.online"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("tiktok_clicado")}
+            aria-label="Abrir o TikTok do Aposta no Futuro"
+            className="flex min-h-[52px] w-full items-center gap-3 rounded-full bg-teal px-4 text-sm font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b] active:scale-95"
+          >
+            <TikTok className="h-6 w-6 flex-none" />
+            <span>@apostanofuturo.online</span>
+          </a>
         </div>
-        <a
-          href="https://instagram.com/apostanofuturo.oficial"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => track("instagram_clicado")}
-          className="mt-4 flex w-full items-center justify-center rounded-full bg-teal px-4 py-3 text-sm font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b] active:scale-95"
-        >
-          Seguir
-        </a>
       </section>
 
       <SensitiveFooter />
