@@ -91,7 +91,7 @@ function Onboarding() {
 
   return (
     <div className="min-h-dvh bg-background">
-      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-6 pb-8 pt-10">
+      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+2rem)] pt-10">
         <h1 className="sr-only">Bem-vindo ao Aposta no Futuro</h1>
         <div className="flex items-center justify-between">
           <div className="flex gap-1.5">
