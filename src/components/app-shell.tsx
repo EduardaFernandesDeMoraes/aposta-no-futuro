@@ -503,9 +503,11 @@ function ChatSheet({
 
 
           {/* Disclaimer */}
-          <div className="border-t border-border bg-background px-4 py-2 text-center text-[10px] text-muted-foreground">
-            Sou um apoio, não substituo um profissional de saúde.
+          <div className="border-t border-border bg-background px-4 py-2 text-center text-[10px] leading-snug text-muted-foreground">
+            O Aposta no Futuro não substitui atendimento profissional e não
+            oferece apoio em tempo real.
           </div>
+
         </div>
       </SheetContent>
     </Sheet>
