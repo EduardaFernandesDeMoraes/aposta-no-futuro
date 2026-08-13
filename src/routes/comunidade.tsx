@@ -434,12 +434,11 @@ const MENTORES: Mentor[] = [
   },
 ];
 
-function Mentores() {
-  const [showForm, setShowForm] = useState(false);
-
+function Mentores({ onBack }: { onBack: () => void }) {
   return (
     <div className="space-y-4">
       <PreviewBanner />
+      <BackToLock onBack={onBack} />
 
       <div className="flex items-start gap-2 rounded-2xl bg-[#1CA0D8]/10 p-3 text-sm text-[#0b4f6c]">
         <Info className="mt-0.5 h-4 w-4 flex-none text-[#1CA0D8]" />
@@ -450,22 +449,6 @@ function Mentores() {
         </p>
       </div>
 
-      {showForm ? (
-        <WaitlistCard
-          title="Quero ser mentor"
-          description="Deixe seu e-mail. Vou te chamar quando a rede de mentores voluntários começar."
-          wantsToMentor
-          cta="Quero ser mentor"
-        />
-      ) : (
-        <button
-          type="button"
-          onClick={() => setShowForm(true)}
-          className="w-full rounded-full bg-[#16BFAC] px-4 py-3 font-semibold text-white transition-all duration-200 hover:bg-[#14ac9b]"
-        >
-          Quero ser mentor
-        </button>
-      )}
 
       <div className="space-y-3">
         {MENTORES.map((m) => (
