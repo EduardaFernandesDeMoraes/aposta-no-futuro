@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermosRouteImport } from './routes/termos'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimuladorRouteImport } from './routes/simulador'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
@@ -26,6 +27,11 @@ import { Route as GuiaPararDeApostarRouteImport } from './routes/guia.parar-de-a
 const TermosRoute = TermosRouteImport.update({
   id: '/termos',
   path: '/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/privacidade': typeof PrivacidadeRoute
   '/simulador': typeof SimuladorRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
 }
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/privacidade': typeof PrivacidadeRoute
   '/simulador': typeof SimuladorRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/privacidade': typeof PrivacidadeRoute
   '/simulador': typeof SimuladorRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
 }
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/simulador'
     | '/sitemap.xml'
+    | '/sobre'
     | '/termos'
     | '/guia/parar-de-apostar'
   fileRoutesByTo: FileRoutesByTo
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/simulador'
     | '/sitemap.xml'
+    | '/sobre'
     | '/termos'
     | '/guia/parar-de-apostar'
   id:
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/simulador'
     | '/sitemap.xml'
+    | '/sobre'
     | '/termos'
     | '/guia/parar-de-apostar'
   fileRoutesById: FileRoutesById
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   PrivacidadeRoute: typeof PrivacidadeRoute
   SimuladorRoute: typeof SimuladorRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   GuiaPararDeApostarRoute: typeof GuiaPararDeApostarRoute
 }
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/termos'
       fullPath: '/termos'
       preLoaderRoute: typeof TermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacidadeRoute: PrivacidadeRoute,
   SimuladorRoute: SimuladorRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   GuiaPararDeApostarRoute: GuiaPararDeApostarRoute,
 }

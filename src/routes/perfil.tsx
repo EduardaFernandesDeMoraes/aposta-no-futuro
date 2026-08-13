@@ -412,6 +412,10 @@ function Perfil() {
         <Link to="/termos" className="font-medium text-teal underline underline-offset-2">
           Termos de uso
         </Link>
+        <span aria-hidden="true" className="text-muted-foreground">·</span>
+        <Link to="/sobre" className="font-medium text-teal underline underline-offset-2">
+          Sobre nós
+        </Link>
       </nav>
     </AppShell>
   );
