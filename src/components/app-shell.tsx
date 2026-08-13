@@ -94,7 +94,6 @@ export function AppShell({
             </button>
             <button
               onClick={() => {
-                track(EVENTS.helpClick);
                 navigate({ to: "/ajuda" });
               }}
               aria-label="Preciso de ajuda agora"
@@ -456,7 +455,6 @@ function ChatSheet({
             <div className="flex shrink-0 items-center gap-1">
               <button
                 onClick={() => {
-                  track(EVENTS.helpClick);
                   onOpenChange(false);
                   navigate({ to: "/ajuda" });
                 }}
