@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Phone, MapPin, Heart, ArrowLeft, MessageSquare, ExternalLink } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/ajuda")({
@@ -153,7 +154,34 @@ function AjudaPage() {
             por “CAPS + nome do seu município”.
           </p>
         </div>
+
+        <a
+          href="https://www.google.com/search?q=CAPS+mais+pr%C3%B3ximo+de+mim"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 flex items-center gap-2 rounded-2xl border border-cyan/40 bg-cyan/5 px-4 py-3 text-sm font-semibold text-cyan transition-colors hover:bg-cyan/10"
+        >
+          <MapPin className="h-4 w-4" />
+          Buscar o CAPS mais próximo
+          <ExternalLink className="ml-auto h-3.5 w-3.5 opacity-80" />
+        </a>
       </section>
+
+      {/* Emergência */}
+      <section className="mb-5 rounded-3xl border border-coral/40 bg-coral/10 p-5">
+        <p className="text-sm font-semibold leading-relaxed text-navy">
+          Se for uma emergência, ligue 192 ou vá ao pronto-socorro mais próximo.
+        </p>
+        <a
+          href="tel:192"
+          className="mt-3 inline-flex items-center gap-2 rounded-full bg-coral px-5 py-2.5 text-sm font-semibold text-coral-foreground shadow-soft transition-transform active:scale-[0.98]"
+          aria-label="Ligar para o SAMU 192"
+        >
+          <Phone className="h-4 w-4" />
+          Ligar 192
+        </a>
+      </section>
+
 
       {/* Disclaimer */}
       <section className="rounded-3xl border border-border bg-card p-6 shadow-card">
@@ -183,6 +211,7 @@ function AjudaPage() {
           <Link to="/comunidade">Ir para a Comunidade</Link>
         </Button>
       </div>
+      <SensitiveFooter />
     </AppShell>
   );
 }

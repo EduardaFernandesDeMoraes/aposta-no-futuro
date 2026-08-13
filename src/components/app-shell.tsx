@@ -359,18 +359,34 @@ function ChatSheet({
     }
   }
 
-  function matchIntent(text: string): QuickId | null {
-    const t = text
+  function normalize(text: string) {
+    return text
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  const RISK_RE =
+    /(suicid|me matar|me mata|tirar a minha vida|tirar minha vida|acabar com tudo|acabar com a minha vida|nao quero mais viver|nao aguento mais viver|queria morrer|quero morrer|vou morrer|me machucar|autolesao|me cortar|me cortando|sumir do mundo|desapareer|nao vejo saida|sem saida|desesperad)/;
+
+  function matchIntent(text: string): QuickId | null {
+    const t = normalize(text);
     if (/(vontade|apostar|jogar|impulso|fissura|tentac)/.test(t)) return "vontade";
     if (/(recai|apostei|joguei|recaida|escorreg|voltei a apostar)/.test(t))
       return "recaida";
     if (/(progresso|contador|dias|conquista|evolu)/.test(t)) return "progresso";
-    if (/(ajuda|socorro|cvv|caps|desesper|nao aguento|sozinh)/.test(t))
-      return "ajuda";
+    if (/(ajuda|socorro|cvv|caps|sozinh)/.test(t)) return "ajuda";
     return null;
+  }
+
+  function pushCrisis(intro: string) {
+    respondAfter(500, () => {
+      pushXande({ text: intro });
+      window.setTimeout(() => {
+        pushXande({ render: <HelpCard /> });
+        setQuick(INITIAL_QUICK);
+      }, 300);
+    });
   }
 
   function handleSend(e: React.FormEvent) {
@@ -378,20 +394,29 @@ function ChatSheet({
     const text = draft.trim();
     if (!text) return;
     setDraft("");
+
+    // Risco imediato: resposta única, sem simular conversa terapêutica.
+    if (RISK_RE.test(normalize(text))) {
+      pushUser(text);
+      pushCrisis(
+        "Sinto muito que você esteja passando por isso — você merece apoio de gente preparada agora. Ligue para o CVV 188 (24h, gratuito e sigiloso) ou procure um CAPS.",
+      );
+      return;
+    }
+
     const intent = matchIntent(text);
     if (intent) {
       handleQuick(intent, text);
       return;
     }
+
+    // Sem correspondência: acolher e direcionar para CVV/CAPS.
     pushUser(text);
-    respondAfter(700, () => {
-      pushXande({
-        text:
-          "Obrigado por compartilhar isso comigo. O que você sente é válido e você não precisa passar por isso sozinho(a). 💚 Se quiser, me conta mais — ou escolhe uma dessas opções:",
-      });
-      setQuick(INITIAL_QUICK);
-    });
+    pushCrisis(
+      "Obrigado por escrever. Eu sou automático e não consigo entender tudo, então não quero te dar uma resposta pronta que não ajude. Quem pode te escutar de verdade agora:",
+    );
   }
+
 
 
 
@@ -430,6 +455,14 @@ function ChatSheet({
               <ChevronRight className="h-6 w-6" strokeWidth={2.5} />
             </button>
           </div>
+
+          {/* Aviso permanente sobre a natureza do guia */}
+          <div className="border-b border-border bg-[#F5A623]/15 px-4 py-2 text-[11px] leading-snug text-[#5c3a00]">
+            Sou um guia automático com respostas prontas. Não sou uma pessoa e
+            ninguém está lendo esta conversa.
+          </div>
+
+
 
 
           {/* Messages */}
@@ -503,9 +536,11 @@ function ChatSheet({
 
 
           {/* Disclaimer */}
-          <div className="border-t border-border bg-background px-4 py-2 text-center text-[10px] text-muted-foreground">
-            Sou um apoio, não substituo um profissional de saúde.
+          <div className="border-t border-border bg-background px-4 py-2 text-center text-[10px] leading-snug text-muted-foreground">
+            O Aposta no Futuro não substitui atendimento profissional e não
+            oferece apoio em tempo real.
           </div>
+
         </div>
       </SheetContent>
     </Sheet>
@@ -672,15 +707,24 @@ function HelpCard() {
           </div>
         </div>
       </a>
-      <div className="rounded-2xl border border-border bg-background p-3">
+      <a
+        href="https://www.google.com/search?q=CAPS+mais+pr%C3%B3ximo+de+mim"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block rounded-2xl border border-border bg-background p-3"
+      >
         <div className="text-sm font-semibold text-navy">
-          CAPS — Centro de Atenção Psicossocial
+          CAPS — encontrar a unidade mais próxima
         </div>
         <div className="mt-0.5 text-[11px] text-muted-foreground">
           Atendimento gratuito do SUS, incluindo dependências. Procure a
           unidade do seu município.
         </div>
-      </div>
+      </a>
+      <p className="px-1 text-[11px] leading-snug text-muted-foreground">
+        Se for uma emergência, ligue 192 ou vá ao pronto-socorro mais próximo.
+      </p>
+
     </div>
   );
 }
