@@ -25,6 +25,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/guia/parar-de-apostar", changefreq: "monthly", priority: "0.9" },
           { path: "/privacidade", changefreq: "yearly", priority: "0.3" },
           { path: "/termos", changefreq: "yearly", priority: "0.3" },
+          { path: "/sobre", changefreq: "yearly", priority: "0.4" },
         ];
 
         const urls = entries.map((e) =>
