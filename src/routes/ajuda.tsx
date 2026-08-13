@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Phone, MapPin, Heart, ArrowLeft, MessageSquare, ExternalLink } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/ajuda")({
@@ -210,6 +211,7 @@ function AjudaPage() {
           <Link to="/comunidade">Ir para a Comunidade</Link>
         </Button>
       </div>
+      <SensitiveFooter />
     </AppShell>
   );
 }

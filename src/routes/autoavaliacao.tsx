@@ -11,6 +11,7 @@ import {
   Info,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
@@ -280,6 +281,7 @@ function Autoavaliacao() {
         Isto não é um diagnóstico médico. Suas respostas ficam só no seu
         aparelho.
       </p>
+      <SensitiveFooter />
     </AppShell>
   );
 }
@@ -396,6 +398,7 @@ function Result({
         Isto não é um diagnóstico médico. É uma ferramenta educativa baseada
         no PGSI (Problem Gambling Severity Index).
       </p>
+      <SensitiveFooter />
     </AppShell>
   );
 }

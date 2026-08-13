@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ShieldAlert, Send, Info, Eye } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { AutoGrowTextarea } from "@/components/auto-grow-textarea";
 import { WaitlistCard } from "@/components/waitlist-card";
@@ -176,6 +177,7 @@ function Comunidade() {
           <Mentores />
         </TabsContent>
       </Tabs>
+      <SensitiveFooter />
     </AppShell>
   );
 }
