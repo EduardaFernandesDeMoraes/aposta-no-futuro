@@ -132,15 +132,16 @@ function useComposerHeight() {
 
 function PreviewBanner() {
   return (
-    <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/20 p-3 text-sm text-[#5c3a00]">
-      <Eye className="mt-0.5 h-4 w-4 flex-none text-[#F5A623]" />
+    <div className="sticky top-0 z-20 flex items-start gap-2 rounded-2xl bg-[#F5E0B8] p-3 text-sm text-[#5c3a00] shadow-sm">
+      <Eye className="mt-0.5 h-4 w-4 flex-none text-[#B57A00]" />
       <p>
-        <strong>Prévia:</strong> as conversas abaixo são exemplos criados para
-        você ver como a comunidade vai funcionar. Ela ainda não está aberta.
+        <strong>Prévia:</strong> estas conversas são exemplos. A comunidade ainda
+        não está aberta e ninguém está lendo.
       </p>
     </div>
   );
 }
+
 
 function ExampleTag() {
   return (
