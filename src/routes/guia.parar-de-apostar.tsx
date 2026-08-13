@@ -112,7 +112,7 @@ function GuiaPararDeApostar() {
           Guia prático
         </p>
         <h2 className="mt-1 text-xl font-bold leading-tight text-navy">
-          Como parar de apostar online — 7 passos pra recomeçar
+          Como parar de apostar online: 7 passos pra recomeçar
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Um caminho passo a passo, sem julgamento, pra quem decidiu sair do
