@@ -16,16 +16,21 @@ export function WaitlistCard({
   description,
   wantsToMentor = false,
   cta = "Entrar na lista",
+  plain = false,
+  successText = "Assim que a comunidade abrir com pessoas de verdade, eu te aviso.",
 }: {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   wantsToMentor?: boolean;
   cta?: string;
+  plain?: boolean;
+  successText?: string;
 }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
