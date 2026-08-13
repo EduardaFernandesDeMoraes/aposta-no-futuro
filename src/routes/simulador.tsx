@@ -128,7 +128,8 @@ function Simulador() {
           Simulador de economia
         </div>
         <p className="mt-2 text-sm opacity-95">
-          Veja quanto dinheiro volta pro seu bolso quando você não aposta.
+          Veja uma estimativa do quanto você pode deixar de perder ao não
+          apostar.
         </p>
       </div>
 
@@ -168,10 +169,10 @@ function Simulador() {
           {/* Result cards */}
           <section className="mt-6">
             <h2 className="mb-3 text-sm font-semibold text-navy">
-              Quanto você deixa de perder
+              Economia estimada
             </h2>
             <div className="grid grid-cols-2 gap-3">
-              {rows.map((r, i) => (
+              {rows.map((r) => (
                 <div
                   key={r.key}
                   className={cn(
@@ -191,6 +192,11 @@ function Simulador() {
                 </div>
               ))}
             </div>
+            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+              Estimativa baseada no valor que você informou, sem considerar
+              juros ou variações. Serve para dar noção de grandeza, não como
+              previsão financeira.
+            </p>
           </section>
 
           {/* Chart */}
@@ -198,7 +204,7 @@ function Simulador() {
             <div className="mb-2 flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-teal" />
               <h2 className="text-sm font-semibold text-navy">
-                Seu dinheiro ao longo do tempo
+                Projeção ao longo do tempo
               </h2>
             </div>
             <div className="h-52 w-full">
@@ -228,7 +234,7 @@ function Simulador() {
                   />
                   <Tooltip
                     cursor={{ fill: "rgba(22,191,172,0.08)" }}
-                    formatter={(v: number) => [brl(v), "Economia"]}
+                    formatter={(v: number) => [brl(v), "Economia estimada"]}
                     contentStyle={{
                       borderRadius: 12,
                       border: "1px solid #e3e8ef",
@@ -243,6 +249,11 @@ function Simulador() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
+            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+              Estimativa baseada no valor que você informou, sem considerar
+              juros ou variações. Serve para dar noção de grandeza, não como
+              previsão financeira.
+            </p>
           </section>
 
           {/* Compound scenario */}
@@ -251,9 +262,9 @@ function Simulador() {
               <Sparkles className="h-4 w-4" />E se você guardasse?
             </div>
             <p className="mt-2 text-sm opacity-95">
-              Depositando{" "}
+              Se você depositasse aproximadamente{" "}
               <strong className="tabular-nums">{brl(monthly)}</strong> por mês,
-              rendendo cerca de 0,8% ao mês:
+              rendendo cerca de 0,8% ao mês, a projeção seria:
             </p>
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
@@ -272,7 +283,7 @@ function Simulador() {
             <div className="mt-4 flex items-start gap-2 rounded-xl bg-white/10 p-3 text-[11px] leading-snug opacity-95">
               <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
               <span>
-                Estimativa educativa. Não é promessa de rendimento nem
+                Projeção educativa. Não é promessa de rendimento nem
                 recomendação de investimento.
               </span>
             </div>

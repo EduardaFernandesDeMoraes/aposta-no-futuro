@@ -78,28 +78,29 @@ const TIERS: Tier[] = [
   {
     min: 0,
     max: 0,
-    label: "Sem sinais de risco",
+    label: "Sem indícios de risco",
     message:
-      "Nenhum sinal de risco por enquanto. Continue cuidando de você.",
+      "Suas respostas não indicam sinais de risco por enquanto. Continue cuidando de você e observando seus hábitos.",
     color: "text-teal",
     bg: "bg-teal/10",
-    showHelp: false,
+    showHelp: true,
   },
   {
     min: 1,
     max: 2,
-    label: "Risco baixo",
-    message: "Risco baixo. Vale ficar atento(a) aos seus hábitos.",
+    label: "Alguns indícios de risco",
+    message:
+      "Suas respostas indicam alguns sinais leves. Pode ser um bom momento para refletir sobre suas apostas e conversar com alguém de confiança.",
     color: "text-cyan",
     bg: "bg-cyan/10",
-    showHelp: false,
+    showHelp: true,
   },
   {
     min: 3,
     max: 7,
-    label: "Risco moderado",
+    label: "Indícios de risco moderado",
     message:
-      "Risco moderado. Pode ser um bom momento para pedir apoio e conversar com alguém de confiança.",
+      "Suas respostas indicam sinais de risco moderado. Pode ser um bom momento para pedir apoio e conversar com alguém de confiança.",
     color: "text-gold",
     bg: "bg-gold/15",
     showHelp: true,
@@ -107,9 +108,9 @@ const TIERS: Tier[] = [
   {
     min: 8,
     max: 27,
-    label: "Risco alto",
+    label: "Indícios de risco alto",
     message:
-      "Risco alto. Você não está sozinho(a). Considere procurar ajuda — isso é um ato de coragem.",
+      "Suas respostas indicam sinais de risco alto. Você não está sozinho(a). Conversar com um profissional ou acessar um canal de apoio é um ato de cuidado.",
     color: "text-coral",
     bg: "bg-coral/10",
     showHelp: true,
@@ -196,10 +197,18 @@ function Autoavaliacao() {
           </div>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-white/85">
-          Este é um teste rápido e anônimo para você se conhecer melhor. Não é
-          um diagnóstico. Pense nos últimos 12 meses.
+          Este é um teste rápido e anônimo para você se conhecer melhor. Pense
+          nos últimos 12 meses.
         </p>
       </section>
+
+      {/* Disclaimer before first question */}
+      <p className="mt-5 flex items-start gap-2 rounded-2xl bg-teal/10 p-3 text-xs leading-relaxed text-navy/90">
+        <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-teal" />
+        Esta é uma triagem baseada em um índice internacional (PGSI). Ela ajuda
+        você a enxergar sinais, mas não é um diagnóstico e não substitui a
+        avaliação de um profissional de saúde.
+      </p>
 
       {/* Progress */}
       <div className="mt-5">
@@ -296,11 +305,84 @@ function Result({
   onRestart: () => void;
 }) {
   const tier = tierFor(score);
+  const isHighRisk = score >= 8;
+  const helpBox = (
+    <section className="space-y-3">
+      <div
+        className={cn(
+          "rounded-3xl border p-5 shadow-card",
+          isHighRisk ? "border-coral/30 bg-coral/5" : "border-border bg-card",
+        )}
+      >
+        <div
+          className={cn(
+            "flex items-center gap-2",
+            isHighRisk ? "text-coral" : "text-navy",
+          )}
+        >
+          <LifeBuoy className="h-5 w-5" />
+          <span className="text-sm font-bold">
+            {isHighRisk ? "Cuidado de você é prioridade" : "Cuidar de você também é uma opção"}
+          </span>
+        </div>
+        <p className="mt-2 text-xs text-navy/80">
+          {isHighRisk
+            ? "Suas respostas indicam sinais que merecem atenção. Conversar com um profissional de saúde ou com um canal de apoio pode fazer diferença."
+            : "Se quiser conversar, o CVV e os CAPS do SUS são gratuitos, sigilosos e acolhedores. Não precisa estar em crise para pedir apoio."}
+        </p>
+        <div className="mt-3 space-y-2">
+          <a
+            href="tel:188"
+            className="flex items-center gap-3 rounded-2xl bg-coral p-3 text-coral-foreground shadow-soft"
+          >
+            <div className="grid h-10 w-10 place-items-center rounded-full bg-white/20">
+              <Phone className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold">CVV — Ligar 188</div>
+              <div className="text-[11px] opacity-90">
+                24h · gratuito · sigiloso
+              </div>
+            </div>
+          </a>
+          <div className="rounded-2xl border border-border bg-card p-3">
+            <div className="text-sm font-semibold text-navy">
+              CAPS mais próximo
+            </div>
+            <div className="mt-0.5 text-[11px] text-muted-foreground">
+              Procure o CAPS do seu município pelo SUS.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Link
+        to="/comunidade"
+        className="flex items-center gap-3 rounded-2xl bg-magenta p-4 text-white shadow-soft active:scale-[0.99]"
+      >
+        <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white/20">
+          <Users className="h-5 w-5" />
+        </div>
+        <div className="flex-1">
+          <div className="text-sm font-semibold">
+            Você não precisa passar por isso sozinho(a)
+          </div>
+          <div className="text-[11px] opacity-90">
+            Entre na lista de espera da Comunidade.
+          </div>
+        </div>
+        <ArrowRight className="h-5 w-5" />
+      </Link>
+    </section>
+  );
+
   return (
     <AppShell title="Seu resultado">
+      {isHighRisk && helpBox}
+
       <section
         className={cn(
-          "rounded-3xl p-6 shadow-card border border-border",
+          "rounded-3xl border border-border p-6 shadow-card",
           tier.bg,
         )}
       >
@@ -321,62 +403,7 @@ function Result({
         </p>
       </section>
 
-      {tier.showHelp && (
-        <section className="mt-5 space-y-3">
-          <div className="rounded-3xl border border-coral/30 bg-coral/5 p-5 shadow-card">
-            <div className="flex items-center gap-2 text-coral">
-              <LifeBuoy className="h-5 w-5" />
-              <span className="text-sm font-bold">Precisa de apoio agora?</span>
-            </div>
-            <p className="mt-2 text-xs text-navy/80">
-              Falar ajuda. O CVV atende 24h, é gratuito e sigiloso. Os CAPS do
-              SUS atendem gratuitamente para saúde mental.
-            </p>
-            <div className="mt-3 space-y-2">
-              <a
-                href="tel:188"
-                className="flex items-center gap-3 rounded-2xl bg-coral p-3 text-coral-foreground shadow-soft"
-              >
-                <div className="grid h-10 w-10 place-items-center rounded-full bg-white/20">
-                  <Phone className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold">CVV — Ligar 188</div>
-                  <div className="text-[11px] opacity-90">
-                    24h · gratuito · sigiloso
-                  </div>
-                </div>
-              </a>
-              <div className="rounded-2xl border border-border bg-card p-3">
-                <div className="text-sm font-semibold text-navy">
-                  CAPS mais próximo
-                </div>
-                <div className="mt-0.5 text-[11px] text-muted-foreground">
-                  Procure o CAPS do seu município pelo SUS.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Link
-            to="/comunidade"
-            className="flex items-center gap-3 rounded-2xl bg-magenta p-4 text-white shadow-soft active:scale-[0.99]"
-          >
-            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white/20">
-              <Users className="h-5 w-5" />
-            </div>
-            <div className="flex-1">
-              <div className="text-sm font-semibold">
-                Você não precisa passar por isso sozinho(a)
-              </div>
-              <div className="text-[11px] opacity-90">
-                Entre na Comunidade e converse com quem entende.
-              </div>
-            </div>
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-        </section>
-      )}
+      {!isHighRisk && <div className="mt-5">{helpBox}</div>}
 
       <div className="mt-5 flex flex-col gap-2">
         <Button
@@ -398,7 +425,8 @@ function Result({
       <p className="mt-6 flex items-start gap-2 rounded-2xl bg-secondary p-3 text-[11px] text-muted-foreground">
         <Info className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
         Isto não é um diagnóstico médico. É uma ferramenta educativa baseada
-        no PGSI (Problem Gambling Severity Index).
+        no PGSI (Problem Gambling Severity Index). Suas respostas ficam só no
+        seu aparelho.
       </p>
       <SensitiveFooter />
     </AppShell>
