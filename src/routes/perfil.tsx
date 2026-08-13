@@ -20,6 +20,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { InstallCard } from "@/components/install-card";
 
 export const Route = createFileRoute("/perfil")({
   head: () => ({
