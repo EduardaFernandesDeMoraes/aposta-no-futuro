@@ -42,7 +42,7 @@ const PEOPLE: Person[] = [
     photo: eduardaPhoto.url,
     name: "Eduarda Fernandes de Moraes",
     role: "Idealizadora",
-    rolePill: "bg-teal text-teal-foreground",
+    rolePill: "bg-teal text-white",
     text: "22 anos, de Uberlândia. Jovem Aprendiz Espro e estudante do último ano de Ciências Contábeis. Idealizou o Aposta no Futuro e cuidou das telas, dos textos e da lógica do app.",
   },
   {
