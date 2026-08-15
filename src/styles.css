@@ -105,11 +105,12 @@
     height: auto;
     overflow-y: visible;
     -webkit-text-size-adjust: 100%;
+    background-color: #16233C;
   }
 
   body {
     font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
-    background-color: var(--background);
+    background-color: #16233C;
     color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
     /* Nenhuma tela pode arrastar para os lados, mas a rolagem vertical
@@ -122,6 +123,7 @@
     min-height: 100dvh;
     max-width: 100%;
     touch-action: manipulation;
+    overscroll-behavior-y: none;
   }
 
 
