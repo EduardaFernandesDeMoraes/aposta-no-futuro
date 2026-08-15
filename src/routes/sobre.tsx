@@ -141,7 +141,7 @@ function Sobre() {
             rel="noopener noreferrer"
             onClick={() => track("instagram_clicado")}
             aria-label="Abrir o Instagram do Aposta no Futuro"
-            className="flex min-h-[52px] w-full items-center gap-3 rounded-full bg-teal px-4 text-sm font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b] active:scale-95"
+            className="flex min-h-[52px] w-full items-center gap-3 rounded-full bg-teal px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#14ac9b] active:scale-95"
           >
             <Instagram className="h-6 w-6 flex-none" />
             <span>@apostanofuturo.oficial</span>
