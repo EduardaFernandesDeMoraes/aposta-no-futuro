@@ -43,7 +43,7 @@ const PEOPLE: Person[] = [
     name: "Eduarda Fernandes de Moraes",
     role: "Idealizadora",
     rolePill: "bg-teal text-teal-foreground",
-    text: "22 anos, de Uberlândia. Jovem Aprendiz Espro na BDO e estudante do último ano de Ciências Contábeis. Idealizou o Aposta no Futuro e cuidou de tudo: as telas, os textos, a lógica e o tom de voz do app.",
+    text: "22 anos, de Uberlândia. Jovem Aprendiz Espro e estudante do último ano de Ciências Contábeis. Idealizou o Aposta no Futuro e cuidou das telas, dos textos e da lógica do app.",
   },
   {
     photo: luizPhoto.url,
@@ -77,15 +77,13 @@ function Sobre() {
         </h2>
         <div className="mt-2 space-y-3 text-sm leading-relaxed text-slate-600">
           <p>
-            No fim de 2024, uma pessoa muito próxima de mim começou a apostar. O
-            que parecia diversão virou dívida, e a dívida virou ansiedade e
-            noites sem dormir. Acompanhei de perto cada tentativa de parar e cada
-            recaída.
+            O Aposta no Futuro começou com uma história real: alguém muito
+            próximo de mim entrou no vício em apostas, e eu acompanhei essa
+            luta de perto.
           </p>
           <p>
-            Nos momentos mais difíceis, ele só encontrava aplicativos de
-            bloqueio. Nenhum aplicativo de apoio, que o acolhesse e não o
-            deixasse sozinho.
+            Quando ele procurava ajuda, só encontrava aplicativos de bloqueio.
+            Nenhum que acolhesse.
           </p>
           <p>
             O Aposta no Futuro nasceu daí: da diferença entre uma tranca e uma
@@ -96,12 +94,12 @@ function Sobre() {
       </section>
 
       <section className="mt-5">
-        <h2 className="text-sm font-semibold text-navy">Quem faz</h2>
-        <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <h2 className="text-sm font-semibold text-navy">Criadores</h2>
+        <div className="mt-3 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
           {PEOPLE.map((p) => (
             <article
               key={p.name}
-              className="flex flex-col items-center rounded-2xl bg-card p-4 text-center shadow-card"
+              className="flex h-full flex-col items-center rounded-2xl bg-card p-4 text-center shadow-card"
             >
               <div className="rounded-full bg-[#E1F5EE] p-1.5">
                 <img
@@ -113,7 +111,11 @@ function Sobre() {
                   className="h-24 w-24 rounded-full object-cover"
                 />
               </div>
-              <h3 className="mt-3 text-sm font-semibold text-navy">{p.name}</h3>
+              <div className="mt-3 flex h-10 items-center justify-center">
+                <h3 className="text-sm font-semibold leading-5 text-navy">
+                  {p.name}
+                </h3>
+              </div>
               <span
                 className={`mt-2 inline-block rounded-full px-3 py-1 text-[11px] font-semibold ${p.rolePill}`}
               >
@@ -132,7 +134,7 @@ function Sobre() {
         <p className="mt-0.5 text-sm text-white/80">
           Conteúdo e apoio todos os dias.
         </p>
-        <div className="mt-4 flex flex-col gap-3">
+        <div className="mt-4">
           <a
             href="https://instagram.com/apostanofuturo.oficial"
             target="_blank"
@@ -143,25 +145,6 @@ function Sobre() {
           >
             <Instagram className="h-6 w-6 flex-none" />
             <span>@apostanofuturo.oficial</span>
-          </a>
-          <a
-            href="https://tiktok.com/@apostanofuturo.online"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => track("tiktok_clicado")}
-            aria-label="Abrir o TikTok do Aposta no Futuro"
-            className="flex min-h-[52px] w-full items-center gap-3 rounded-full bg-teal px-4 text-sm font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b] active:scale-95"
-          >
-            <svg
-              className="h-6 w-6 flex-none"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-            </svg>
-            <span>@apostanofuturo.online</span>
           </a>
         </div>
       </section>
