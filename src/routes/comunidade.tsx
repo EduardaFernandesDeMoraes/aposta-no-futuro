@@ -50,38 +50,122 @@ type Msg = { nick: string; text: string; when: string };
 
 const SEED: Record<string, Msg[]> = {
   "0-7": [
-    { nick: "Colibri82", text: "Cheguei hoje. Faz 2 dias que não abri o app. Tá difícil mas tô aqui.", when: "há 20 min" },
-    { nick: "RaioDeSol", text: "Bem-vindo(a)! Os primeiros dias são os mais pesados mesmo. Um dia de cada vez 💚", when: "há 12 min" },
-    { nick: "MarLivre", text: "Ontem quase recaí. Fui caminhar 20 minutos e passou. Deixo a dica.", when: "há 5 min" },
-    { nick: "PassoLeve", text: "Estou no dia 4. Nunca achei que fosse chegar aqui. Obrigado por existirem.", when: "agora" },
+    {
+      nick: "Colibri82",
+      text: "Cheguei hoje. Faz 2 dias que não abri o app. Tá difícil mas tô aqui.",
+      when: "há 20 min",
+    },
+    {
+      nick: "RaioDeSol",
+      text: "Bem-vindo(a)! Os primeiros dias são os mais pesados mesmo. Um dia de cada vez 💚",
+      when: "há 12 min",
+    },
+    {
+      nick: "MarLivre",
+      text: "Ontem quase recaí. Fui caminhar 20 minutos e passou. Deixo a dica.",
+      when: "há 5 min",
+    },
+    {
+      nick: "PassoLeve",
+      text: "Estou no dia 4. Nunca achei que fosse chegar aqui. Obrigado por existirem.",
+      when: "agora",
+    },
   ],
   "1s": [
-    { nick: "VentoNorte", text: "Fechei 10 dias hoje! Pequeno pra alguns, gigante pra mim.", when: "há 1 h" },
-    { nick: "LuaCheia", text: "Parabéns!! Cada dia conta demais. Segue firme 🙌", when: "há 55 min" },
-    { nick: "TrilhaNova", text: "Tive um dia difícil no trabalho e a vontade voltou. Vim aqui em vez de abrir o app.", when: "há 30 min" },
-    { nick: "AuroraAzul", text: "Isso aí, TrilhaNova. Vir aqui já é uma vitória. Respira que passa.", when: "há 22 min" },
+    {
+      nick: "VentoNorte",
+      text: "Fechei 10 dias hoje! Pequeno pra alguns, gigante pra mim.",
+      when: "há 1 h",
+    },
+    {
+      nick: "LuaCheia",
+      text: "Parabéns!! Cada dia conta demais. Segue firme 🙌",
+      when: "há 55 min",
+    },
+    {
+      nick: "TrilhaNova",
+      text: "Tive um dia difícil no trabalho e a vontade voltou. Vim aqui em vez de abrir o app.",
+      when: "há 30 min",
+    },
+    {
+      nick: "AuroraAzul",
+      text: "Isso aí, TrilhaNova. Vir aqui já é uma vitória. Respira que passa.",
+      when: "há 22 min",
+    },
   ],
   "1m": [
-    { nick: "PedraFirme", text: "35 dias. Comecei a guardar o dinheiro que ia pras bets numa conta separada. Já dá pra ver a diferença.", when: "há 2 h" },
-    { nick: "BrisaMansa", text: "Que máximo! Eu tô no 40 e também tô guardando. Motiva demais ver o valor crescendo.", when: "há 1 h" },
-    { nick: "NovoRumo", text: "Ontem sonhei que apostava e acordei aliviado por ser só sonho. Sinal de que a cabeça tá mudando.", when: "há 40 min" },
+    {
+      nick: "PedraFirme",
+      text: "35 dias. Comecei a guardar o dinheiro que ia pras bets numa conta separada. Já dá pra ver a diferença.",
+      when: "há 2 h",
+    },
+    {
+      nick: "BrisaMansa",
+      text: "Que máximo! Eu tô no 40 e também tô guardando. Motiva demais ver o valor crescendo.",
+      when: "há 1 h",
+    },
+    {
+      nick: "NovoRumo",
+      text: "Ontem sonhei que apostava e acordei aliviado por ser só sonho. Sinal de que a cabeça tá mudando.",
+      when: "há 40 min",
+    },
   ],
   "3m": [
-    { nick: "SolPoente", text: "3 meses hoje. Chorei quando vi o contador. Valeu cada dia.", when: "há 3 h" },
-    { nick: "CaminhoLeve", text: "Parabéns, Sol! Eu tô no 4º mês e a ansiedade diminuiu MUITO. Dá esperança pra quem tá começando.", when: "há 2 h" },
-    { nick: "FolhaVerde", text: "Retomei os estudos com a grana que sobrou. Coisa que eu tinha largado por causa das bets.", when: "há 1 h" },
+    {
+      nick: "SolPoente",
+      text: "3 meses hoje. Chorei quando vi o contador. Valeu cada dia.",
+      when: "há 3 h",
+    },
+    {
+      nick: "CaminhoLeve",
+      text: "Parabéns, Sol! Eu tô no 4º mês e a ansiedade diminuiu MUITO. Dá esperança pra quem tá começando.",
+      when: "há 2 h",
+    },
+    {
+      nick: "FolhaVerde",
+      text: "Retomei os estudos com a grana que sobrou. Coisa que eu tinha largado por causa das bets.",
+      when: "há 1 h",
+    },
     { nick: "PortoSeguro", text: "Que lindo ler vocês. Segue firme, gente. 💚", when: "há 25 min" },
   ],
   "6m": [
-    { nick: "MonteAlto", text: "6 meses e 3 dias. A vida ficou mais silenciosa, no melhor sentido.", when: "há 5 h" },
-    { nick: "RioCalmo", text: "Assinei matrícula do curso técnico com o dinheiro guardado. Nunca imaginei.", when: "há 3 h" },
-    { nick: "PassoCerto", text: "Ainda tenho dias em que penso, mas sei o que fazer agora. Obrigado a essa comunidade.", when: "há 1 h" },
+    {
+      nick: "MonteAlto",
+      text: "6 meses e 3 dias. A vida ficou mais silenciosa, no melhor sentido.",
+      when: "há 5 h",
+    },
+    {
+      nick: "RioCalmo",
+      text: "Assinei matrícula do curso técnico com o dinheiro guardado. Nunca imaginei.",
+      when: "há 3 h",
+    },
+    {
+      nick: "PassoCerto",
+      text: "Ainda tenho dias em que penso, mas sei o que fazer agora. Obrigado a essa comunidade.",
+      when: "há 1 h",
+    },
   ],
   "1a": [
-    { nick: "EstrelaGuia", text: "1 ano e 2 meses. Se eu consegui, você também consegue. Um dia de cada vez, sempre.", when: "há 6 h" },
-    { nick: "HorizonteNovo", text: "Fez 1 ano semana passada. Voltei aqui pra retribuir o apoio que recebi lá no começo.", when: "há 4 h" },
-    { nick: "AlmaLeve", text: "13 meses. A relação com dinheiro, sono e família mudou totalmente. Vale demais.", when: "há 2 h" },
-    { nick: "CéuAberto", text: "Se estiver difícil hoje, respira. Aqui do outro lado é possível. 💚", when: "há 30 min" },
+    {
+      nick: "EstrelaGuia",
+      text: "1 ano e 2 meses. Se eu consegui, você também consegue. Um dia de cada vez, sempre.",
+      when: "há 6 h",
+    },
+    {
+      nick: "HorizonteNovo",
+      text: "Fez 1 ano semana passada. Voltei aqui pra retribuir o apoio que recebi lá no começo.",
+      when: "há 4 h",
+    },
+    {
+      nick: "AlmaLeve",
+      text: "13 meses. A relação com dinheiro, sono e família mudou totalmente. Vale demais.",
+      when: "há 2 h",
+    },
+    {
+      nick: "CéuAberto",
+      text: "Se estiver difícil hoje, respira. Aqui do outro lado é possível. 💚",
+      when: "há 30 min",
+    },
   ],
 };
 
@@ -90,13 +174,12 @@ function PreviewBanner() {
     <div className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-20 -mx-4 flex items-start gap-2 border-b border-[#B57A00]/20 bg-[#F5E0B8] px-4 py-3 text-sm text-[#5c3a00] shadow-sm">
       <Eye className="mt-0.5 h-4 w-4 flex-none text-[#B57A00]" />
       <p>
-        <strong>Prévia:</strong> estas conversas são exemplos. A comunidade ainda
-        não está aberta e ninguém está lendo.
+        <strong>Prévia:</strong> estas conversas são exemplos. A comunidade ainda não está aberta e
+        ninguém está lendo.
       </p>
     </div>
   );
 }
-
 
 function ExampleTag() {
   return (
@@ -106,13 +189,7 @@ function ExampleTag() {
   );
 }
 
-function LockScreen({
-  mentor = false,
-  onPreview,
-}: {
-  mentor?: boolean;
-  onPreview: () => void;
-}) {
+function LockScreen({ mentor = false, onPreview }: { mentor?: boolean; onPreview: () => void }) {
   return (
     <div className="-mx-4 flex min-h-[calc(100dvh-var(--nav-h,62px)-190px)] flex-col items-center justify-center bg-[#F7FAFC] px-6 py-10 text-center">
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#E1F5EE]">
@@ -127,8 +204,8 @@ function LockScreen({
         {mentor ? "A rede de mentores está em construção" : "A comunidade está em construção"}
       </h2>
       <p className="mt-2 max-w-sm text-sm leading-relaxed text-slate-600">
-        Estou formando a rede de pessoas e mentores voluntários. Deixe seu e-mail
-        e eu aviso assim que ela abrir, com gente de verdade do outro lado.
+        Estou formando a rede de pessoas e mentores voluntários. Deixe seu e-mail e eu aviso assim
+        que ela abrir, com gente de verdade do outro lado.
       </p>
 
       <div className="mt-5 w-full max-w-sm">
@@ -198,10 +275,12 @@ function Comunidade() {
           {previewForum ? (
             <Forum onBack={() => setPreviewForum(false)} />
           ) : (
-            <LockScreen onPreview={() => {
+            <LockScreen
+              onPreview={() => {
                 track(EVENTS.communityPreview);
                 setPreviewForum(true);
-              }} />
+              }}
+            />
           )}
         </TabsContent>
 
@@ -209,10 +288,13 @@ function Comunidade() {
           {previewMentores ? (
             <Mentores onBack={() => setPreviewMentores(false)} />
           ) : (
-            <LockScreen mentor onPreview={() => {
+            <LockScreen
+              mentor
+              onPreview={() => {
                 track(EVENTS.communityPreview);
                 setPreviewMentores(true);
-              }} />
+              }}
+            />
           )}
         </TabsContent>
       </Tabs>
@@ -243,8 +325,8 @@ function Forum({ onBack }: { onBack: () => void }) {
       <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/10 p-3 text-sm text-[#7a4e00]">
         <ShieldAlert className="mt-0.5 h-4 w-4 flex-none text-[#F5A623]" />
         <p>
-          <strong>Espaço anônimo e de respeito.</strong> Proibido divulgar
-          apostas, casas de bet ou links de jogos.
+          <strong>Espaço anônimo e de respeito.</strong> Proibido divulgar apostas, casas de bet ou
+          links de jogos.
         </p>
       </div>
 
@@ -280,16 +362,11 @@ function Forum({ onBack }: { onBack: () => void }) {
       >
         <p className="text-xs uppercase tracking-wide opacity-80">Sala</p>
         <h2 className="text-lg font-bold">{room.label}</h2>
-        <p className="mt-1 text-xs opacity-90">
-          Quando abrir, tudo será anônimo
-        </p>
+        <p className="mt-1 text-xs opacity-90">Quando abrir, tudo será anônimo</p>
       </div>
 
       {/* Mensagens de exemplo */}
-      <div
-        ref={listRef}
-        className="flex flex-col gap-3"
-      >
+      <div ref={listRef} className="flex flex-col gap-3">
         {messages.map((m, i) => (
           <div
             key={`${m.nick}-${i}`}
@@ -302,9 +379,7 @@ function Forum({ onBack }: { onBack: () => void }) {
                 <ExampleTag />
               </div>
             </div>
-            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
-              {m.text}
-            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">{m.text}</p>
           </div>
         ))}
       </div>
@@ -365,12 +440,11 @@ function Mentores({ onBack }: { onBack: () => void }) {
       <div className="flex items-start gap-2 rounded-2xl bg-[#1CA0D8]/10 p-3 text-sm text-[#0b4f6c]">
         <Info className="mt-0.5 h-4 w-4 flex-none text-[#1CA0D8]" />
         <p>
-          Estamos formando a rede de mentores voluntários (pessoas com 1 ano ou
-          mais livres das apostas). Mentores oferecem escuta e apoio, mas{" "}
+          Estamos formando a rede de mentores voluntários (pessoas com 1 ano ou mais livres das
+          apostas). Mentores oferecem escuta e apoio, mas{" "}
           <strong>não substituem atendimento profissional</strong> de saúde.
         </p>
       </div>
-
 
       <div className="space-y-3">
         {MENTORES.map((m) => (
@@ -388,10 +462,7 @@ function Mentores({ onBack }: { onBack: () => void }) {
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-semibold text-[#16233C]">
-                    {m.name} ·{" "}
-                    <span className="font-normal text-slate-600">
-                      {m.timeLabel}
-                    </span>
+                    {m.name} · <span className="font-normal text-slate-600">{m.timeLabel}</span>
                   </p>
                   <ExampleTag />
                 </div>
