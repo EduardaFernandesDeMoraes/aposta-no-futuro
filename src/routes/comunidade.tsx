@@ -87,7 +87,7 @@ const SEED: Record<string, Msg[]> = {
 
 function PreviewBanner() {
   return (
-    <div className="sticky top-0 z-20 flex items-start gap-2 rounded-2xl bg-[#F5E0B8] p-3 text-sm text-[#5c3a00] shadow-sm">
+    <div className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-20 -mx-4 flex items-start gap-2 border-b border-[#B57A00]/20 bg-[#F5E0B8] px-4 py-3 text-sm text-[#5c3a00] shadow-sm">
       <Eye className="mt-0.5 h-4 w-4 flex-none text-[#B57A00]" />
       <p>
         <strong>Prévia:</strong> estas conversas são exemplos. A comunidade ainda
