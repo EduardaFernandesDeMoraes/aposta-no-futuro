@@ -10,6 +10,8 @@ import {
   Users,
   Phone,
   Info,
+  MapPin,
+  ExternalLink,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
@@ -345,14 +347,25 @@ function Result({
               </div>
             </div>
           </a>
-          <div className="rounded-2xl border border-border bg-card p-3">
-            <div className="text-sm font-semibold text-navy">
-              CAPS mais próximo
+          <a
+            href="https://www.google.com/maps/search/CAPS+perto+de+mim"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track(EVENTS.capsClicked)}
+            aria-label="Abrir busca por CAPS perto de mim no Google Maps"
+            className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3 text-navy shadow-soft transition-colors active:scale-[0.99]"
+          >
+            <div className="grid h-10 w-10 place-items-center rounded-full bg-navy/10">
+              <MapPin className="h-4 w-4 text-navy" />
             </div>
-            <div className="mt-0.5 text-[11px] text-muted-foreground">
-              Procure o CAPS do seu município pelo SUS.
+            <div className="flex-1">
+              <div className="text-sm font-semibold">CAPS mais próximo</div>
+              <div className="text-[11px] text-muted-foreground">
+                Toque para encontrar o CAPS mais próximo de você.
+              </div>
             </div>
-          </div>
+            <ExternalLink className="h-4 w-4 flex-none text-muted-foreground" />
+          </a>
         </div>
       </div>
 
@@ -382,7 +395,7 @@ function Result({
 
       <section
         className={cn(
-          "rounded-3xl border border-border p-6 shadow-card",
+          "mt-6 rounded-3xl border border-border p-6 shadow-card",
           tier.bg,
         )}
       >
