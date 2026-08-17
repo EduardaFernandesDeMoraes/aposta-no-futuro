@@ -10,6 +10,8 @@ import {
   Users,
   Phone,
   Info,
+  MapPin,
+  ExternalLink,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";

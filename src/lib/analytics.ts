@@ -79,4 +79,5 @@ export const EVENTS = {
   helpClick: "ajuda_acessada",
   waitlistSignup: "lista_espera_cadastro",
   communityPreview: "previa_comunidade_aberta",
+  capsClicked: "caps_clicado",
 } as const;
