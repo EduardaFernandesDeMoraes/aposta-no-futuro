@@ -235,7 +235,7 @@ function Forum({ onBack }: { onBack: () => void }) {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="isolate space-y-4">
       <PreviewBanner />
       <BackToLock onBack={onBack} />
 
@@ -358,7 +358,7 @@ const MENTORES: Mentor[] = [
 
 function Mentores({ onBack }: { onBack: () => void }) {
   return (
-    <div className="space-y-4">
+    <div className="isolate space-y-4">
       <PreviewBanner />
       <BackToLock onBack={onBack} />
 
