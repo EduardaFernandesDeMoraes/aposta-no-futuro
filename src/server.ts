@@ -46,6 +46,13 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    // www → domínio principal: o progresso dos usuários fica no localStorage,
+    // que é separado por endereço. Tudo precisa viver em apostanofuturo.online.
+    const url = new URL(request.url);
+    if (url.hostname === "www.apostanofuturo.online") {
+      url.hostname = "apostanofuturo.online";
+      return Response.redirect(url.toString(), 301);
+    }
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
