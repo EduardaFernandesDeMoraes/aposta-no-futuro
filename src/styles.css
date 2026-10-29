@@ -220,6 +220,27 @@
   50% { transform: scale(1.05); }
 }
 
+/* Abertura do onboarding: logo + nome, some em ~1,6 s */
+@keyframes intro-logo {
+  0% { opacity: 0; transform: scale(0.6) rotate(-8deg); }
+  60% { opacity: 1; transform: scale(1.06) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes intro-text {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes intro-out {
+  to { opacity: 0; visibility: hidden; }
+}
+.intro-splash { animation: intro-out 0.45s ease-in 1.2s forwards; }
+.intro-splash-logo { animation: intro-logo 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.intro-splash-text { animation: intro-text 0.5s ease-out 0.3s both; }
+@media (prefers-reduced-motion: reduce) {
+  .intro-splash { animation-duration: 0.2s; animation-delay: 0.6s; }
+  .intro-splash-logo, .intro-splash-text { animation: none; }
+}
+
 #lovable-badge {
   display: none !important;
 }

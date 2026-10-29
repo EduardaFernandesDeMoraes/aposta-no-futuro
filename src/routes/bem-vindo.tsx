@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Calendar, HandHeart, PiggyBank, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OnboardingGate } from "@/components/onboarding-gate";
+import { IntroSplash } from "@/components/intro-splash";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { AccessChooser, type AccessChoice } from "@/components/access-chooser";
 import { readAccessChosen, useAccess } from "@/lib/access";
@@ -34,6 +35,7 @@ function OnboardingRoute() {
   return (
     <OnboardingGate expect="new">
       <Onboarding />
+      <IntroSplash />
     </OnboardingGate>
   );
 }
