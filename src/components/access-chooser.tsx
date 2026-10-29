@@ -52,10 +52,10 @@ function ProfileStep({
 }) {
   return (
     <div className="animate-fade-in">
-      <h2 className="text-balance text-2xl font-bold leading-tight text-navy">
+      <h2 className="text-balance text-center text-2xl font-bold leading-tight text-navy">
         Bem-vindo ao Aposta no Futuro 💙
       </h2>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-2 text-balance text-center text-sm text-muted-foreground">
         Sua jornada de autocuidado e clareza financeira. Como você deseja acessar hoje?
       </p>
 
