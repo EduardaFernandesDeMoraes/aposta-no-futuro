@@ -20,6 +20,7 @@ import {
   Heart,
 } from "lucide-react";
 import logoMark from "@/assets/logo-maos-coracao.svg.asset.json";
+import { BrandLockup } from "@/components/brand-lockup";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -49,9 +50,12 @@ const TABS: Tab[] = [
 export function AppShell({
   title,
   titleAs = "h1",
+  brand,
   children,
 }: {
   title: string;
+  /** Quando presente, o topo mostra a assinatura "AF People + Instituição". */
+  brand?: { product: "People" | "Campus"; partner?: string };
   /** Use "p" quando a página já define o seu próprio <h1> no conteúdo. */
   titleAs?: "h1" | "p";
   children: ReactNode;
@@ -76,9 +80,13 @@ export function AppShell({
               className="h-7 w-7 shrink-0 select-none"
               draggable={false}
             />
-            <TitleTag className="min-w-0 truncate text-base font-semibold tracking-tight sm:text-lg">
-              {title}
-            </TitleTag>
+            {brand ? (
+              <BrandLockup product={brand.product} partner={brand.partner} as={titleAs} />
+            ) : (
+              <TitleTag className="min-w-0 truncate text-base font-semibold tracking-tight sm:text-lg">
+                {title}
+              </TitleTag>
+            )}
           </div>
 
           <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">

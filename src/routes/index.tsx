@@ -25,6 +25,9 @@ import {
 import { cn } from "@/lib/utils";
 import { OnboardingGate } from "@/components/onboarding-gate";
 import { InstallCard } from "@/components/install-card";
+import { CampusSupportCard } from "@/components/campus-support-card";
+import { useAccess } from "@/lib/access";
+import { findPartner } from "@/lib/partners";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -154,6 +157,8 @@ function Home() {
     "anf.lastMilestone",
     0,
   );
+  const [access] = useAccess();
+  const partner = access.mode === "student" ? findPartner(access.partner) : undefined;
   const [now, setNow] = useState(() => Date.now());
   const [restartOpen, setRestartOpen] = useState(false);
   const [celebration, setCelebration] = useState<Milestone | null>(null);
@@ -200,7 +205,11 @@ function Home() {
   }
 
   return (
-    <AppShell title="Aposta no Futuro" titleAs="p">
+    <AppShell
+      title="Aposta no Futuro"
+      titleAs="p"
+      brand={{ product: "People", partner: partner?.shortName }}
+    >
 
       {/* Título principal da página */}
       <div className="pb-5">
@@ -324,6 +333,8 @@ function Home() {
           />
         </div>
       </section>
+
+      {partner && <CampusSupportCard partner={partner} className="mt-4" />}
 
       <InstallCard className="mt-4" />
 

@@ -80,4 +80,10 @@ export const EVENTS = {
   waitlistSignup: "lista_espera_cadastro",
   communityPreview: "previa_comunidade_aberta",
   capsClicked: "caps_clicado",
+  accessStudent: "acesso_estudante",
+  accessFree: "acesso_livre",
+  accessManager: "acesso_gestor",
+  campusSupportOpened: "apoio_campus_aberto",
+  futureBetCreated: "aposta_futuro_criada",
+  campusDashboardView: "painel_campus_demo",
 } as const;

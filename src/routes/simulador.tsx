@@ -17,6 +17,7 @@ import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
+import { MinhasApostas } from "@/components/minhas-apostas";
 
 export const Route = createFileRoute("/simulador")({
   head: () => ({
@@ -91,9 +92,8 @@ function Simulador() {
   );
   const [error, setError] = useState<string | null>(null);
 
-  function handleCalc(e: React.FormEvent) {
-    e.preventDefault();
-    const num = Number(raw.replace(/\./g, "").replace(",", "."));
+  function calculate(input: string) {
+    const num = Number(input.replace(/\./g, "").replace(",", "."));
     const result = weeklySchema.safeParse(num);
     if (!result.success) {
       setError(result.error.issues[0]?.message ?? "Valor inválido");
@@ -104,6 +104,17 @@ function Simulador() {
     setWeekly(result.data);
     setSaved({ weekly: result.data, calculatedAt: new Date().toISOString() });
     track(EVENTS.simulatorUsed);
+  }
+
+  function handleCalc(e: React.FormEvent) {
+    e.preventDefault();
+    calculate(raw);
+  }
+
+  function quickPick(v: number) {
+    const s = String(v);
+    setRaw(s);
+    calculate(s);
   }
 
   const rows = weekly !== null
@@ -156,6 +167,26 @@ function Simulador() {
         {error && (
           <p className="mt-2 text-xs font-medium text-destructive">{error}</p>
         )}
+        <div className="mt-3 flex flex-wrap gap-2" aria-label="Valores rápidos">
+          {[20, 50, 100, 200].map((v) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => quickPick(v)}
+              className={cn(
+                "rounded-full border px-3 py-1.5 text-xs font-semibold tabular-nums transition-colors",
+                weekly === v
+                  ? "border-teal bg-[#E1F5EE] text-[#0d6b60]"
+                  : "border-border bg-background text-navy/80 hover:border-teal/40",
+              )}
+            >
+              R$ {v}
+            </button>
+          ))}
+        </div>
+        <p className="mt-3 text-[11px] text-muted-foreground">
+          O valor fica só no seu aparelho. Usamos 52 semanas por ano, sem juros.
+        </p>
         <Button
           type="submit"
           className="mt-4 h-12 w-full rounded-full bg-teal text-base font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
@@ -299,13 +330,22 @@ function Simulador() {
               <strong className="tabular-nums">{brl(yearAmount)}</strong> pode
               ser {dreamFor(yearAmount)}
             </p>
+            <a
+              href="#minhas-apostas"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-magenta px-4 py-2 text-xs font-semibold text-white shadow-soft transition-colors hover:bg-[#c9156b]"
+            >
+              Transformar em uma aposta no futuro →
+            </a>
           </section>
 
-          <p className="mt-4 text-center text-[11px] text-muted-foreground">
-            Conteúdo educativo. Este app não oferece consultoria financeira.
-          </p>
         </div>
       )}
+
+      <MinhasApostas weekly={weekly} suggestedTarget={weekly !== null ? weekly * 52 : 0} />
+
+      <p className="mt-4 text-center text-[11px] text-muted-foreground">
+        Conteúdo educativo. Este app não oferece consultoria financeira.
+      </p>
     </AppShell>
   );
 }

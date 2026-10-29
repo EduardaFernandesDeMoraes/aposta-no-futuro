@@ -21,6 +21,10 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { InstallCard } from "@/components/install-card";
+import { useAccess } from "@/lib/access";
+import { findPartner } from "@/lib/partners";
+import { useFutureBets } from "@/components/minhas-apostas";
+import { ArrowLeftRight, PiggyBank } from "lucide-react";
 
 export const Route = createFileRoute("/perfil")({
   head: () => ({
@@ -83,6 +87,11 @@ function Perfil() {
     onboarded: false,
   });
   const [saved] = useLocalStorage<Saved>("anf.simulador", null);
+  const [access] = useAccess();
+  const partner = access.mode === "student" ? findPartner(access.partner) : undefined;
+  const [bets] = useFutureBets();
+  const betsSaved = bets.reduce((a, b) => a + b.saved, 0);
+  const betsTarget = bets.reduce((a, b) => a + b.target, 0);
   const [metas] = useLocalStorage<MetasState>("anf.desafios", {
     completed: {},
     points: 0,
@@ -322,6 +331,43 @@ function Perfil() {
             </AreaChart>
           </ResponsiveContainer>
         </div>
+      </section>
+
+      {/* Minhas apostas no futuro */}
+      <Link
+        to="/simulador"
+        hash="minhas-apostas"
+        className="mt-4 flex items-center gap-3 rounded-3xl bg-card p-4 shadow-card transition-all hover:shadow-soft"
+      >
+        <span className="grid h-11 w-11 flex-none place-items-center rounded-2xl bg-[#E1F5EE] text-[#0d6b60]">
+          <PiggyBank className="h-5 w-5" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-sm font-semibold text-navy">Minhas apostas no futuro</span>
+          <span className="block text-xs text-muted-foreground">
+            {bets.length === 0
+              ? "Crie seu primeiro objetivo no Simulador"
+              : `${bets.length} ${bets.length === 1 ? "objetivo" : "objetivos"} · ${brl(betsSaved)} de ${brl(betsTarget)} registrados`}
+          </span>
+        </span>
+      </Link>
+
+      {/* Instituição e perfil */}
+      <section className="mt-4 flex items-center gap-3 rounded-3xl bg-card p-4 shadow-card">
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Seu acesso
+          </span>
+          <span className="mt-0.5 block text-sm font-semibold text-navy">
+            AF People{partner ? ` + ${partner.shortName}` : " · acesso livre"}
+          </span>
+        </span>
+        <Link
+          to="/acesso"
+          className="inline-flex flex-none items-center gap-1.5 rounded-full border border-teal/40 px-3 py-2 text-xs font-semibold text-[#0d6b60] hover:bg-[#E1F5EE]"
+        >
+          <ArrowLeftRight className="h-4 w-4" /> Alterar instituição / perfil
+        </Link>
       </section>
 
       {/* Share */}

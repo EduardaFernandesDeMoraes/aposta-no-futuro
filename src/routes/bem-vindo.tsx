@@ -1,10 +1,12 @@
 import { track, EVENTS } from "@/lib/analytics";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, Calendar, HandHeart, PiggyBank, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OnboardingGate } from "@/components/onboarding-gate";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { AccessChooser, type AccessChoice } from "@/components/access-chooser";
+import { readAccessChosen, useAccess } from "@/lib/access";
 
 export const Route = createFileRoute("/bem-vindo")({
   head: () => ({
@@ -66,6 +68,28 @@ const STEPS = [
 function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  const [phase, setPhase] = useState<"access" | "intro">("access");
+  const [, setAccess] = useAccess();
+
+  useEffect(() => {
+    if (readAccessChosen()) setPhase("intro");
+  }, []);
+
+  function handleAccess(choice: AccessChoice) {
+    if (choice.kind === "manager") {
+      track(EVENTS.accessManager);
+      navigate({ to: "/campus" });
+      return;
+    }
+    if (choice.kind === "student") {
+      setAccess({ mode: "student", partner: choice.partner });
+      track(EVENTS.accessStudent);
+    } else {
+      setAccess({ mode: "free" });
+      track(EVENTS.accessFree);
+    }
+    setPhase("intro");
+  }
   const [profile, setProfile] = useLocalStorage<Profile>("anf.profile", {
     name: "",
     firstFreeDay: "",
@@ -87,6 +111,21 @@ function Onboarding() {
     } else {
       setStep((s) => s + 1);
     }
+  }
+
+  if (phase === "access") {
+    return (
+      <div className="min-h-dvh bg-background">
+        <main className="mx-auto flex min-h-dvh max-w-md flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+2rem)] pt-10">
+          <h1 className="sr-only">Bem-vindo ao Aposta no Futuro</h1>
+          <AccessChooser onDone={handleAccess} />
+          <p className="mt-auto pt-8 text-center text-[11px] text-muted-foreground">
+            Este app é um apoio e não substitui tratamento profissional. Em
+            crise, ligue 188 (CVV).
+          </p>
+        </main>
+      </div>
+    );
   }
 
   return (
