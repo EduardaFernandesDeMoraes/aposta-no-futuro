@@ -25,7 +25,7 @@ import {
   ClipboardCheck,
   Info,
 } from "lucide-react";
-import logoMark from "@/assets/logo-maos-coracao.svg.asset.json";
+import logoMark from "@/assets/logo-maos-coracao.svg";
 import { BrandLockup } from "@/components/brand-lockup";
 import { Button } from "@/components/ui/button";
 import { PARTNERS, findPartner, type Partner } from "@/lib/partners";
@@ -125,7 +125,7 @@ function Login({ onEnter }: { onEnter: (code: string) => void }) {
     <div className="min-h-dvh bg-background">
       <header className="bg-navy text-white shadow-soft">
         <div className="mx-auto flex min-h-14 max-w-md items-center gap-2 px-4 py-2 sm:max-w-[1100px]">
-          <img src={logoMark.url} alt="" aria-hidden="true" className="h-7 w-7" />
+          <img src={logoMark} alt="" aria-hidden="true" className="h-7 w-7" />
           <BrandLockup product="Campus" as="p" />
         </div>
       </header>
@@ -323,7 +323,7 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
       <header className="sticky top-0 z-30 bg-navy text-white shadow-soft">
         <div className="mx-auto flex min-h-14 max-w-[1100px] items-center justify-between gap-3 px-4 py-2">
           <div className="flex min-w-0 items-center gap-2">
-            <img src={logoMark.url} alt="" aria-hidden="true" className="h-7 w-7" />
+            <img src={logoMark} alt="" aria-hidden="true" className="h-7 w-7" />
             <BrandLockup product="Campus" partner={partner.shortName} as="h1" />
           </div>
           <div className="flex items-center gap-2">

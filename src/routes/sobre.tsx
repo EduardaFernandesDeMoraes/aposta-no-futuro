@@ -4,8 +4,8 @@ import { Instagram, Heart } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { SensitiveFooter } from "@/components/sensitive-footer";
 import { track, trackOnce } from "@/lib/analytics";
-import eduardaPhoto from "@/assets/eduarda.png.asset.json";
-import luizPhoto from "@/assets/luiz.png.asset.json";
+import eduardaPhoto from "@/assets/eduarda.webp";
+import luizPhoto from "@/assets/luiz.webp";
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({
@@ -39,14 +39,14 @@ type Person = {
 
 const PEOPLE: Person[] = [
   {
-    photo: eduardaPhoto.url,
+    photo: eduardaPhoto,
     name: "Eduarda Fernandes de Moraes",
     role: "Idealizadora",
     rolePill: "bg-teal text-white",
     text: "22 anos, de Uberlândia. Jovem Aprendiz Espro e estudante do último ano de Ciências Contábeis. Idealizou o Aposta no Futuro e cuidou das telas, dos textos e da lógica do app.",
   },
   {
-    photo: luizPhoto.url,
+    photo: luizPhoto,
     name: "Luiz Santis",
     role: "Idealizador Operacional",
     rolePill: "bg-cyan text-white",

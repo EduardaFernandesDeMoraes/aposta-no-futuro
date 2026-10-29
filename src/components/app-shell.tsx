@@ -19,7 +19,7 @@ import {
   Timer,
   Heart,
 } from "lucide-react";
-import logoMark from "@/assets/logo-maos-coracao.svg.asset.json";
+import logoMark from "@/assets/logo-maos-coracao.svg";
 import { BrandLockup } from "@/components/brand-lockup";
 import { cn } from "@/lib/utils";
 
@@ -72,7 +72,7 @@ export function AppShell({
         <div className="mx-auto flex min-h-14 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-[1100px]">
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <img
-              src={logoMark.url}
+              src={logoMark}
               alt=""
               aria-hidden="true"
               width={28}
