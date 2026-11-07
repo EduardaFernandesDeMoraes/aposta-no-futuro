@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { DateField } from "@/components/date-field";
 import { OnboardingGate } from "@/components/onboarding-gate";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { AccessChooser, type AccessChoice } from "@/components/access-chooser";
@@ -213,14 +214,7 @@ function Onboarding() {
             <span className="mb-1.5 block font-medium text-navy">
               Desde quando você está sem apostar?
             </span>
-            <input
-              id="primeiro-dia-livre"
-              type="date"
-              value={date}
-              max={today}
-              onChange={(e) => setDate(e.target.value)}
-              className="min-h-12 w-full rounded-2xl border border-input bg-card px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
-            />
+            <DateField id="primeiro-dia-livre" value={date} max={today} onChange={setDate} />
           </label>
         )}
 

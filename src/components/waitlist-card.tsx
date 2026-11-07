@@ -21,11 +21,13 @@ export function WaitlistCard({
   cta = "Me avise quando abrir",
   tone = "light",
   successText = "Assim que a comunidade abrir com pessoas de verdade, a gente te avisa.",
+  onDone,
 }: {
   wantsToMentor?: boolean;
   cta?: string;
   tone?: "light" | "dark";
   successText?: string;
+  onDone?: () => void;
 }) {
   const dark = tone === "dark";
   const [email, setEmail] = useState("");
@@ -54,6 +56,7 @@ export function WaitlistCard({
     }
     track(EVENTS.waitlistSignup);
     setDone(true);
+    onDone?.();
   };
 
   if (done) {

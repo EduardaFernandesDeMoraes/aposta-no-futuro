@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { WaitlistCard } from "@/components/waitlist-card";
 import { cn } from "@/lib/utils";
@@ -167,11 +167,39 @@ const SEED: Record<string, Msg[]> = {
 
 const MENTOR_INITIALS = ["RA", "JU", "MA", "BI"];
 
+type Role = "participar" | "mentor";
+
+const ROLES: { id: Role; title: string; text: string }[] = [
+  {
+    id: "participar",
+    title: "Quero participar",
+    text: "Conversar com quem está na mesma fase que eu.",
+  },
+  {
+    id: "mentor",
+    title: "Quero ser mentor",
+    text: "Tenho 1 ano ou mais sem apostar e quero ajudar.",
+  },
+];
+
 function Comunidade() {
-  const [mentor, setMentor] = useState(false);
+  const [role, setRole] = useState<Role>("participar");
+  const [joined, setJoined] = useState(false);
   const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
   const room = ROOMS.find((r) => r.id === activeRoom)!;
   const messages = SEED[activeRoom] ?? [];
+  const mentor = role === "mentor";
+
+  /** Do cartão "Mentores voluntários": já escolhe mentor e leva ao formulário. */
+  function chooseMentor() {
+    setRole("mentor");
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById("lista")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    window.setTimeout(
+      () => document.getElementById("waitlist-email")?.focus({ preventScroll: true }),
+      reduce ? 0 : 450,
+    );
+  }
 
   return (
     <AppShell
@@ -184,36 +212,81 @@ function Comunidade() {
           aria-labelledby="lista"
           className="lg:sticky lg:top-28 lg:order-2 lg:col-span-5"
         >
-          <h2 id="lista" className="text-lg font-semibold text-navy lg:text-xl">Lista de espera</h2>
+          <h2 id="lista" className="scroll-mt-24 text-lg font-semibold text-navy lg:text-xl">Lista de espera</h2>
           <div className="mt-4 rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:rounded-[2rem] lg:p-8">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#7fe6da]" aria-hidden="true" />
-            Em construção
-          </span>
-          <p className="mt-4 text-[1.5rem] font-semibold leading-tight tracking-[-0.02em]">
-            Seja avisado quando abrir
-          </p>
-          <label className="mt-5 flex min-h-11 cursor-pointer items-center gap-3 text-sm text-white/90">
-            <input
-              type="checkbox"
-              checked={mentor}
-              onChange={(e) => setMentor(e.target.checked)}
-              className="h-5 w-5 flex-none cursor-pointer rounded accent-[#7fe6da]"
-            />
-            Quero ser mentor (estou há 1 ano ou mais sem apostar)
-          </label>
-          <div className="mt-3">
-            <WaitlistCard
-              tone="dark"
-              wantsToMentor={mentor}
-              cta={mentor ? "Quero ser mentor" : "Me avise quando abrir"}
-              successText={
-                mentor
-                  ? "Quando a rede de mentores começar, a gente te chama."
-                  : "Assim que a comunidade abrir, a gente te avisa."
-              }
-            />
-          </div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#7fe6da]" aria-hidden="true" />
+              Em construção
+            </span>
+            <p className="mt-4 text-[1.5rem] font-semibold leading-tight tracking-[-0.02em]">
+              Seja avisado quando abrir
+            </p>
+
+            {!joined && (
+              <fieldset className="mt-5">
+                <legend className="text-sm font-medium text-white/80">Como você quer entrar?</legend>
+                <div className="mt-3 grid gap-2">
+                  {ROLES.map((r) => {
+                    const selected = role === r.id;
+                    return (
+                      <label
+                        key={r.id}
+                        className={cn(
+                          "flex min-h-16 cursor-pointer items-center gap-3.5 rounded-2xl border px-4 py-3 transition-colors",
+                          "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[#7fe6da] has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-teal-ink",
+                          selected
+                            ? "border-white bg-white text-teal-ink"
+                            : "border-white/20 bg-white/[0.06] text-white hover:bg-white/10",
+                        )}
+                      >
+                        <input
+                          type="radio"
+                          name="papel-comunidade"
+                          value={r.id}
+                          checked={selected}
+                          onChange={() => setRole(r.id)}
+                          className="sr-only"
+                        />
+                        <span
+                          aria-hidden="true"
+                          className={cn(
+                            "grid h-5 w-5 flex-none place-items-center rounded-full border-2",
+                            selected ? "border-teal-ink" : "border-white/55",
+                          )}
+                        >
+                          {selected && <span className="h-2.5 w-2.5 rounded-full bg-teal-ink" />}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block font-semibold leading-snug">{r.title}</span>
+                          <span
+                            className={cn(
+                              "mt-0.5 block text-sm",
+                              selected ? "text-teal-ink/80" : "text-white/75",
+                            )}
+                          >
+                            {r.text}
+                          </span>
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            )}
+
+            <div className="mt-5">
+              <WaitlistCard
+                tone="dark"
+                wantsToMentor={mentor}
+                cta={mentor ? "Me cadastrar como mentor" : "Me avise quando abrir"}
+                successText={
+                  mentor
+                    ? "Quando a rede de mentores começar, a gente te chama."
+                    : "Assim que a comunidade abrir, a gente te avisa."
+                }
+                onDone={() => setJoined(true)}
+              />
+            </div>
           </div>
         </section>
 
@@ -255,6 +328,16 @@ function Comunidade() {
                 <p className="mt-1 text-sm text-gold-deep">
                   Gente com 1 ano ou mais sem apostar. Escuta, não atendimento profissional.
                 </p>
+                {!joined && (
+                  <button
+                    type="button"
+                    onClick={chooseMentor}
+                    className="mt-4 inline-flex min-h-11 items-center gap-1.5 rounded-full bg-gold-deep px-4 text-sm font-semibold text-white transition-colors hover:bg-[#654200] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-deep focus-visible:ring-offset-2 focus-visible:ring-offset-gold-soft"
+                  >
+                    Quero ser mentor
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                )}
               </div>
               <div className="rounded-3xl bg-navy p-5 text-white">
                 <ShieldCheck className="h-6 w-6 text-[#7fe6da]" />
