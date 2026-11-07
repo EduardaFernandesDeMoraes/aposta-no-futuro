@@ -1,7 +1,7 @@
 import { SiteFooter } from "@/components/site-footer";
 import { AutoGrowTextarea } from "@/components/auto-grow-textarea";
 import { Link, useLocation, useNavigate, useRouter } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import {
   Home,
   Calculator,
@@ -64,6 +64,31 @@ export function openXande() {
   window.dispatchEvent(new Event(OPEN_XANDE_EVENT));
 }
 
+/* A dica do Xande nunca divide a tela com outro aviso (ex.: a comemoração
+   de marco na home). Uma tela "segura" a dica com useHoldXandeTip(true). */
+const tipHolds = new Set<symbol>();
+const tipListeners = new Set<() => void>();
+function emitTipHolds() {
+  tipListeners.forEach((l) => l());
+}
+function subscribeTipHolds(listener: () => void) {
+  tipListeners.add(listener);
+  return () => tipListeners.delete(listener);
+}
+
+export function useHoldXandeTip(hold: boolean) {
+  useEffect(() => {
+    if (!hold) return;
+    const id = Symbol("hold");
+    tipHolds.add(id);
+    emitTipHolds();
+    return () => {
+      tipHolds.delete(id);
+      emitTipHolds();
+    };
+  }, [hold]);
+}
+
 export function AppShell({
   title,
   titleAs = "h1",
@@ -93,7 +118,23 @@ export function AppShell({
   const [tipSeen, setTipSeen] = useLocalStorage<boolean>("anf.dicaXande", false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  const showTip = mounted && !tipSeen && location.pathname === "/";
+  const tipHeld = useSyncExternalStore(
+    subscribeTipHolds,
+    () => tipHolds.size > 0,
+    () => false,
+  );
+  const showTip = mounted && !tipSeen && !tipHeld && location.pathname === "/";
+
+  // Ao trocar de tela, o foco vai para o conteúdo (leitor de tela e teclado
+  // começam do título, não do topo). Na primeira carga, nada muda.
+  const firstPath = useRef(true);
+  useEffect(() => {
+    if (firstPath.current) {
+      firstPath.current = false;
+      return;
+    }
+    document.getElementById("conteudo")?.focus({ preventScroll: true });
+  }, [location.pathname]);
 
   function openChat() {
     setTipSeen(true);
@@ -210,7 +251,7 @@ export function AppShell({
               </p>
               <button
                 onClick={() => setTipSeen(true)}
-                className="mt-3 inline-flex min-h-9 items-center rounded-full bg-teal-soft px-3 text-xs font-semibold text-teal-ink hover:bg-[#cfe9e1]"
+                className="mt-3 inline-flex min-h-11 items-center rounded-full bg-teal-soft px-4 text-xs font-semibold text-teal-ink hover:bg-[#cfe9e1]"
               >
                 Entendi
               </button>
@@ -222,7 +263,9 @@ export function AppShell({
       {/* Conteúdo */}
       <main
         key={location.pathname}
-        className="mx-auto flex w-full max-w-md flex-1 flex-col px-4 pb-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1.5rem)] pt-5 sm:max-w-2xl lg:max-w-6xl lg:px-8 lg:pb-12 lg:pt-10"
+        id="conteudo"
+        tabIndex={-1}
+        className="mx-auto flex outline-none w-full max-w-md flex-1 flex-col px-4 pb-[calc(var(--nav-h)+env(safe-area-inset-bottom)+1.5rem)] pt-5 sm:max-w-2xl lg:max-w-6xl lg:px-8 lg:pb-12 lg:pt-10"
       >
         {!isRoot && (
           <button

@@ -189,6 +189,13 @@ function RootShell({ children }: { children: ReactNode }) {
             <p className="af-splash-tagline">Menos apostas. Mais futuro.</p>
           </div>
         </div>
+        {/* Teclado: aparece só no foco e pula o topo direto para o conteúdo. */}
+        <a
+          href="#conteudo"
+          className="fixed left-4 top-3 z-[60] -translate-y-24 rounded-full bg-card px-4 py-3 text-sm font-semibold text-navy shadow-soft transition-transform focus-visible:translate-y-[env(safe-area-inset-top)]"
+        >
+          Pular para o conteúdo
+        </a>
         {children}
         <Scripts />
       </body>

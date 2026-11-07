@@ -143,7 +143,8 @@ function Autoavaliacao() {
   const currentAnswer = answers[step];
   const isLast = step === QUESTIONS.length - 1;
   const answeredCount = answers.filter((a) => a !== null).length;
-  const progress = (answeredCount / QUESTIONS.length) * 100;
+  // A barra acompanha o texto "Pergunta X de 9": já começa com 1/9.
+  const progress = (step + 1) / QUESTIONS.length;
 
   function select(value: number) {
     const next = [...answers];
@@ -238,13 +239,14 @@ function Autoavaliacao() {
           className="h-2 overflow-hidden rounded-full bg-muted"
           role="progressbar"
           aria-label="Progresso da autoavaliação"
-          aria-valuenow={Math.round(progress)}
+          aria-valuenow={step + 1}
           aria-valuemin={0}
-          aria-valuemax={100}
+          aria-valuemax={QUESTIONS.length}
+          aria-valuetext={`Pergunta ${step + 1} de ${QUESTIONS.length}`}
         >
           <div
-            className="h-full rounded-full bg-teal transition-[width] duration-300"
-            style={{ width: `${progress}%` }}
+            className="h-full origin-left rounded-full bg-teal transition-transform duration-300 ease-[var(--ease-out)]"
+            style={{ transform: `scaleX(${progress})` }}
           />
         </div>
         <ol className="mt-5 hidden grid-cols-9 gap-1.5 lg:grid" aria-hidden="true">

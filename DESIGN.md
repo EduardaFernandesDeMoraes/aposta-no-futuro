@@ -47,6 +47,10 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 - **Troca AF People ⇄ AF Campus** (`src/lib/product-switch.ts`): cortina navy cobre a tela, "People" sai e "Campus" entra (ou o contrário), a rota troca com a tela coberta e a cortina revela o outro produto. ~1,9s, WAAPI, com teto de tempo em cada etapa e trava de 4s para o overlay nunca ficar preso.
 - `useLocalStorage` usa `useSyncExternalStore`: o servidor renderiza o valor inicial e o aparelho troca pelo salvo depois da hidratação. Não ler `Date.now()` nem localStorage durante a renderização do servidor.
 - Abrir o Xande de qualquer tela: `openXande()` de `@/components/app-shell`.
+- **Um aviso por vez.** A dica do Xande nunca aparece junto com outro aviso. Uma tela que abre um modal próprio chama `useHoldXandeTip(true)` enquanto ele estiver aberto (a home faz isso durante a comemoração de marco).
+- **Modais** (`components/ui/dialog.tsx`): fundo navy translúcido, 16px de margem de cada lado no celular (nunca encostam na borda), botão "Fechar" com 44px.
+- **Teclado:** o link "Pular para o conteúdo" (em `__root.tsx`) aponta para `#conteudo`. Todo `<main>` tem `id="conteudo"` e `tabIndex={-1}`, e a cada troca de tela o foco vai para ele.
+- Formulários: rótulo sempre visível (o texto de exemplo dentro do campo não substitui o rótulo).
 
 ## Tom das telas sensíveis
 
@@ -59,7 +63,9 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 - **Cuidar**: bento com uma identidade por item. Ajuda (coral), Autoavaliação (superfície rica teal-ink, com a escala de faixas), Xande (teal-soft com prévia da conversa), Guia (branco com os 3 primeiros passos) e Comunidade (tracejado, "Em breve").
 - **Home, "Para continuar"**: Simulador em cartão largo dourado (mostra o valor de 5 anos se já houver cálculo), Autoavaliação em branco com a escala, Guia em navy com os 7 passos. No fim da página, "Trocar perfil" leva a `/acesso`.
 - **Metas**: banco de 30 cuidados; 3 sugestões + 3 ideias extras por dia, trocadas à meia-noite do aparelho (timer até a meia-noite + nova checagem ao voltar para a aba). Nada se repete de um dia para o outro.
-- **AF Campus**: abre direto no painel de demonstração, sem login; a instituição é escolhida no topo.
+- **AF Campus**: abre direto no painel de demonstração, sem login; a instituição é escolhida no topo. Um único aviso no alto (LGPD com o selo "Demonstração · dados fictícios"); a instituição aparece como subtítulo, abaixo de "Visão geral do mês"; "Exportar relatório" em teal profundo, como toda ação.
+- **Simulador no desktop**: antes do cálculo, a coluna da direita mostra um exemplo apagado (R$ 50 por semana) com "Usar R$ 50", em vez de um quadro vazio.
+- **Perfil no desktop**: cartão dourado + números do caminho na esquerda; atalhos e instalação na direita.
 - **Comunidade**: uma página só (sem abas nem telas de bloqueio). Lista de espera em superfície teal-ink como única ação (com opção "quero ser mentor"), "Como vai funcionar" em três pilares (salas, mentores, anônimo e moderado) e uma prévia de conversa por sala, marcada uma vez como "Mensagens de exemplo".
 
 ## Texto

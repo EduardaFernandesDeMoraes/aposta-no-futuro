@@ -75,7 +75,10 @@ export function WaitlistCard({
 
   return (
     <form onSubmit={submit} className="w-full text-left" noValidate>
-      <label htmlFor="waitlist-email" className="sr-only">
+      <label
+        htmlFor="waitlist-email"
+        className={cn("mb-1.5 block text-sm font-semibold", dark ? "text-white/90" : "text-navy")}
+      >
         Seu e-mail
       </label>
       <input

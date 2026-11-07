@@ -10,7 +10,13 @@ export function SiteFooter() {
       <p className="mx-auto max-w-[44ch] lg:mx-0 lg:max-w-[60ch]">
         O Aposta no Futuro é um apoio e não substitui atendimento
         profissional. Em emergência, ligue{" "}
-        <a href="tel:188" className="font-semibold text-navy underline">
+        {/* Número de crise: o padding vertical (inline) amplia a área de toque
+            sem mudar a altura da linha. */}
+        <a
+          href="tel:188"
+          aria-label="Ligar para o CVV, 188"
+          className="-mx-1.5 rounded-md px-1.5 py-3.5 font-semibold text-navy underline"
+        >
           188
         </a>{" "}
         (CVV) ou 192.

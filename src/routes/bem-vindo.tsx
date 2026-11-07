@@ -136,7 +136,7 @@ function Onboarding() {
   if (phase === "access") {
     return (
       <OnboardingFrame>
-        <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-[calc(env(safe-area-inset-top)+2.5rem)] lg:min-h-0 lg:w-full lg:py-16">
+        <main id="conteudo" tabIndex={-1} className="mx-auto flex min-h-dvh max-w-md outline-none flex-col px-5 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-[calc(env(safe-area-inset-top)+2.5rem)] lg:min-h-0 lg:w-full lg:py-16">
           <h1 className="sr-only">Bem-vindo ao Aposta no Futuro</h1>
           <AccessChooser onDone={handleAccess} />
         </main>
@@ -146,7 +146,7 @@ function Onboarding() {
 
   return (
     <OnboardingFrame>
-      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-[calc(env(safe-area-inset-top)+1rem)] lg:min-h-0 lg:w-full lg:py-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto flex min-h-dvh max-w-md outline-none flex-col px-5 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-[calc(env(safe-area-inset-top)+1rem)] lg:min-h-0 lg:w-full lg:py-16">
         <button
           type="button"
           onClick={() => setPhase("access")}

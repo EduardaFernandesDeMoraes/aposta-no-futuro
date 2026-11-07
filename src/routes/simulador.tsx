@@ -209,14 +209,47 @@ function Simulador() {
 
       <div className="lg:col-span-7">
       {weekly === null && (
-        <div className="hidden h-full min-h-[26rem] flex-col items-center justify-center rounded-[2rem] border-2 border-dashed border-border px-10 text-center lg:flex">
-          <span className="grid h-16 w-16 place-items-center rounded-full bg-gold-soft text-gold-deep">
-            <PiggyBank className="h-7 w-7" />
+        // Desktop: em vez de um quadro vazio, um exemplo apagado mostra o que
+        // a revelação vai trazer (R$ 50 por semana).
+        <div className="hidden rounded-[2.25rem] border border-border bg-card p-10 lg:block">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-soft px-3 py-1 text-xs font-semibold text-gold-deep">
+            <PiggyBank className="h-3.5 w-3.5" />
+            Exemplo com R$ 50 por semana
           </span>
-          <p className="mt-5 max-w-[32ch] text-lg leading-relaxed text-navy">
-            Escolha um valor ao lado e veja o que ele pode virar em 5 anos.
+          <p className="mt-6 text-lg text-muted-foreground">Em 5 anos sem apostar, você teria</p>
+          <p
+            className="tabular mt-3 text-[4rem] font-semibold leading-none tracking-[-0.04em] text-navy/30"
+            aria-hidden="true"
+          >
+            {brl(50 * 260)}
           </p>
-                  </div>
+          <ul className="mt-8 space-y-3" aria-hidden="true">
+            {PERIODS.map((p) => (
+              <li key={p.key} className="grid grid-cols-[4.5rem_1fr_auto] items-center gap-3">
+                <span className="text-sm text-muted-foreground">{p.label}</span>
+                <span className="h-2.5 overflow-hidden rounded-full bg-muted">
+                  <span
+                    className="block h-full rounded-full bg-teal/35"
+                    style={{ width: `${(p.weeks / 260) * 100}%` }}
+                  />
+                </span>
+                <span className="tabular text-right text-sm font-semibold text-muted-foreground">
+                  {brl(50 * p.weeks)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-6">
+            <p className="text-[0.95rem] text-navy">Agora coloque o seu valor ao lado.</p>
+            <button
+              type="button"
+              onClick={() => quickPick(50)}
+              className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-semibold text-teal-deep underline underline-offset-4 transition-colors hover:text-teal-ink"
+            >
+              Usar R$ 50
+            </button>
+          </div>
+        </div>
       )}
       {weekly !== null && (
         <div className="rise-in" key={weekly}>

@@ -20,7 +20,7 @@ import {
   Award,
   type LucideIcon,
 } from "lucide-react";
-import { AppShell, openXande } from "@/components/app-shell";
+import { AppShell, openXande, useHoldXandeTip } from "@/components/app-shell";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Button } from "@/components/ui/button";
 import {
@@ -189,6 +189,12 @@ function Home() {
       celebrate();
     }
   }, [days, lastMilestone, setLastMilestone, started, now]);
+
+  // A dica do Xande espera: enquanto o contador não carregou, enquanto há
+  // um marco por comemorar e enquanto a comemoração está aberta.
+  const pendingMilestone =
+    started && now !== null && MILESTONES.some((m) => days >= m.days && m.days > lastMilestone);
+  useHoldXandeTip(now === null || pendingMilestone || celebration !== null);
 
   const phrase = useMemo(() => encourage(totalMinutes), [totalMinutes]);
 
@@ -404,7 +410,7 @@ function Home() {
             <BookOpen className="h-5 w-5 text-[#7fe6da]" />
             <span className="mt-3 font-semibold leading-snug">Como parar de apostar</span>
             <span className="mt-1 text-sm leading-snug text-white/75">Guia em 7 passos</span>
-            <span className="tabular mt-auto grid grid-cols-7 gap-1 pt-4 text-[0.65rem] font-semibold" aria-hidden="true">
+            <span className="tabular mt-auto grid grid-cols-7 gap-1 pt-4 text-xs font-semibold" aria-hidden="true">
               {[1, 2, 3, 4, 5, 6, 7].map((n) => (
                 <span
                   key={n}

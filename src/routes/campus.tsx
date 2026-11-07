@@ -236,38 +236,35 @@ function Dashboard({
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1100px] px-4 pb-16 pt-5">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-[1100px] px-4 pb-16 pt-5 outline-none">
+        {/* Um aviso só: privacidade (LGPD) + selo de demonstração. */}
         <div className="flex items-start gap-3 rounded-2xl bg-teal-soft p-4">
           <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-teal-deep" strokeWidth={2.4} />
-          <div>
-            <p className="text-sm font-semibold text-navy">
-              Painel de Indicadores Agregados — Proteção Total de Dados (LGPD)
+          <div className="min-w-0 flex-1">
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-navy">
+              Só dados agregados, protegidos pela LGPD
+              <span className="rounded-full bg-gold-soft px-2.5 py-0.5 text-xs font-semibold text-gold-deep ring-1 ring-gold/50">
+                Demonstração · dados fictícios
+              </span>
             </p>
-            <p className="mt-0.5 text-xs text-navy/75">
-              Nenhum nome, e-mail, matrícula ou resposta individual é exibido. Faixas com menos de
-              10 estudantes são ocultadas.
+            <p className="mt-1 text-xs leading-relaxed text-navy/75">
+              Nenhum nome, e-mail, matrícula ou resposta individual aparece. Faixas com menos de
+              10 estudantes ficam ocultas.
             </p>
           </div>
         </div>
 
-        <div className="mt-3 rounded-2xl border-2 border-dashed border-[#F5A623] bg-gold-soft px-4 py-2.5 text-center text-xs font-bold text-[#8a5a00]">
-          Demonstração — dados fictícios
-        </div>
-
-        <div className="mt-5 flex flex-wrap items-end justify-between gap-3">
+        <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold text-teal-deep">
-              {partner.name}
-            </p>
             <h2 className="text-xl font-bold text-navy sm:text-2xl">Visão geral do mês</h2>
+            <p className="mt-0.5 text-sm text-muted-foreground">{partner.name}</p>
           </div>
           <Button
             onClick={exportReport}
-            className="h-11 w-full rounded-full bg-navy px-5 text-sm font-semibold text-white hover:bg-[#0f1a2c] sm:w-auto"
+            className="h-11 w-full rounded-full bg-teal-deep px-5 text-sm font-semibold text-white hover:bg-teal-ink sm:w-auto"
           >
             <Download className="mr-1.5 h-4 w-4" />
-            <span className="sm:hidden">Exportar relatório</span>
-            <span className="hidden sm:inline">Exportar Relatório ESG / Assistência Estudantil</span>
+            Exportar relatório
           </Button>
         </div>
 
@@ -294,7 +291,7 @@ function Dashboard({
             <p className="mt-0.5 text-sm text-muted-foreground">Acessos ao AF People vindos da campanha</p>
             <div className="mt-5 h-64 lg:h-60">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={d.weeks} margin={{ top: 8, right: 8, left: 0, bottom: 4 }}>
+                <LineChart data={d.weeks} margin={{ top: 8, right: 24, left: 0, bottom: 4 }}>
                   <CartesianGrid stroke="#e6edea" vertical={false} />
                   <XAxis
                     dataKey="name"

@@ -191,11 +191,10 @@ function Perfil() {
           </>
         )}
       </section>
-      </div>
 
-      <div className="lg:col-span-7">
-      {/* Números do caminho */}
-      <dl className="mt-4 grid grid-cols-2 gap-3 lg:mt-0 lg:gap-4">
+      {/* Números do caminho: ficam sob o cartão dourado para equilibrar as
+          duas colunas no desktop (no celular, a ordem é a mesma). */}
+      <dl className="mt-4 grid grid-cols-2 gap-3 lg:gap-4">
         <div className="rounded-3xl border border-border bg-card p-4">
           <dt className="text-sm text-muted-foreground">Marcos da trilha</dt>
           <dd className="tabular mt-1 text-2xl font-semibold text-navy">
@@ -207,8 +206,10 @@ function Perfil() {
           <dd className="tabular mt-1 text-2xl font-semibold text-navy">{careDays}</dd>
         </div>
       </dl>
+      </div>
 
-      <ul className="mt-6 divide-y divide-border overflow-hidden rounded-3xl border border-border bg-card">
+      <div className="lg:col-span-7">
+      <ul className="mt-6 lg:mt-0 divide-y divide-border overflow-hidden rounded-3xl border border-border bg-card">
         <li>
           <Link
             to="/simulador"
