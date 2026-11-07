@@ -526,6 +526,44 @@ html[data-splash="skip"] #af-splash {
   }
 }
 
+/* Campos nunca vazam do contêiner: podem encolher dentro de linhas flex
+   (Safari e Firefox não deixam um input ficar menor que ~20 caracteres)
+   e nunca passam da largura do pai. */
+input,
+select,
+textarea {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* iOS desenha sombra interna e cantos próprios em campos de texto: o
+   visual vem só das nossas classes. */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* iOS Safari ignora width: 100% no campo de data e o centraliza com uma
+   largura mínima própria: aqui ele vira um campo comum, alinhado à
+   esquerda, que ainda abre o seletor nativo ao toque. */
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  text-align: left;
+  line-height: normal;
+}
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  margin: 0;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
 /* Placeholder nunca corta no meio de uma palavra: usa ellipsis. */
 input::placeholder,
 textarea::placeholder {

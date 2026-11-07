@@ -1,10 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
-  Cell,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -12,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Download,
   Eye,
@@ -102,7 +100,7 @@ function useDemoData(partner: Partner) {
     );
     const pgsi = [
       { name: "Sem risco", value: r(48, 56), color: "#16BFAC" },
-      { name: "Risco baixo", value: r(22, 28), color: "#1CA0D8" },
+      { name: "Risco baixo", value: r(22, 28), color: "#0D6B60" },
       { name: "Risco moderado", value: r(12, 16), color: "#F5A623" },
     ];
     pgsi.push({
@@ -135,6 +133,7 @@ function Dashboard({
 }) {
   const d = useDemoData(partner);
   const navigate = useNavigate();
+  const narrow = useIsMobile();
 
   useEffect(() => {
     track(EVENTS.campusDashboardView);
@@ -204,7 +203,7 @@ function Dashboard({
         <div className="mx-auto flex min-h-14 max-w-[1100px] items-center justify-between gap-3 px-4 py-2">
           <div className="flex min-w-0 items-center gap-2">
             <img src={logoMark} alt="" aria-hidden="true" className="h-7 w-7" />
-            <BrandLockup product="Campus" tone="dark" partner={partner.shortName} as="h1" />
+            <BrandLockup product="Campus" tone="dark" partner={narrow ? undefined : partner.shortName} as="h1" />
           </div>
           <div className="flex items-center gap-2">
             <label className="sr-only" htmlFor="campus-instituicao">
@@ -288,20 +287,25 @@ function Dashboard({
         </section>
 
         <div className="mt-4 grid gap-4 lg:grid-cols-5">
-          <section className="rounded-3xl bg-card p-5 shadow-card lg:col-span-3">
-            <h3 className="text-sm font-semibold text-navy">Engajamento no campus por semana</h3>
-            <p className="text-xs text-muted-foreground">Acessos ao AF People vindos da campanha</p>
-            <div className="mt-3 h-56">
+          <section className="min-w-0 rounded-3xl bg-card p-5 shadow-card lg:col-span-3 lg:p-6">
+            <h3 className="font-semibold text-navy">Engajamento no campus por semana</h3>
+            <p className="mt-0.5 text-sm text-muted-foreground">Acessos ao AF People vindos da campanha</p>
+            <div className="mt-5 h-64 lg:h-60">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={d.weeks} margin={{ top: 10, right: 12, left: -16, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e3e8ef" vertical={false} />
+                <LineChart data={d.weeks} margin={{ top: 8, right: 8, left: 0, bottom: 4 }}>
+                  <CartesianGrid stroke="#e6edea" vertical={false} />
                   <XAxis
                     dataKey="name"
+                    interval={0}
+                    tickFormatter={(v: string) => (narrow ? v.replace("Sem ", "S") : v)}
                     tick={{ fontSize: 12, fill: "#526075" }}
+                    tickMargin={10}
                     axisLine={false}
                     tickLine={false}
                   />
                   <YAxis
+                    width={32}
+                    tickCount={5}
                     tick={{ fontSize: 12, fill: "#526075" }}
                     axisLine={false}
                     tickLine={false}
@@ -313,67 +317,49 @@ function Dashboard({
                     type="monotone"
                     dataKey="acessos"
                     name="Acessos"
-                    stroke="#16BFAC"
-                    strokeWidth={3}
-                    dot={{ r: 3 }}
+                    stroke="#0D6B60"
+                    strokeWidth={2.5}
+                    dot={{ r: 3.5, fill: "#0D6B60", stroke: "#fff", strokeWidth: 2 }}
+                    activeDot={{ r: 5 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </section>
 
-          <section className="rounded-3xl bg-card p-5 shadow-card lg:col-span-2">
-            <h3 className="text-sm font-semibold text-navy">
-              Autoavaliação (PGSI) — distribuição agregada
-            </h3>
-            <p className="text-xs text-muted-foreground">
-              % dos estudantes que concluíram a triagem
+          <section className="min-w-0 rounded-3xl bg-card p-5 shadow-card lg:col-span-2 lg:p-6">
+            <h3 className="font-semibold text-navy">Autoavaliação (PGSI)</h3>
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              Distribuição de quem concluiu a triagem
             </p>
-            <div className="mt-3 h-56">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={d.pgsi}
-                  layout="vertical"
-                  margin={{ top: 0, right: 28, left: 8, bottom: 0 }}
-                >
-                  <XAxis type="number" hide domain={[0, 100]} />
-                  <YAxis
-                    type="category"
-                    dataKey="name"
-                    width={104}
-                    tick={{ fontSize: 12, fill: "#16233c" }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    formatter={(v: number) => [`${v}%`, "Estudantes"]}
-                    contentStyle={{ borderRadius: 12, border: "1px solid #e3e8ef", fontSize: 12 }}
-                  />
-                  <Bar
-                    dataKey="value"
-                    radius={[0, 8, 8, 0]}
-                    label={{
-                      position: "right",
-                      fontSize: 12,
-                      fill: "#16233c",
-                      formatter: (v: number) => `${v}%`,
-                    }}
+            <ul className="mt-5 space-y-4">
+              {d.pgsi.map((p) => (
+                <li key={p.name}>
+                  <div className="flex items-baseline justify-between gap-3 text-sm">
+                    <span className="text-navy">{p.name}</span>
+                    <span className="tabular font-semibold text-navy">{p.value}%</span>
+                  </div>
+                  <div
+                    className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-muted"
+                    role="img"
+                    aria-label={`${p.name}: ${p.value}%`}
                   >
-                    {d.pgsi.map((p) => (
-                      <Cell key={p.name} fill={p.color} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
+                    <div
+                      className="h-full rounded-full"
+                      style={{ width: `${p.value}%`, backgroundColor: p.color }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-xs text-muted-foreground">
               Triagem, não diagnóstico. Serve para planejar ações preventivas.
             </p>
           </section>
         </div>
 
         <section className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-3xl bg-navy p-5 text-white shadow-soft">
+          <div className="min-w-0 rounded-3xl bg-navy p-5 text-white shadow-soft">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10">
               <PiggyBank className="h-5 w-5 text-[#7fe6da]" />
             </span>
@@ -385,7 +371,7 @@ function Dashboard({
               planejados em {d.goals} “apostas no futuro” criadas pelos estudantes.
             </p>
           </div>
-          <div className="rounded-3xl bg-card p-5 shadow-card">
+          <div className="min-w-0 rounded-3xl bg-card p-5 shadow-card">
             <h3 className="text-sm font-semibold text-navy">Canais de apoio divulgados no app</h3>
             <ul className="mt-3 space-y-2">
               {partner.channels.map((c) => (
@@ -393,7 +379,7 @@ function Dashboard({
                   <p className="text-xs font-semibold text-teal-deep">
                     {c.label}
                   </p>
-                  <p className="truncate text-sm text-navy">{c.detail}</p>
+                  <p className="break-words text-sm text-navy">{c.detail}</p>
                 </li>
               ))}
               <li className="rounded-2xl bg-coral-soft px-3 py-2">

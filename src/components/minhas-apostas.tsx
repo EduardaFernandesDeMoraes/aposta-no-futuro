@@ -236,7 +236,7 @@ function BetForm({
 
       <label className="mt-3 block">
         <span className="mb-1.5 block text-sm font-medium text-navy">Quanto você quer juntar?</span>
-        <span className="flex min-h-12 items-center gap-2 rounded-2xl border border-input bg-background px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
+        <span className="flex min-h-12 min-w-0 items-center gap-2 rounded-2xl border border-input bg-background px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
           <span className="text-sm font-semibold text-muted-foreground">R$</span>
           <input
             inputMode="decimal"
@@ -385,7 +385,7 @@ function BetCard({
         </div>
       ) : adding ? (
         <form
-          className="mt-3 flex items-center gap-2"
+          className="mt-3 flex flex-wrap items-center gap-2"
           onSubmit={(e) => {
             e.preventDefault();
             const v = parseBRL(amount);
@@ -395,7 +395,7 @@ function BetCard({
             setAdding(false);
           }}
         >
-          <span className="flex min-h-11 flex-1 items-center gap-1.5 rounded-full border border-input bg-background px-3 focus-within:border-teal-deep">
+          <span className="flex min-h-12 w-full min-w-0 items-center gap-1.5 rounded-full border border-input bg-background px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
             <span className="text-sm font-semibold text-muted-foreground">R$</span>
             <input
               autoFocus
@@ -409,17 +409,16 @@ function BetCard({
           </span>
           <button
             type="submit"
-            className="min-h-11 rounded-full bg-teal-deep px-4 text-sm font-semibold text-white"
+            className="min-h-11 flex-1 rounded-full bg-teal-deep px-4 text-sm font-semibold text-white hover:bg-teal-ink"
           >
             Registrar
           </button>
           <button
             type="button"
             onClick={() => setAdding(false)}
-            aria-label="Cancelar"
-            className="grid h-11 w-11 place-items-center rounded-full text-muted-foreground hover:bg-muted"
+            className="min-h-11 rounded-full px-4 text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-navy"
           >
-            <X className="h-4 w-4" />
+            Cancelar
           </button>
         </form>
       ) : (
