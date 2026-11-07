@@ -67,7 +67,7 @@ function AjudaPage() {
         <p className="font-script text-[2rem] font-bold leading-none text-teal-deep lg:text-[2.75rem]">
           Respira.
         </p>
-        <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[3rem] lg:tracking-[-0.03em]">
+        <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[2.75rem] lg:tracking-[-0.03em]">
           Você não está sozinho(a).
         </h1>
         <p className="mt-2 max-w-[56ch] text-[0.95rem] leading-relaxed text-muted-foreground lg:mt-3 lg:text-lg">
@@ -114,7 +114,7 @@ function AjudaPage() {
       <div className="lg:col-span-5">
       {/* CAPS */}
       <section aria-labelledby="caps" className="mt-8 lg:mt-0 lg:rounded-[2rem] lg:border lg:border-border lg:bg-card lg:p-8">
-        <h2 id="caps" className="text-lg font-semibold text-navy">
+        <h2 id="caps" className="text-lg font-semibold text-navy lg:text-xl">
           CAPS: atendimento pelo SUS
         </h2>
         <p className="mt-2 leading-relaxed text-navy/80">

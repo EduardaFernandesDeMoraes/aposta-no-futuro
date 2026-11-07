@@ -102,7 +102,7 @@ function GuiaPararDeApostar() {
       title="Como parar de apostar online"
       intro="Sete passos, sem julgamento, para quem decidiu sair do ciclo das bets. Vai no seu ritmo: cada passo já conta."
     >
-      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-16">
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
       <ol className="relative lg:col-span-7">
         <span
           aria-hidden="true"

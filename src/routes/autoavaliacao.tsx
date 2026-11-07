@@ -377,9 +377,7 @@ function Result({ score, onRestart }: { score: number; onRestart: () => void }) 
 
   return (
     <AppShell title="Seu resultado" titleAs="p">
-      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
-      <div className="lg:sticky lg:top-28 lg:col-span-5">
-      <div className="rise-in">
+      <div className="rise-in lg:pb-10">
         <p className="font-script text-[2rem] font-bold leading-none text-teal-deep lg:text-[2.75rem]">
           Obrigado
         </p>
@@ -391,11 +389,15 @@ function Result({ score, onRestart }: { score: number; onRestart: () => void }) 
         </p>
       </div>
 
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
+      <div className="lg:sticky lg:top-28 lg:col-span-5">
       {/* Resultado */}
-      <section className="mt-8 rounded-3xl border border-border bg-card p-5" aria-labelledby="faixa">
-        <h2 id="faixa" className="text-[1.3rem] font-semibold leading-snug text-navy">
+      <section className="mt-8 lg:mt-0" aria-labelledby="faixa">
+        <h2 id="faixa" className="text-lg font-semibold text-navy lg:text-xl">Sua faixa</h2>
+        <div className="mt-3 rounded-3xl border border-border bg-card p-5 lg:p-6">
+        <p className="text-[1.3rem] font-semibold leading-snug text-navy">
           {tier.label}
-        </h2>
+        </p>
         <p className="mt-2 text-[0.95rem] leading-relaxed text-navy/85">{tier.message}</p>
 
         <div className="mt-5" aria-hidden="true">
@@ -426,13 +428,14 @@ function Result({ score, onRestart }: { score: number; onRestart: () => void }) 
         <p className="tabular mt-4 text-sm text-muted-foreground">
           Pontuação: <span className="font-semibold text-navy">{score}</span> de 27
         </p>
+        </div>
       </section>
       </div>
 
       <div className="lg:col-span-7">
       {/* Próximo passo */}
       <section className="mt-8 lg:mt-0" aria-labelledby="proximo">
-        <h2 id="proximo" className="text-lg font-semibold text-navy lg:text-2xl">
+        <h2 id="proximo" className="text-lg font-semibold text-navy lg:text-xl">
           Seu próximo passo
         </h2>
         <ol className="mt-3 space-y-2.5">

@@ -127,15 +127,13 @@ function Perfil() {
 
   return (
     <AppShell title="Perfil" titleAs="p">
-      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
-      <div className="lg:sticky lg:top-28 lg:col-span-5">
-      {/* Quem */}
-      <div className="flex items-center gap-4 pb-6 lg:pb-8">
+      {/* Quem: faixa inteira acima da grade */}
+      <div className="flex items-center gap-4 pb-6 lg:pb-10">
         <span className="grid h-16 w-16 flex-none place-items-center rounded-full bg-teal-soft text-2xl font-semibold text-teal-deep lg:h-20 lg:w-20 lg:text-3xl">
           {initial || <Sprout className="h-7 w-7" />}
         </span>
         <div className="min-w-0">
-          <h1 className="truncate text-[1.6rem] font-semibold leading-tight tracking-[-0.02em] text-navy lg:text-[2.5rem] lg:tracking-[-0.03em]">
+          <h1 className="truncate text-[1.6rem] font-semibold leading-tight tracking-[-0.02em] text-navy lg:text-[2.75rem] lg:tracking-[-0.03em]">
             {profile.name.trim() || "Você"}
           </h1>
           <p className="mt-0.5 text-[0.95rem] text-muted-foreground lg:text-lg">
@@ -148,7 +146,19 @@ function Perfil() {
                   : `${days} ${days === 1 ? "dia" : "dias"} sem apostar`}
           </p>
         </div>
+        {started && (
+          <Button
+            onClick={handleShare}
+            className="ml-auto hidden min-h-12 rounded-full bg-teal-deep px-6 text-base font-semibold text-white hover:bg-teal-ink lg:inline-flex"
+          >
+            <Share2 className="mr-2 h-5 w-5" />
+            Compartilhar conquista
+          </Button>
+        )}
       </div>
+
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
+      <div className="lg:col-span-5">
 
       {/* Dinheiro que ficou com você */}
       <section className="rounded-3xl bg-gold-soft p-5 lg:rounded-[2rem] lg:p-8" aria-labelledby="dinheiro">
@@ -183,7 +193,7 @@ function Perfil() {
       </section>
       </div>
 
-      <div className="lg:col-span-7 lg:pt-[7.5rem]">
+      <div className="lg:col-span-7">
       {/* Números do caminho */}
       <dl className="mt-4 grid grid-cols-2 gap-3 lg:mt-0 lg:gap-4">
         <div className="rounded-3xl border border-border bg-card p-4">
@@ -242,7 +252,7 @@ function Perfil() {
 
       {/* Compartilhar */}
       {started && (
-        <section className="mt-6">
+        <section className="mt-6 lg:hidden">
           <Button
             onClick={handleShare}
             className="min-h-12 w-full rounded-full bg-teal-deep text-base font-semibold text-white hover:bg-teal-ink"

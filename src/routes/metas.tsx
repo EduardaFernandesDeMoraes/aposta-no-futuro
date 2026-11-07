@@ -249,8 +249,9 @@ function Metas() {
     >
       <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
       <div className="lg:sticky lg:top-28 lg:col-span-4">
+      <h2 className="sr-only text-lg font-semibold text-navy lg:not-sr-only lg:block lg:text-xl">Seu dia</h2>
       {/* Resumo do dia */}
-      <section className="flex items-center gap-4 rounded-3xl bg-gold-soft p-5 lg:flex-col lg:items-start lg:rounded-[2rem] lg:p-8" aria-live="polite">
+      <section className="lg:mt-3 flex items-center gap-4 rounded-3xl bg-gold-soft p-5 lg:flex-col lg:items-start lg:rounded-[2rem] lg:p-8" aria-live="polite">
         <span className="grid h-14 w-14 flex-none place-items-center rounded-full bg-card text-gold-deep lg:h-16 lg:w-16">
           <Sun className="h-6 w-6 lg:h-7 lg:w-7" />
         </span>
@@ -279,7 +280,7 @@ function Metas() {
 
       <div className="lg:col-span-8">
       <section className="mt-8 lg:mt-0" aria-labelledby="sugestoes">
-        <h2 id="sugestoes" className="text-lg font-semibold text-navy">
+        <h2 id="sugestoes" className="text-lg font-semibold text-navy lg:text-xl">
           Sugestões para hoje
         </h2>
         <ul key={today ?? "carregando"} className="rise-in mt-3 space-y-2.5 lg:grid lg:grid-cols-3 lg:gap-4 lg:space-y-0">
@@ -291,7 +292,7 @@ function Metas() {
 
       {showMore ? (
         <section className="rise-in mt-8" aria-labelledby="outras">
-          <h2 id="outras" className="text-lg font-semibold text-navy">
+          <h2 id="outras" className="text-lg font-semibold text-navy lg:text-xl">
             Mais ideias para hoje
           </h2>
           <ul className="mt-3 space-y-2.5 lg:grid lg:grid-cols-3 lg:gap-4 lg:space-y-0">

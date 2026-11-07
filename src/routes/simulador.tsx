@@ -246,7 +246,7 @@ function Simulador() {
 
           {/* Linha do tempo */}
           <section className="mt-8" aria-labelledby="tempo-titulo">
-            <h2 id="tempo-titulo" className="text-lg font-semibold text-navy">
+            <h2 id="tempo-titulo" className="text-lg font-semibold text-navy lg:text-xl">
               Ao longo do tempo
             </h2>
             <ul className="mt-4 space-y-3">

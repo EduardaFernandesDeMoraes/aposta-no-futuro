@@ -177,8 +177,6 @@ function Home() {
   const hours = Math.floor((elapsed / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((elapsed / (1000 * 60)) % 60);
 
-  const reachedCount = started ? MILESTONES.filter((m) => days >= m.days).length : 0;
-  const next = MILESTONES.find((m) => !started || days < m.days);
 
   // Comemora um marco recém-alcançado
   useEffect(() => {
@@ -212,10 +210,8 @@ function Home() {
 
   return (
     <AppShell title="Aposta no Futuro" titleAs="p">
-      <div className="lg:grid lg:grid-cols-12 lg:gap-x-12">
-      <div className="lg:col-span-7">
       {/* Saudação + título da página */}
-      <div className="pb-6 lg:pb-8">
+      <div className="pb-6 lg:pb-10">
         <p className="text-lg leading-snug text-muted-foreground lg:text-xl">
           {firstName ? (
             <>
@@ -226,15 +222,18 @@ function Home() {
             "Que bom te ver por aqui."
           )}
         </p>
-        <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[3.25rem] lg:leading-[1.05] lg:tracking-[-0.035em]">
+        <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[2.75rem] lg:tracking-[-0.03em]">
           Menos apostas. Mais futuro.
         </h1>
       </div>
 
+      <div className="lg:grid lg:grid-cols-12 lg:items-stretch lg:gap-x-12">
+      <div className="lg:col-span-7 lg:flex lg:flex-col">
+
       {/* Contador: a peça central */}
       <section
         aria-label="Seu contador de dias sem apostar"
-        className="relative overflow-hidden rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:rounded-[2.25rem] lg:p-10"
+        className="relative overflow-hidden rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:flex lg:flex-1 lg:flex-col lg:rounded-[2.25rem] lg:p-10"
       >
         <HandsWatermark />
         {started ? (
@@ -264,12 +263,12 @@ function Home() {
                 </div>
               </div>
             </div>
-            <p className="relative mt-5 max-w-[30ch] text-[0.95rem] leading-snug text-white lg:mt-8 lg:text-xl">
+            <p className="relative mt-5 max-w-[30ch] text-[0.95rem] leading-snug text-white lg:mb-6 lg:mt-8 lg:text-xl">
               {phrase}
             </p>
             <button
               onClick={() => setRestartOpen(true)}
-              className="relative -ml-1 mt-4 inline-flex min-h-11 items-center gap-2 rounded-full px-1 text-sm font-medium text-white/85 underline decoration-white/40 underline-offset-4 transition-colors hover:text-white"
+              className="relative -ml-1 mt-4 inline-flex min-h-11 w-fit items-center gap-2 lg:mt-auto rounded-full px-1 text-sm font-medium text-white/85 underline decoration-white/40 underline-offset-4 transition-colors hover:text-white"
             >
               <RefreshCw className="h-4 w-4" />
               Precisei recomeçar
@@ -280,13 +279,13 @@ function Home() {
             <p className="relative text-xl font-semibold leading-snug lg:text-[2rem] lg:leading-tight">
               Seu contador começa quando você quiser.
             </p>
-            <p className="relative mt-2 max-w-[34ch] text-[0.95rem] leading-relaxed text-white/85 lg:mt-3 lg:text-lg"> 
+            <p className="relative mt-2 max-w-[34ch] text-[0.95rem] leading-relaxed text-white/85 lg:mb-6 lg:mt-3 lg:text-lg"> 
               Não precisa ter parado de vez. Começar hoje já é um passo, e você
               pode recomeçar quantas vezes precisar.
             </p>
             <button
               onClick={startCounter}
-              className="relative mt-5 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-5 text-[0.95rem] font-semibold text-teal-ink transition-colors hover:bg-teal-soft"
+              className="relative mt-5 inline-flex min-h-12 w-fit items-center gap-2 rounded-full bg-white lg:mt-auto px-5 text-[0.95rem] font-semibold text-teal-ink transition-colors hover:bg-teal-soft"
             >
               <Sprout className="h-4 w-4" />
               Começar a contar hoje
@@ -295,72 +294,13 @@ function Home() {
         )}
       </section>
 
-      {/* Trilha de marcos */}
-      <section className="mt-8 lg:mt-12" aria-labelledby="marcos-titulo">
-        <div className="flex items-baseline justify-between">
-          <h2 id="marcos-titulo" className="text-lg font-semibold text-navy">
-            Sua trilha
-          </h2>
-          <span className="tabular text-sm text-muted-foreground">
-            {reachedCount} de {MILESTONES.length} marcos
-          </span>
-        </div>
-        <ol className="relative mt-5 grid grid-cols-6">
-          <span
-            aria-hidden="true"
-            className="absolute left-[8.33%] right-[8.33%] top-[18px] h-[3px] rounded-full bg-border lg:top-[23px]"
-          />
-          <span
-            aria-hidden="true"
-            className="absolute left-[8.33%] top-[18px] h-[3px] rounded-full bg-gold transition-[width] duration-700 lg:top-[23px]"
-            style={{
-              width: `${reachedCount <= 1 ? 0 : ((reachedCount - 1) / (MILESTONES.length - 1)) * 83.33}%`,
-            }}
-          />
-          {MILESTONES.map((m) => {
-            const achieved = started && days >= m.days;
-            const isNext = next?.days === m.days;
-            const Icon = m.icon;
-            return (
-              <li key={m.days} className="relative flex flex-col items-center text-center">
-                <span
-                  className={cn(
-                    "grid h-9 w-9 place-items-center rounded-full border-2 lg:h-12 lg:w-12",
-                    achieved
-                      ? "border-gold bg-gold text-navy"
-                      : isNext
-                        ? "border-teal-deep bg-card text-teal-deep"
-                        : "border-border bg-background text-muted-foreground",
-                  )}
-                >
-                  <Icon className="h-4 w-4 lg:h-5 lg:w-5" strokeWidth={2} />
-                </span>
-                <span
-                  className={cn(
-                    "mt-2 text-xs leading-tight lg:mt-3 lg:text-sm",
-                    achieved || isNext ? "font-semibold text-navy" : "text-muted-foreground",
-                  )}
-                >
-                  {m.short}
-                </span>
-                <span className="sr-only">{achieved ? "alcançado" : "ainda não"}</span>
-              </li>
-            );
-          })}
-        </ol>
-        {started && next && now !== null && (
-          <p className="mt-4 text-sm text-muted-foreground">
-            Próximo marco: <span className="font-semibold text-navy">{next.label}</span>
-            {" · "}
-            {next.days - days === 1 ? "falta 1 dia" : `faltam ${next.days - days} dias`}
-          </p>
-        )}
-      </section>
+      {/* Trilha de marcos (celular) */}
+      <Trail started={started} days={days} ready={now !== null} variant="compact" />
 
       </div>
 
       {/* Coluna lateral no desktop */}
-      <aside className="lg:col-span-5 lg:pt-[11.25rem]">
+      <aside className="lg:col-span-5">
       {/* Para o momento da vontade: perto do polegar */}
       <button
         onClick={openXande}
@@ -380,7 +320,7 @@ function Home() {
 
       {/* Caminhos */}
       <section className="mt-8" aria-labelledby="caminhos-titulo">
-        <h2 id="caminhos-titulo" className="text-lg font-semibold text-navy">
+        <h2 id="caminhos-titulo" className="text-lg font-semibold text-navy lg:text-xl">
           Para continuar
         </h2>
         <div className="mt-3 grid grid-cols-2 gap-3">
@@ -465,6 +405,9 @@ function Home() {
       {partner && <CampusSupportCard partner={partner} className="mt-6" />}
       </aside>
       </div>
+
+      {/* Trilha de marcos (desktop, largura toda) */}
+      <Trail started={started} days={days} ready={now !== null} variant="wide" />
 
       {/* Trocar perfil */}
       <Link
@@ -572,4 +515,158 @@ function tierIndex(score: number) {
 }
 function tierShort(score: number) {
   return ["Sem risco", "Risco leve", "Risco moderado", "Risco alto"][tierIndex(score)];
+}
+
+/**
+ * Trilha de marcos. No celular fica compacta, logo abaixo do contador.
+ * No desktop ganha a largura toda da página, com o nome completo de cada
+ * marco, o estado de cada um e o avanço até o próximo.
+ */
+function Trail({
+  started,
+  days,
+  ready,
+  variant,
+}: {
+  started: boolean;
+  days: number;
+  ready: boolean;
+  variant: "compact" | "wide";
+}) {
+  const reachedCount = started ? MILESTONES.filter((m) => days >= m.days).length : 0;
+  const next = MILESTONES.find((m) => !started || days < m.days);
+  const prev = MILESTONES[reachedCount - 1];
+
+  // Linha dourada: até o último marco alcançado + o trecho já andado rumo ao próximo.
+  let progress = 0;
+  if (started && reachedCount >= 1) {
+    const frac = next && prev ? (days - prev.days) / (next.days - prev.days) : 0;
+    progress = Math.min(1, (reachedCount - 1 + Math.max(0, frac)) / (MILESTONES.length - 1));
+  }
+  const remaining = next ? next.days - days : 0;
+  const remainingText = remaining === 1 ? "falta 1 dia" : `faltam ${remaining} dias`;
+
+  if (variant === "compact") {
+    return (
+      <section className="mt-8 lg:hidden" aria-labelledby="marcos-titulo">
+        <div className="flex items-baseline justify-between">
+          <h2 id="marcos-titulo" className="text-lg font-semibold text-navy">
+            Sua trilha
+          </h2>
+          <span className="tabular text-sm text-muted-foreground">
+            {reachedCount} de {MILESTONES.length} marcos
+          </span>
+        </div>
+        <ol className="relative mt-5 grid grid-cols-6">
+          <span aria-hidden="true" className="absolute left-[8.33%] right-[8.33%] top-[18px] h-[3px] rounded-full bg-border" />
+          <span
+            aria-hidden="true"
+            className="absolute left-[8.33%] top-[18px] h-[3px] rounded-full bg-gold transition-[width] duration-700"
+            style={{ width: `${progress * 83.33}%` }}
+          />
+          {MILESTONES.map((m) => {
+            const achieved = started && days >= m.days;
+            const isNext = next?.days === m.days;
+            const Icon = m.icon;
+            return (
+              <li key={m.days} className="relative flex flex-col items-center text-center">
+                <span
+                  className={cn(
+                    "grid h-9 w-9 place-items-center rounded-full border-2",
+                    achieved
+                      ? "border-gold bg-gold text-navy"
+                      : isNext
+                        ? "border-teal-deep bg-card text-teal-deep"
+                        : "border-border bg-background text-muted-foreground",
+                  )}
+                >
+                  <Icon className="h-4 w-4" strokeWidth={2} />
+                </span>
+                <span
+                  className={cn(
+                    "mt-2 text-xs leading-tight",
+                    achieved || isNext ? "font-semibold text-navy" : "text-muted-foreground",
+                  )}
+                >
+                  {m.short}
+                </span>
+                <span className="sr-only">{achieved ? "alcançado" : "ainda não"}</span>
+              </li>
+            );
+          })}
+        </ol>
+        {started && next && ready && (
+          <p className="mt-4 text-sm text-muted-foreground">
+            Próximo marco: <span className="font-semibold text-navy">{next.label}</span>
+            {" · "}
+            {remainingText}
+          </p>
+        )}
+      </section>
+    );
+  }
+
+  return (
+    <section
+      className="mt-12 hidden rounded-[2rem] border border-border bg-card px-10 py-9 lg:block"
+      aria-labelledby="marcos-titulo-wide"
+    >
+      <div>
+        <div>
+          <h2 id="marcos-titulo-wide" className="text-xl font-semibold text-navy">
+            Sua trilha
+          </h2>
+          <p className="tabular mt-1 text-sm text-muted-foreground">
+            {reachedCount} de {MILESTONES.length} marcos alcançados
+          </p>
+        </div>
+      </div>
+
+      <ol className="relative mt-10 grid grid-cols-6">
+        <span aria-hidden="true" className="absolute left-[8.33%] right-[8.33%] top-[27px] h-1 rounded-full bg-muted" />
+        <span
+          aria-hidden="true"
+          className="absolute left-[8.33%] top-[27px] h-1 rounded-full bg-gold transition-[width] duration-700"
+          style={{ width: `${progress * 83.33}%` }}
+        />
+        {MILESTONES.map((m) => {
+          const achieved = started && days >= m.days;
+          const isNext = next?.days === m.days;
+          const Icon = m.icon;
+          return (
+            <li key={m.days} className="relative flex flex-col items-center text-center">
+              <span
+                className={cn(
+                  "grid h-14 w-14 place-items-center rounded-full border-2",
+                  achieved
+                    ? "border-gold bg-gold text-navy"
+                    : isNext
+                      ? "border-teal-deep bg-card text-teal-deep ring-4 ring-teal-soft"
+                      : "border-border bg-card text-muted-foreground",
+                )}
+              >
+                <Icon className="h-6 w-6" strokeWidth={1.9} />
+              </span>
+              <span
+                className={cn(
+                  "mt-4 font-semibold leading-tight",
+                  achieved || isNext ? "text-navy" : "text-navy/60",
+                )}
+              >
+                {m.label}
+              </span>
+              <span
+                className={cn(
+                  "tabular mt-1 text-sm",
+                  achieved ? "text-gold-deep" : isNext ? "font-medium text-teal-deep" : "text-muted-foreground",
+                )}
+              >
+                {achieved ? "Alcançado" : isNext && started && ready ? remainingText : `${m.days} ${m.days === 1 ? "dia" : "dias"}`}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  );
 }

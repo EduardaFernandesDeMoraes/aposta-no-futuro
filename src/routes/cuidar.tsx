@@ -60,7 +60,7 @@ function CuidarPage() {
       title="Cuidar de você"
       intro="Entender, pausar e pedir apoio. No seu ritmo."
     >
-      <div className="grid gap-4 lg:grid-cols-12 lg:gap-6">
+      <div className="grid gap-4 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-8">
         {/* 1. Ajuda agora: o caminho mais curto */}
         <Link
           to="/ajuda"

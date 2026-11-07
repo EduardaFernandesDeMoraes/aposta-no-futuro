@@ -182,15 +182,17 @@ function Comunidade() {
         {/* Lista de espera: a única ação da página */}
         <section
           aria-labelledby="lista"
-          className="rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:sticky lg:top-28 lg:order-2 lg:col-span-5 lg:rounded-[2rem] lg:p-8"
+          className="lg:sticky lg:top-28 lg:order-2 lg:col-span-5"
         >
+          <h2 id="lista" className="text-lg font-semibold text-navy lg:text-xl">Lista de espera</h2>
+          <div className="mt-4 rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:rounded-[2rem] lg:p-8">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
             <span className="h-1.5 w-1.5 rounded-full bg-[#7fe6da]" aria-hidden="true" />
             Em construção
           </span>
-          <h2 id="lista" className="mt-4 text-[1.5rem] font-semibold leading-tight tracking-[-0.02em]">
+          <p className="mt-4 text-[1.5rem] font-semibold leading-tight tracking-[-0.02em]">
             Seja avisado quando abrir
-          </h2>
+          </p>
           <label className="mt-5 flex min-h-11 cursor-pointer items-center gap-3 text-sm text-white/90">
             <input
               type="checkbox"
@@ -212,12 +214,13 @@ function Comunidade() {
               }
             />
           </div>
+          </div>
         </section>
 
         <div className="lg:order-1 lg:col-span-7">
           {/* Como vai funcionar */}
           <section className="mt-10 lg:mt-0" aria-labelledby="como">
-            <h2 id="como" className="text-lg font-semibold text-navy lg:text-2xl">
+            <h2 id="como" className="text-lg font-semibold text-navy lg:text-xl">
               Como vai funcionar
             </h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -266,7 +269,7 @@ function Comunidade() {
           {/* Prévia */}
           <section className="mt-10" aria-labelledby="previa">
             <div className="flex items-baseline justify-between gap-3">
-              <h2 id="previa" className="text-lg font-semibold text-navy lg:text-2xl">
+              <h2 id="previa" className="text-lg font-semibold text-navy lg:text-xl">
                 Uma prévia
               </h2>
               <span className="text-sm text-muted-foreground">Mensagens de exemplo</span>
