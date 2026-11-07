@@ -126,7 +126,7 @@ function Login({ onEnter }: { onEnter: (code: string) => void }) {
       <header className="bg-navy text-white shadow-soft">
         <div className="mx-auto flex min-h-14 max-w-md items-center gap-2 px-4 py-2 sm:max-w-[1100px]">
           <img src={logoMark} alt="" aria-hidden="true" className="h-7 w-7" />
-          <BrandLockup product="Campus" as="p" />
+          <BrandLockup product="Campus" tone="dark" as="p" />
         </div>
       </header>
 
@@ -137,20 +137,28 @@ function Login({ onEnter }: { onEnter: (code: string) => void }) {
         >
           <ArrowLeft className="h-4 w-4" /> Voltar
         </Link>
-        <h1 className="mt-3 text-2xl font-bold leading-tight text-navy">
+        <h1 className="mt-3 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy">
           Acesso Gestor — AF Campus
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Selecione sua instituição e insira suas credenciais corporativas:
         </p>
 
-        <form onSubmit={submit} className="mt-6 space-y-4 rounded-3xl bg-card p-5 shadow-card">
+        <div className="mt-5 flex items-start gap-3 rounded-2xl bg-gold-soft p-4">
+          <Info className="mt-0.5 h-5 w-5 flex-none text-gold-deep" />
+          <p className="text-sm leading-snug text-gold-deep">
+            <strong>Ambiente de demonstração.</strong> O AF Campus está em fase piloto: nenhuma
+            credencial é enviada ou armazenada, e o painel exibe dados fictícios.
+          </p>
+        </div>
+
+        <form onSubmit={submit} className="mt-4 space-y-4 rounded-3xl border border-border bg-card p-5">
           <label className="block">
             <span className="mb-1.5 block text-sm font-medium text-navy">Instituição</span>
             <select
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-base outline-none focus:border-teal md:text-sm"
+              className="min-h-12 w-full rounded-2xl border border-input bg-background px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
             >
               {PARTNERS.map((p) => (
                 <option key={p.code} value={p.code}>
@@ -170,7 +178,7 @@ function Login({ onEnter }: { onEnter: (code: string) => void }) {
                 setError(null);
               }}
               placeholder={`nome@${selected?.emailDomain ?? "instituicao.edu.br"}`}
-              className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-base outline-none focus:border-teal md:text-sm"
+              className="min-h-12 w-full rounded-2xl border border-input bg-background px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
             />
           </label>
           <label className="block">
@@ -183,10 +191,10 @@ function Login({ onEnter }: { onEnter: (code: string) => void }) {
                 setPassword(e.target.value);
                 setError(null);
               }}
-              className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-base outline-none focus:border-teal md:text-sm"
+              className="min-h-12 w-full rounded-2xl border border-input bg-background px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
             />
           </label>
-          {error && <p className="text-xs font-medium text-destructive">{error}</p>}
+          {error && <p role="alert" className="text-sm font-medium text-destructive">{error}</p>}
           <Button
             type="submit"
             className="h-12 w-full rounded-full bg-navy text-base font-semibold text-white hover:bg-[#0f1a2c]"
@@ -195,13 +203,6 @@ function Login({ onEnter }: { onEnter: (code: string) => void }) {
           </Button>
         </form>
 
-        <div className="mt-4 flex items-start gap-3 rounded-2xl bg-[#F5A623]/15 p-4">
-          <Info className="mt-0.5 h-5 w-5 flex-none text-[#8a5a00]" />
-          <p className="text-xs leading-snug text-[#5c3a00]">
-            <strong>Ambiente de demonstração.</strong> O AF Campus está em fase piloto: nenhuma
-            credencial é enviada ou armazenada, e o painel exibe dados fictícios.
-          </p>
-        </div>
       </main>
     </div>
   );
@@ -296,25 +297,25 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
       icon: Users,
       label: "Estudantes que acessaram no mês",
       value: d.students.toLocaleString("pt-BR"),
-      tone: "bg-teal/10 text-[#0d6b60]",
+      tone: "bg-teal/10 text-teal-deep",
     },
     {
       icon: Eye,
       label: "Usos de ferramentas",
       value: d.tools.toLocaleString("pt-BR"),
-      tone: "bg-cyan/10 text-[#0f6f99]",
+      tone: "bg-teal-soft text-[#0f6f99]",
     },
     {
       icon: ClipboardCheck,
       label: "Autoavaliações concluídas",
       value: d.assessments.toLocaleString("pt-BR"),
-      tone: "bg-magenta/10 text-magenta",
+      tone: "bg-teal-soft text-teal-deep",
     },
     {
       icon: HeartHandshake,
       label: "Acessos aos canais de ajuda",
       value: d.help.toLocaleString("pt-BR"),
-      tone: "bg-coral/10 text-[#c2392c]",
+      tone: "bg-coral-soft text-[#c2392c]",
     },
   ];
 
@@ -324,7 +325,7 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
         <div className="mx-auto flex min-h-14 max-w-[1100px] items-center justify-between gap-3 px-4 py-2">
           <div className="flex min-w-0 items-center gap-2">
             <img src={logoMark} alt="" aria-hidden="true" className="h-7 w-7" />
-            <BrandLockup product="Campus" partner={partner.shortName} as="h1" />
+            <BrandLockup product="Campus" tone="dark" partner={partner.shortName} as="h1" />
           </div>
           <div className="flex items-center gap-2">
             <Link
@@ -345,8 +346,8 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
       </header>
 
       <main className="mx-auto max-w-[1100px] px-4 pb-16 pt-5">
-        <div className="flex items-start gap-3 rounded-2xl bg-[#E1F5EE] p-4">
-          <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-[#0d6b60]" strokeWidth={2.4} />
+        <div className="flex items-start gap-3 rounded-2xl bg-teal-soft p-4">
+          <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-teal-deep" strokeWidth={2.4} />
           <div>
             <p className="text-sm font-semibold text-navy">
               Painel de Indicadores Agregados — Proteção Total de Dados (LGPD)
@@ -358,13 +359,13 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
           </div>
         </div>
 
-        <div className="mt-3 rounded-2xl border-2 border-dashed border-[#F5A623] bg-[#F5A623]/10 px-4 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-[#8a5a00]">
+        <div className="mt-3 rounded-2xl border-2 border-dashed border-[#F5A623] bg-gold-soft px-4 py-2.5 text-center text-xs font-bold text-[#8a5a00]">
           Demonstração — dados fictícios
         </div>
 
         <div className="mt-5 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#0d6b60]">
+            <p className="text-xs font-semibold text-teal-deep">
               {partner.name}
             </p>
             <h2 className="text-xl font-bold text-navy sm:text-2xl">Visão geral do mês</h2>
@@ -474,7 +475,7 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <p className="mt-1 text-[11px] text-muted-foreground">
+            <p className="mt-1 text-xs text-muted-foreground">
               Triagem, não diagnóstico. Serve para planejar ações preventivas.
             </p>
           </section>
@@ -483,9 +484,9 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
         <section className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="rounded-3xl bg-navy p-5 text-white shadow-soft">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10">
-              <PiggyBank className="h-5 w-5 text-[#0AF0FB]" />
+              <PiggyBank className="h-5 w-5 text-[#7fe6da]" />
             </span>
-            <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-[#0AF0FB]">
+            <p className="mt-3 text-xs font-semibold text-[#7fe6da]">
               Metas financeiras simbólicas acumuladas
             </p>
             <p className="mt-1 text-3xl font-bold tabular-nums">{brl(d.goalsValue)}</p>
@@ -498,14 +499,14 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
             <ul className="mt-3 space-y-2">
               {partner.channels.map((c) => (
                 <li key={c.label} className="rounded-2xl bg-background px-3 py-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-[#0d6b60]">
+                  <p className="text-xs font-semibold text-teal-deep">
                     {c.label}
                   </p>
                   <p className="truncate text-sm text-navy">{c.detail}</p>
                 </li>
               ))}
-              <li className="rounded-2xl bg-coral/10 px-3 py-2">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#c2392c]">
+              <li className="rounded-2xl bg-coral-soft px-3 py-2">
+                <p className="text-xs font-semibold text-[#c2392c]">
                   Crise
                 </p>
                 <p className="text-sm text-navy">CVV 188 · 24h, gratuito e sigiloso</p>
@@ -514,7 +515,7 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
           </div>
         </section>
 
-        <p className="mt-6 text-center text-[11px] text-muted-foreground">
+        <p className="mt-6 text-center text-xs text-muted-foreground">
           AF Campus · Aposta no Futuro. Os estudantes usam o AF People de forma gratuita e anônima;
           a instituição vê apenas indicadores agregados.
         </p>

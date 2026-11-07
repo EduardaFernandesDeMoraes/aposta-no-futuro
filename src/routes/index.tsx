@@ -5,13 +5,20 @@ import confetti from "canvas-confetti";
 import {
   ClipboardCheck,
   Calculator,
-  Trophy,
-  Users,
+  BookOpen,
   RefreshCw,
   Sparkles,
-  Lock,
+  ChevronRight,
+  Heart,
+  Sprout,
+  Leaf,
+  Star,
+  Mountain,
+  Gem,
+  Award,
+  type LucideIcon,
 } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
+import { AppShell, openXande } from "@/components/app-shell";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Button } from "@/components/ui/button";
 import {
@@ -105,46 +112,37 @@ type Profile = {
   onboarded: boolean;
 };
 
-type Milestone = { days: number; label: string; emoji: string };
+type Milestone = { days: number; label: string; short: string; icon: LucideIcon };
 
 const MILESTONES: Milestone[] = [
-  { days: 1, label: "1 dia", emoji: "🌱" },
-  { days: 7, label: "1 semana", emoji: "🌿" },
-  { days: 30, label: "1 mês", emoji: "⭐" },
-  { days: 90, label: "3 meses", emoji: "🔥" },
-  { days: 180, label: "6 meses", emoji: "💎" },
-  { days: 365, label: "1 ano", emoji: "👑" },
+  { days: 1, label: "1 dia", short: "1 dia", icon: Sprout },
+  { days: 7, label: "1 semana", short: "1 sem.", icon: Leaf },
+  { days: 30, label: "1 mês", short: "1 mês", icon: Star },
+  { days: 90, label: "3 meses", short: "3 meses", icon: Mountain },
+  { days: 180, label: "6 meses", short: "6 meses", icon: Gem },
+  { days: 365, label: "1 ano", short: "1 ano", icon: Award },
 ];
 
 function encourage(totalMinutes: number) {
-  if (totalMinutes < 60) return "Cada minuto é uma vitória. Respira, você consegue.";
+  if (totalMinutes < 60) return "Cada minuto conta. Respira, você está fazendo isso.";
   if (totalMinutes < 60 * 24) return "Você está mais forte a cada hora que passa.";
-  if (totalMinutes < 60 * 24 * 7) return "Siga firme, valerá a pena.";
-  if (totalMinutes < 60 * 24 * 30) return "Uma semana muda muita coisa. Continua assim!";
-  if (totalMinutes < 60 * 24 * 90) return "Você está transformando sua história 💚";
-  return "Você é inspiração pra muita gente. Continue!";
+  if (totalMinutes < 60 * 24 * 7) return "Siga com calma. Um dia de cada vez.";
+  if (totalMinutes < 60 * 24 * 30) return "Uma semana muda muita coisa. Continua assim.";
+  if (totalMinutes < 60 * 24 * 90) return "Você está reescrevendo a sua história.";
+  return "Você é inspiração pra muita gente. Continue.";
 }
 
 function celebrate() {
-  const end = Date.now() + 900;
-  const colors = ["#16BFAC", "#F5A623", "#E8197E", "#1CA0D8"];
-  (function frame() {
-    confetti({
-      particleCount: 4,
-      angle: 60,
-      spread: 60,
-      origin: { x: 0, y: 0.7 },
-      colors,
-    });
-    confetti({
-      particleCount: 4,
-      angle: 120,
-      spread: 60,
-      origin: { x: 1, y: 0.7 },
-      colors,
-    });
-    if (Date.now() < end) requestAnimationFrame(frame);
-  })();
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+  confetti({
+    particleCount: 60,
+    spread: 70,
+    startVelocity: 28,
+    gravity: 0.8,
+    origin: { y: 0.45 },
+    colors: ["#16BFAC", "#F5A623", "#0D6B60"],
+    disableForReducedMotion: true,
+  });
 }
 
 function Home() {
@@ -159,35 +157,38 @@ function Home() {
   );
   const [access] = useAccess();
   const partner = access.mode === "student" ? findPartner(access.partner) : undefined;
-  const [now, setNow] = useState(() => Date.now());
+  // `now` só existe no aparelho: evita HTML diferente entre servidor e navegador.
+  const [now, setNow] = useState<number | null>(null);
   const [restartOpen, setRestartOpen] = useState(false);
   const [celebration, setCelebration] = useState<Milestone | null>(null);
 
   useEffect(() => {
+    setNow(Date.now());
     const id = window.setInterval(() => setNow(Date.now()), 1000 * 30);
     return () => window.clearInterval(id);
   }, []);
 
-  const startMs = profile.firstFreeDay
-    ? new Date(profile.firstFreeDay).getTime()
-    : now;
-  const elapsed = Math.max(0, now - startMs);
+  const started = Boolean(profile.firstFreeDay);
+  const startMs = started ? new Date(profile.firstFreeDay).getTime() : (now ?? 0);
+  const elapsed = now === null ? 0 : Math.max(0, now - startMs);
   const totalMinutes = Math.floor(elapsed / 60000);
   const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
   const hours = Math.floor((elapsed / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((elapsed / (1000 * 60)) % 60);
 
-  // Detect newly hit milestone
+  const reachedCount = started ? MILESTONES.filter((m) => days >= m.days).length : 0;
+  const next = MILESTONES.find((m) => !started || days < m.days);
+
+  // Comemora um marco recém-alcançado
   useEffect(() => {
-    const reached = [...MILESTONES]
-      .reverse()
-      .find((m) => days >= m.days);
+    if (!started || now === null) return;
+    const reached = [...MILESTONES].reverse().find((m) => days >= m.days);
     if (reached && reached.days > lastMilestone) {
       setLastMilestone(reached.days);
       setCelebration(reached);
       celebrate();
     }
-  }, [days, lastMilestone, setLastMilestone]);
+  }, [days, lastMilestone, setLastMilestone, started, now]);
 
   const phrase = useMemo(() => encourage(totalMinutes), [totalMinutes]);
 
@@ -195,7 +196,7 @@ function Home() {
     trackOnce(EVENTS.homeView);
   }, []);
 
-  function handleRestart() {
+  function startCounter() {
     const iso = new Date().toISOString();
     setProfile({ ...profile, firstFreeDay: iso });
     track(EVENTS.counterStarted);
@@ -204,166 +205,228 @@ function Home() {
     setRestartOpen(false);
   }
 
-  return (
-    <AppShell
-      title="Aposta no Futuro"
-      titleAs="p"
-      brand={{ product: "People", partner: partner?.shortName }}
-    >
+  const firstName = profile.name.trim().split(/\s+/)[0];
 
-      {/* Título principal da página */}
-      <div className="pb-5">
-        <h1 className="text-xl font-bold leading-tight tracking-tight text-navy sm:text-2xl">
-          Menos apostas. Mais futuro. Essa é a nossa aposta.
+  return (
+    <AppShell title="Aposta no Futuro" titleAs="p">
+      <div className="lg:grid lg:grid-cols-12 lg:gap-x-12">
+      <div className="lg:col-span-7">
+      {/* Saudação + título da página */}
+      <div className="pb-6 lg:pb-8">
+        <p className="font-script text-[2rem] font-bold leading-none text-teal-deep lg:text-[2.75rem]">
+          {firstName ? `Oi, ${firstName}` : "Oi, que bom te ver"}
+        </p>
+        <h1 className="mt-3 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[3.25rem] lg:leading-[1.05] lg:tracking-[-0.035em]">
+          Menos apostas. Mais futuro.
         </h1>
       </div>
 
-      {/* Greeting */}
-      <div className="flex items-center gap-2 pb-1">
-        <Sparkles className="h-4 w-4 text-magenta" />
-        <p className="text-sm font-medium text-navy">
-          Olá{profile.name ? `, ${profile.name}` : ""}!
-        </p>
-      </div>
-
-      {/* Counter card */}
-      <section className="mt-3 overflow-hidden rounded-3xl bg-gradient-to-br from-[#0d6b60] to-[#094e46] p-6 text-white shadow-soft animate-fade-in">
-        <div className="text-xs font-semibold uppercase tracking-wider opacity-90">
-          Você está sem apostar há:
-        </div>
-
-        <div className="mt-4 flex items-end justify-between gap-2">
-          <TimeBlock value={days} label={days === 1 ? "dia" : "dias"} big />
-          <span className="pb-3 text-3xl font-light opacity-60">:</span>
-          <TimeBlock value={hours} label="h" />
-          <span className="pb-3 text-3xl font-light opacity-60">:</span>
-          <TimeBlock value={minutes} label="min" />
-        </div>
-
-        <p className="mt-5 text-sm leading-snug opacity-95">{phrase}</p>
-
-        <button
-          onClick={() => setRestartOpen(true)}
-          className="mt-5 inline-flex items-center gap-2 rounded-full bg-coral px-4 py-2 text-sm font-semibold text-coral-foreground shadow-soft transition-all duration-200 ease-out hover:bg-[#eb4436] active:scale-95"
-        >
-          <RefreshCw className="h-4 w-4" />
-          Recomecei hoje
-        </button>
-      </section>
-
-      {/* Milestones */}
-      <section className="mt-6">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-navy">Seus marcos</h2>
-          <span className="text-xs text-muted-foreground">
-            {MILESTONES.filter((m) => days >= m.days).length}/{MILESTONES.length}
-          </span>
-        </div>
-
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4">
-          {MILESTONES.map((m) => {
-            const achieved = days >= m.days;
-            return (
-              <div
-                key={m.days}
-                className={cn(
-                  "min-w-[92px] flex-1 rounded-2xl border p-3 text-center transition",
-                  achieved
-                    ? "border-gold/40 bg-gradient-to-b from-gold/15 to-gold/5 shadow-card"
-                    : "border-border bg-card/60",
-                )}
-              >
-                <div
-                  className={cn(
-                    "mx-auto grid h-12 w-12 place-items-center rounded-full text-xl",
-                    achieved
-                      ? "bg-gold text-gold-foreground shadow-soft"
-                      : "bg-muted text-muted-foreground",
-                  )}
-                >
-                  {achieved ? m.emoji : <Lock className="h-4 w-4" />}
+      {/* Contador: a peça central */}
+      <section
+        aria-label="Seu contador de dias sem apostar"
+        className="relative overflow-hidden rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:rounded-[2.25rem] lg:p-10"
+      >
+        <HandsWatermark />
+        {started ? (
+          <>
+            <p className="relative text-[0.95rem] text-white/85 lg:text-lg">Você está sem apostar há</p>
+            <div className="relative mt-3 flex items-end gap-5 lg:mt-4 lg:gap-10">
+              <div>
+                <span className="tabular block text-[4.5rem] font-semibold leading-[0.9] tracking-[-0.03em] lg:text-[8.5rem] lg:tracking-[-0.045em]">
+                  {now === null ? "–" : days}
+                </span>
+                <span className="mt-2 block text-sm font-medium text-white/85 lg:mt-3 lg:text-lg">
+                  {days === 1 ? "dia" : "dias"}
+                </span>
+              </div>
+              <div className="mb-1 flex gap-4 text-white/85 lg:mb-3 lg:gap-8">
+                <div>
+                  <span className="tabular block text-2xl font-semibold leading-none text-white lg:text-[2.75rem]">
+                    {now === null ? "–" : String(hours).padStart(2, "0")}
+                  </span>
+                  <span className="mt-1 block text-xs lg:mt-2 lg:text-sm">horas</span>
                 </div>
-                <div
-                  className={cn(
-                    "mt-2 text-xs font-semibold",
-                    achieved ? "text-navy" : "text-muted-foreground",
-                  )}
-                >
-                  {m.label}
+                <div>
+                  <span className="tabular block text-2xl font-semibold leading-none text-white lg:text-[2.75rem]">
+                    {now === null ? "–" : String(minutes).padStart(2, "0")}
+                  </span>
+                  <span className="mt-1 block text-xs lg:mt-2 lg:text-sm">min</span>
                 </div>
               </div>
+            </div>
+            <p className="relative mt-5 max-w-[30ch] text-[0.95rem] leading-snug text-white lg:mt-8 lg:text-xl">
+              {phrase}
+            </p>
+            <button
+              onClick={() => setRestartOpen(true)}
+              className="relative -ml-1 mt-4 inline-flex min-h-11 items-center gap-2 rounded-full px-1 text-sm font-medium text-white/85 underline decoration-white/40 underline-offset-4 transition-colors hover:text-white"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Precisei recomeçar
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="relative text-xl font-semibold leading-snug lg:text-[2rem] lg:leading-tight">
+              Seu contador começa quando você quiser.
+            </p>
+            <p className="relative mt-2 max-w-[34ch] text-[0.95rem] leading-relaxed text-white/85 lg:mt-3 lg:text-lg"> 
+              Não precisa ter parado de vez. Começar hoje já é um passo, e você
+              pode recomeçar quantas vezes precisar.
+            </p>
+            <button
+              onClick={startCounter}
+              className="relative mt-5 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-5 text-[0.95rem] font-semibold text-teal-ink transition-colors hover:bg-teal-soft"
+            >
+              <Sprout className="h-4 w-4" />
+              Começar a contar hoje
+            </button>
+          </>
+        )}
+      </section>
+
+      {/* Trilha de marcos */}
+      <section className="mt-8 lg:mt-12" aria-labelledby="marcos-titulo">
+        <div className="flex items-baseline justify-between">
+          <h2 id="marcos-titulo" className="text-lg font-semibold text-navy">
+            Sua trilha
+          </h2>
+          <span className="tabular text-sm text-muted-foreground">
+            {reachedCount} de {MILESTONES.length} marcos
+          </span>
+        </div>
+        <ol className="relative mt-5 grid grid-cols-6">
+          <span
+            aria-hidden="true"
+            className="absolute left-[8.33%] right-[8.33%] top-[18px] h-[3px] rounded-full bg-border lg:top-[23px]"
+          />
+          <span
+            aria-hidden="true"
+            className="absolute left-[8.33%] top-[18px] h-[3px] rounded-full bg-gold transition-[width] duration-700 lg:top-[23px]"
+            style={{
+              width: `${reachedCount <= 1 ? 0 : ((reachedCount - 1) / (MILESTONES.length - 1)) * 83.33}%`,
+            }}
+          />
+          {MILESTONES.map((m) => {
+            const achieved = started && days >= m.days;
+            const isNext = next?.days === m.days;
+            const Icon = m.icon;
+            return (
+              <li key={m.days} className="relative flex flex-col items-center text-center">
+                <span
+                  className={cn(
+                    "grid h-9 w-9 place-items-center rounded-full border-2 lg:h-12 lg:w-12",
+                    achieved
+                      ? "border-gold bg-gold text-navy"
+                      : isNext
+                        ? "border-teal-deep bg-card text-teal-deep"
+                        : "border-border bg-background text-muted-foreground",
+                  )}
+                >
+                  <Icon className="h-4 w-4 lg:h-5 lg:w-5" strokeWidth={2} />
+                </span>
+                <span
+                  className={cn(
+                    "mt-2 text-xs leading-tight lg:mt-3 lg:text-sm",
+                    achieved || isNext ? "font-semibold text-navy" : "text-muted-foreground",
+                  )}
+                >
+                  {m.short}
+                </span>
+                <span className="sr-only">{achieved ? "alcançado" : "ainda não"}</span>
+              </li>
             );
           })}
-        </div>
+        </ol>
+        {started && next && now !== null && (
+          <p className="mt-4 text-sm text-muted-foreground">
+            Próximo marco: <span className="font-semibold text-navy">{next.label}</span>
+            {" · "}
+            {next.days - days === 1 ? "falta 1 dia" : `faltam ${next.days - days} dias`}
+          </p>
+        )}
       </section>
 
-      {/* Shortcuts */}
-      <section className="mt-6">
-        <h2 className="mb-3 text-sm font-semibold text-navy">
-          Continue sua jornada
+      </div>
+
+      {/* Coluna lateral no desktop */}
+      <aside className="lg:col-span-5 lg:pt-[11.25rem]">
+      {/* Para o momento da vontade: perto do polegar */}
+      <button
+        onClick={openXande}
+        className="mt-8 lg:mt-0 flex w-full items-center gap-4 rounded-3xl bg-teal-soft p-4 text-left transition-colors hover:bg-[#cfe9e1]"
+      >
+        <span className="grid h-12 w-12 flex-none place-items-center rounded-full bg-card text-teal-deep shadow-card">
+          <Sparkles className="h-5 w-5" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold text-navy">Bateu vontade de apostar?</span>
+          <span className="mt-0.5 block text-sm text-teal-ink">
+            Fala com o Xande. A gente segura junto por alguns minutos.
+          </span>
+        </span>
+        <ChevronRight className="h-5 w-5 flex-none text-teal-deep" />
+      </button>
+
+      {/* Caminhos */}
+      <section className="mt-8" aria-labelledby="caminhos-titulo">
+        <h2 id="caminhos-titulo" className="text-lg font-semibold text-navy">
+          Para continuar
         </h2>
-        <div className="grid grid-cols-2 items-stretch gap-3">
-          <ShortcutCard
-            to="/autoavaliacao"
-            color="bg-magenta/10 text-magenta"
-            hover="hover:bg-magenta/5 hover:border-magenta/30"
-            icon={<ClipboardCheck className="h-5 w-5" />}
-            title="Autoavaliação"
-          />
-          <ShortcutCard
+        <ul className="mt-3 divide-y divide-border overflow-hidden rounded-3xl border border-border bg-card">
+          <PathRow
             to="/simulador"
-            color="bg-teal/10 text-teal"
-            hover="hover:bg-teal/5 hover:border-teal/30"
             icon={<Calculator className="h-5 w-5" />}
-            title="Ver simulador"
+            title="O que seu dinheiro pode virar"
+            desc="Simulador de futuro"
           />
-          <ShortcutCard
-            to="/metas"
-            color="bg-gold/15 text-gold"
-            hover="hover:bg-gold/10 hover:border-gold/30"
-            icon={<Trophy className="h-5 w-5" />}
-            title="Ver meta de hoje"
+          <PathRow
+            to="/autoavaliacao"
+            icon={<ClipboardCheck className="h-5 w-5" />}
+            title="Como está sua relação com as bets?"
+            desc="9 perguntas, uns 2 minutos, anônimo"
           />
-          <ShortcutCard
-            to="/comunidade"
-            color="bg-cyan/10 text-cyan"
-            hover="hover:bg-cyan/5 hover:border-cyan/30"
-            icon={<Users className="h-5 w-5" />}
-            title="Falar com a comunidade"
+          <PathRow
+            to="/guia/parar-de-apostar"
+            icon={<BookOpen className="h-5 w-5" />}
+            title="Como parar de apostar"
+            desc="Guia passo a passo"
           />
-        </div>
+        </ul>
       </section>
 
-      {partner && <CampusSupportCard partner={partner} className="mt-4" />}
+      {partner && <CampusSupportCard partner={partner} className="mt-6" />}
 
-      <InstallCard className="mt-4" />
+      <InstallCard className="mt-6" />
+      </aside>
+      </div>
 
-      {/* Restart dialog */}
+      {/* Recomeçar */}
       <Dialog open={restartOpen} onOpenChange={setRestartOpen}>
         <DialogContent className="max-w-sm rounded-3xl">
           <DialogHeader>
-            <div className="mx-auto mb-2 grid h-14 w-14 place-items-center rounded-full bg-coral/10 text-2xl">
-              💚
+            <div className="mx-auto mb-2 grid h-14 w-14 place-items-center rounded-full bg-teal-soft text-teal-deep">
+              <Heart className="h-6 w-6" />
             </div>
-            <DialogTitle className="text-center text-navy">
+            <DialogTitle className="text-center text-xl text-navy">
               Todo recomeço conta
             </DialogTitle>
-            <DialogDescription className="text-center">
-              Recaída não apaga seu progresso. Orgulho de você por continuar
-              tentando. Vamos reiniciar seu contador a partir de agora?
+            <DialogDescription className="text-center text-[0.95rem] leading-relaxed">
+              Recaída não apaga o que você já construiu. Orgulho de você por
+              continuar tentando. Vamos recomeçar o contador a partir de agora?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="mt-2 flex-col gap-2 sm:flex-col">
             <Button
-              onClick={handleRestart}
-              className="w-full rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
+              onClick={startCounter}
+              className="min-h-12 w-full rounded-full bg-teal-deep text-white hover:bg-teal-ink"
             >
               Sim, recomeçar agora
             </Button>
             <Button
               variant="ghost"
               onClick={() => setRestartOpen(false)}
-              className="w-full rounded-full text-muted-foreground"
+              className="min-h-12 w-full rounded-full text-muted-foreground"
             >
               Agora não
             </Button>
@@ -371,28 +434,28 @@ function Home() {
         </DialogContent>
       </Dialog>
 
-      {/* Milestone celebration dialog */}
+      {/* Comemoração de marco */}
       <Dialog
         open={celebration !== null}
         onOpenChange={(v) => !v && setCelebration(null)}
       >
         <DialogContent className="max-w-sm rounded-3xl text-center">
           <DialogHeader>
-            <div className="mx-auto mb-2 grid h-20 w-20 place-items-center rounded-full bg-gold text-4xl shadow-soft">
-              {celebration?.emoji}
+            <div className="mx-auto mb-2 grid h-20 w-20 place-items-center rounded-full bg-gold text-navy shadow-soft">
+              {celebration ? <celebration.icon className="h-9 w-9" strokeWidth={1.8} /> : null}
             </div>
-            <DialogTitle className="text-center text-navy">
-              Você conquistou {celebration?.label}!
+            <DialogTitle className="text-center text-xl text-navy">
+              Você chegou a {celebration?.label}
             </DialogTitle>
-            <DialogDescription className="text-center">
-              Isso é muito grande. Respira, sente esse orgulho, você merece.
+            <DialogDescription className="text-center text-[0.95rem] leading-relaxed">
+              Isso é muito grande. Respira e sente esse orgulho: foi você que fez.
             </DialogDescription>
           </DialogHeader>
           <Button
             onClick={() => setCelebration(null)}
-            className="mt-2 w-full rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
+            className="mt-2 min-h-12 w-full rounded-full bg-teal-deep text-white hover:bg-teal-ink"
           >
-            Obrigado 💚
+            Seguir em frente
           </Button>
         </DialogContent>
       </Dialog>
@@ -400,64 +463,47 @@ function Home() {
   );
 }
 
-function TimeBlock({
-  value,
-  label,
-  big = false,
-}: {
-  value: number;
-  label: string;
-  big?: boolean;
-}) {
+/** Marca d'água com o logo das mãos, discreta, no canto do contador. */
+function HandsWatermark() {
   return (
-    <div className="flex flex-1 flex-col items-center">
-      <span
-        className={cn(
-          "font-bold leading-none tabular-nums",
-          big ? "text-6xl" : "text-4xl",
-        )}
-      >
-        {String(value).padStart(2, "0")}
-      </span>
-      <span className="mt-1 text-[11px] uppercase tracking-wider opacity-80">
-        {label}
-      </span>
-    </div>
+    <img
+      src="/logo-maos-coracao.svg"
+      alt=""
+      aria-hidden="true"
+      width={180}
+      height={180}
+      className="pointer-events-none absolute -bottom-10 -right-8 h-44 w-44 select-none opacity-[0.12] grayscale brightness-[3] lg:-bottom-16 lg:-right-10 lg:h-80 lg:w-80"
+      draggable={false}
+    />
   );
 }
 
-function ShortcutCard({
+function PathRow({
   to,
-  color,
-  hover,
   icon,
   title,
+  desc,
 }: {
   to: string;
-  color: string;
-  hover?: string;
   icon: React.ReactNode;
   title: string;
+  desc: string;
 }) {
   return (
-    <Link
-      to={to}
-      className={cn(
-        "group flex h-full min-h-[124px] flex-col rounded-2xl border border-border bg-card p-4 text-left shadow-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-soft active:translate-y-0 active:scale-[0.98]",
-        hover,
-      )}
-    >
-      <div
-        className={cn(
-          "grid h-10 w-10 place-items-center rounded-xl transition-colors duration-200",
-          color,
-        )}
+    <li>
+      <Link
+        to={to}
+        className="flex min-h-[4.5rem] items-center gap-4 px-4 py-3 transition-colors hover:bg-background"
       >
-        {icon}
-      </div>
-      <div className="mt-3 text-sm font-semibold leading-tight text-navy">
-        {title}
-      </div>
-    </Link>
+        <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
+          {icon}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-medium leading-snug text-navy">{title}</span>
+          <span className="mt-0.5 block text-sm text-muted-foreground">{desc}</span>
+        </span>
+        <ChevronRight className="h-5 w-5 flex-none text-muted-foreground" />
+      </Link>
+    </li>
   );
 }

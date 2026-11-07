@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FileText } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { SensitiveFooter } from "@/components/sensitive-footer";
 
 export const Route = createFileRoute("/termos")({
   head: () => ({
@@ -29,7 +28,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <section className="mt-5 rounded-2xl bg-card p-4 shadow-card">
       <h2 className="text-sm font-semibold text-navy">{title}</h2>
-      <div className="mt-2 space-y-2 text-sm leading-relaxed text-slate-600">
+      <div className="mt-2 space-y-2 text-sm leading-relaxed text-navy/80">
         {children}
       </div>
     </section>
@@ -39,11 +38,11 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Termos() {
   return (
     <AppShell title="Termos de uso">
-      <div className="flex items-start gap-3 rounded-2xl border border-[#16BFAC] bg-[#E1F5EE] p-4">
-        <FileText className="mt-0.5 h-5 w-5 flex-none text-[#16BFAC]" />
+      <div className="flex items-start gap-3 rounded-2xl border border-teal-deep/30 bg-teal-soft p-4">
+        <FileText className="mt-0.5 h-5 w-5 flex-none text-teal-deep" />
         <div>
-          <h1 className="font-semibold text-[#16233C]">Termos de uso</h1>
-          <p className="mt-1 text-sm text-slate-600">
+          <h1 className="font-semibold text-navy">Termos de uso</h1>
+          <p className="mt-1 text-sm text-navy/80">
             Regras simples para este espaço continuar sendo seguro para todo
             mundo.
           </p>
@@ -87,7 +86,7 @@ function Termos() {
         <p>
           Dúvidas sobre estes termos:{" "}
           <a
-            className="font-medium text-teal underline underline-offset-2"
+            className="font-medium text-teal-deep underline underline-offset-2"
             href="mailto:contato@apostanofuturo.online"
           >
             contato@apostanofuturo.online
@@ -96,7 +95,6 @@ function Termos() {
         </p>
       </Section>
 
-      <SensitiveFooter />
     </AppShell>
   );
 }

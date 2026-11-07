@@ -73,27 +73,44 @@ export function MinhasApostas({
   const [creating, setCreating] = useState(false);
 
   return (
-    <section id="minhas-apostas" className="mt-6 scroll-mt-20">
-      <div className="rounded-3xl bg-navy p-5 text-white shadow-soft">
-        <p className="text-xs font-semibold uppercase tracking-wider text-[#0AF0FB]">
-          Minhas apostas no futuro
-        </p>
-        <h2 className="mt-1 text-lg font-bold leading-snug">
-          E se esse dinheiro fosse para o seu futuro?
-        </h2>
-        <p className="mt-1.5 text-sm text-white/80">
-          Transforme o valor que você deixa de apostar em objetivos reais. Esta é a única aposta que
-          nunca vira dívida.
-        </p>
-        {!creating && (
+    <section id="minhas-apostas" className="mt-12 scroll-mt-24 lg:mt-20" aria-labelledby="apostas-titulo">
+      <h2
+        id="apostas-titulo"
+        className="text-[1.5rem] font-semibold leading-tight tracking-[-0.02em] text-navy lg:text-[2.25rem]"
+      >
+        Minhas apostas{" "}
+        <span className="font-script text-[1.9rem] font-bold text-teal-deep lg:text-[2.75rem]">no futuro</span>
+      </h2>
+      <p className="mt-2 max-w-[60ch] text-[0.95rem] leading-relaxed text-muted-foreground lg:text-lg">
+        Transforme o que você deixa de apostar em objetivos reais. A única
+        aposta que nunca vira dívida.
+      </p>
+
+      {!creating && bets.length === 0 && (
+        <div className="mt-5 rounded-3xl border-2 border-dashed border-border px-5 py-7 text-center lg:flex lg:items-center lg:gap-6 lg:px-8 lg:text-left">
+          <span className="mx-auto grid h-14 w-14 flex-none place-items-center rounded-full bg-gold-soft text-gold-deep lg:mx-0">
+            <PiggyBank className="h-6 w-6" />
+          </span>
+          <p className="mx-auto mt-4 max-w-[30ch] text-[0.95rem] leading-relaxed text-navy lg:mx-0 lg:mt-0 lg:max-w-none lg:flex-1 lg:text-lg">
+            Uma reserva, um curso, uma viagem. O que você quer construir?
+          </p>
           <Button
             onClick={() => setCreating(true)}
-            className="mt-4 h-11 rounded-full bg-teal px-5 text-sm font-semibold text-navy hover:bg-[#14ac9b]"
+            className="mt-5 min-h-12 flex-none rounded-full bg-teal-deep px-6 text-sm font-semibold text-white hover:bg-teal-ink lg:mt-0"
           >
-            <Plus className="mr-1 h-4 w-4" /> Criar uma aposta no futuro
+            <Plus className="mr-1 h-4 w-4" /> Criar minha primeira aposta
           </Button>
-        )}
-      </div>
+        </div>
+      )}
+      {!creating && bets.length > 0 && (
+        <Button
+          onClick={() => setCreating(true)}
+          variant="outline"
+          className="mt-4 min-h-11 rounded-full border-teal-deep/30 bg-card px-5 text-sm font-semibold text-teal-deep hover:bg-teal-soft"
+        >
+          <Plus className="mr-1 h-4 w-4" /> Nova aposta no futuro
+        </Button>
+      )}
 
       {creating && (
         <BetForm
@@ -108,7 +125,7 @@ export function MinhasApostas({
       )}
 
       {bets.length > 0 && (
-        <ul className="mt-3 space-y-3">
+        <ul className="mt-4 space-y-3 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
           {bets.map((b) => (
             <BetCard
               key={b.id}
@@ -121,7 +138,7 @@ export function MinhasApostas({
         </ul>
       )}
 
-      <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+      <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
         É só um planejamento: o app não guarda, movimenta nem investe dinheiro. Seus objetivos ficam
         salvos apenas neste aparelho.
       </p>
@@ -168,23 +185,23 @@ function BetForm({
   }
 
   return (
-    <form onSubmit={submit} className="mt-3 rounded-3xl bg-card p-5 shadow-card">
+    <form onSubmit={submit} className="rise-in mt-5 rounded-3xl border border-border bg-card p-5 lg:max-w-2xl lg:p-8">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-navy">
+        <h3 className="font-semibold text-navy">
           {initial ? "Editar objetivo" : "Novo objetivo"}
         </h3>
         <button
           type="button"
           onClick={onCancel}
           aria-label="Cancelar"
-          className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground hover:bg-muted"
+          className="-mr-2 grid h-11 w-11 place-items-center rounded-full text-muted-foreground hover:bg-muted"
         >
           <X className="h-4 w-4" />
         </button>
       </div>
 
       <label className="mt-3 block">
-        <span className="mb-1.5 block text-xs font-medium text-navy">Qual é o objetivo?</span>
+        <span className="mb-1.5 block text-sm font-medium text-navy">Qual é o objetivo?</span>
         <input
           value={name}
           onChange={(e) => {
@@ -193,12 +210,12 @@ function BetForm({
           }}
           maxLength={40}
           placeholder="Ex.: Reserva de emergência, curso de inglês…"
-          className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-base outline-none focus:border-teal md:text-sm"
+          className="min-h-12 w-full rounded-2xl border border-input bg-background px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
         />
       </label>
 
       <div className="mt-3">
-        <span className="mb-1.5 block text-xs font-medium text-navy">Escolha um ícone</span>
+        <span className="mb-1.5 block text-sm font-medium text-navy">Escolha um ícone</span>
         <div className="flex flex-wrap gap-2">
           {(Object.keys(ICONS) as IconKey[]).map((k) => {
             const I = ICONS[k].icon;
@@ -209,10 +226,10 @@ function BetForm({
                 onClick={() => setIcon(k)}
                 aria-pressed={icon === k}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                  "flex min-h-10 items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium transition-colors",
                   icon === k
-                    ? "border-teal bg-[#E1F5EE] text-[#0d6b60]"
-                    : "border-border bg-background text-navy/80 hover:border-teal/40",
+                    ? "border-teal-deep bg-teal-soft text-teal-ink"
+                    : "border-border bg-background text-navy hover:border-teal-deep/40",
                 )}
               >
                 <I className="h-3.5 w-3.5" /> {ICONS[k].label}
@@ -223,8 +240,8 @@ function BetForm({
       </div>
 
       <label className="mt-3 block">
-        <span className="mb-1.5 block text-xs font-medium text-navy">Quanto você quer juntar?</span>
-        <span className="flex items-center gap-2 rounded-2xl border border-border bg-background px-4 focus-within:border-teal">
+        <span className="mb-1.5 block text-sm font-medium text-navy">Quanto você quer juntar?</span>
+        <span className="flex min-h-12 items-center gap-2 rounded-2xl border border-input bg-background px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
           <span className="text-sm font-semibold text-muted-foreground">R$</span>
           <input
             inputMode="decimal"
@@ -237,17 +254,17 @@ function BetForm({
           />
         </span>
         {suggestedTarget > 0 && !initial && (
-          <span className="mt-1.5 block text-[11px] text-muted-foreground">
+          <span className="mt-1.5 block text-xs text-muted-foreground">
             Sugestão: o valor estimado de 1 ano do simulador ({brl(suggestedTarget)}).
           </span>
         )}
       </label>
 
-      {error && <p className="mt-2 text-xs font-medium text-destructive">{error}</p>}
+      {error && <p className="mt-2 text-sm font-medium text-destructive">{error}</p>}
 
       <Button
         type="submit"
-        className="mt-4 h-11 w-full rounded-full bg-teal text-sm font-semibold text-navy hover:bg-[#14ac9b]"
+        className="mt-5 min-h-12 w-full rounded-full bg-teal-deep text-sm font-semibold text-white hover:bg-teal-ink"
       >
         {initial ? "Salvar alterações" : "Criar minha aposta no futuro"}
       </Button>
@@ -292,14 +309,14 @@ function BetCard({
   }
 
   return (
-    <li className="rounded-3xl bg-card p-4 shadow-card">
+    <li className="rounded-3xl border border-border bg-card p-4">
       <div className="flex items-start gap-3">
-        <span className="grid h-11 w-11 flex-none place-items-center rounded-2xl bg-[#E1F5EE] text-[#0d6b60]">
+        <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-gold-soft text-gold-deep">
           <I className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold text-navy">{bet.name}</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="truncate font-semibold text-navy">{bet.name}</p>
+          <p className="text-sm text-muted-foreground">
             Meta: <span className="font-semibold tabular-nums text-navy">{brl(bet.target)}</span>
           </p>
         </div>
@@ -307,7 +324,7 @@ function BetCard({
           type="button"
           onClick={() => setEditing(true)}
           aria-label={`Editar ${bet.name}`}
-          className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground hover:bg-muted"
+          className="grid h-11 w-11 place-items-center rounded-full text-muted-foreground hover:bg-muted"
         >
           <Pencil className="h-4 w-4" />
         </button>
@@ -315,7 +332,7 @@ function BetCard({
           type="button"
           onClick={() => setConfirmDelete(true)}
           aria-label={`Excluir ${bet.name}`}
-          className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground hover:bg-muted"
+          className="-mr-2 grid h-11 w-11 place-items-center rounded-full text-muted-foreground hover:bg-muted"
         >
           <Trash2 className="h-4 w-4" />
         </button>
@@ -329,23 +346,23 @@ function BetCard({
         aria-valuemax={100}
       >
         <div
-          className="h-full rounded-full bg-teal transition-all duration-500"
+          className="h-full rounded-full bg-gold transition-all duration-500"
           style={{ width: `${pct}%` }}
         />
       </div>
 
-      <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
-        <div className="rounded-xl bg-background p-2.5">
+      <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+        <div className="rounded-2xl bg-background p-3">
           <p className="text-muted-foreground">Registrado por você</p>
           <p className="mt-0.5 font-semibold tabular-nums text-navy">
             {brl(bet.saved)} <span className="font-normal text-muted-foreground">({pct}%)</span>
           </p>
         </div>
-        <div className="rounded-xl bg-background p-2.5">
+        <div className="rounded-2xl bg-background p-3">
           <p className="text-muted-foreground">Estimado</p>
           <p className="mt-0.5 font-semibold text-navy">
             {remaining === 0
-              ? "Objetivo alcançado! 🎉"
+              ? "Objetivo alcançado!"
               : weeks
                 ? `~${weeks} ${weeks === 1 ? "semana" : "semanas"}`
                 : "Use o simulador"}
@@ -353,25 +370,25 @@ function BetCard({
         </div>
       </div>
       {weeks && remaining > 0 && (
-        <p className="mt-1.5 text-[11px] text-muted-foreground">
+        <p className="mt-2 text-xs text-muted-foreground">
           Se você direcionar {brl(weekly!)} por semana para este objetivo.
         </p>
       )}
 
       {confirmDelete ? (
-        <div className="mt-3 flex items-center gap-2 rounded-2xl bg-coral/10 p-2.5">
-          <p className="flex-1 text-xs font-medium text-navy">Excluir este objetivo?</p>
+        <div className="mt-3 flex items-center gap-2 rounded-2xl bg-coral-soft p-2.5">
+          <p className="flex-1 pl-1 text-sm font-medium text-navy">Excluir este objetivo?</p>
           <button
             type="button"
             onClick={onDelete}
-            className="rounded-full bg-coral px-3 py-1.5 text-xs font-semibold text-white"
+            className="min-h-11 rounded-full bg-coral-deep px-4 text-sm font-semibold text-white"
           >
             Excluir
           </button>
           <button
             type="button"
             onClick={() => setConfirmDelete(false)}
-            className="rounded-full px-3 py-1.5 text-xs font-semibold text-navy"
+            className="min-h-11 rounded-full px-3 text-sm font-semibold text-navy"
           >
             Cancelar
           </button>
@@ -388,8 +405,8 @@ function BetCard({
             setAdding(false);
           }}
         >
-          <span className="flex flex-1 items-center gap-1.5 rounded-full border border-border bg-background px-3 focus-within:border-teal">
-            <span className="text-xs font-semibold text-muted-foreground">R$</span>
+          <span className="flex min-h-11 flex-1 items-center gap-1.5 rounded-full border border-input bg-background px-3 focus-within:border-teal-deep">
+            <span className="text-sm font-semibold text-muted-foreground">R$</span>
             <input
               autoFocus
               inputMode="decimal"
@@ -397,12 +414,12 @@ function BetCard({
               onChange={(e) => setAmount(e.target.value.replace(/[^0-9,.]/g, ""))}
               placeholder="Quanto você separou?"
               aria-label="Valor separado"
-              className="w-full bg-transparent py-2 text-sm outline-none"
+              className="w-full bg-transparent py-2 text-base outline-none"
             />
           </span>
           <button
             type="submit"
-            className="rounded-full bg-teal px-4 py-2 text-xs font-semibold text-navy"
+            className="min-h-11 rounded-full bg-teal-deep px-4 text-sm font-semibold text-white"
           >
             Registrar
           </button>
@@ -410,7 +427,7 @@ function BetCard({
             type="button"
             onClick={() => setAdding(false)}
             aria-label="Cancelar"
-            className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground hover:bg-muted"
+            className="grid h-11 w-11 place-items-center rounded-full text-muted-foreground hover:bg-muted"
           >
             <X className="h-4 w-4" />
           </button>
@@ -420,7 +437,7 @@ function BetCard({
           <button
             type="button"
             onClick={() => setAdding(true)}
-            className="mt-3 w-full rounded-full border border-teal/40 px-4 py-2 text-xs font-semibold text-[#0d6b60] transition-colors hover:bg-[#E1F5EE]"
+            className="mt-3 min-h-11 w-full rounded-full border border-teal-deep/30 px-4 text-sm font-semibold text-teal-deep transition-colors hover:bg-teal-soft"
           >
             + Registrar um valor que separei
           </button>

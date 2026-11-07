@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ShieldAlert, Info, Eye, Lock, Users, ArrowLeft } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { SensitiveFooter } from "@/components/sensitive-footer";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { WaitlistCard } from "@/components/waitlist-card";
 import { track, EVENTS } from "@/lib/analytics";
@@ -38,11 +37,11 @@ type Room = {
 };
 
 const ROOMS: Room[] = [
-  { id: "0-7", label: "Primeiros passos (0 a 7 dias)", short: "0–7d", color: "#FF5B4C" },
-  { id: "1s", label: "1 semana ou mais", short: "1 sem+", color: "#F5A623" },
-  { id: "1m", label: "1 mês ou mais", short: "1 mês+", color: "#1CA0D8" },
-  { id: "3m", label: "3 meses ou mais", short: "3 meses+", color: "#16BFAC" },
-  { id: "6m", label: "6 meses ou mais", short: "6 meses+", color: "#E8197E" },
+  { id: "0-7", label: "Primeiros passos (0 a 7 dias)", short: "0–7d", color: "#B83427" },
+  { id: "1s", label: "1 semana ou mais", short: "1 sem+", color: "#7D5200" },
+  { id: "1m", label: "1 mês ou mais", short: "1 mês+", color: "#0A5249" },
+  { id: "3m", label: "3 meses ou mais", short: "3 meses+", color: "#0D6B60" },
+  { id: "6m", label: "6 meses ou mais", short: "6 meses+", color: "#0D6B60" },
   { id: "1a", label: "1 ano ou mais", short: "1 ano+", color: "#16233C" },
 ];
 
@@ -171,8 +170,8 @@ const SEED: Record<string, Msg[]> = {
 
 function PreviewBanner() {
   return (
-    <div className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-20 -mx-4 flex items-start gap-2 border-b border-[#B57A00]/20 bg-[#F5E0B8] px-4 py-3 text-sm text-[#5c3a00] shadow-sm">
-      <Eye className="mt-0.5 h-4 w-4 flex-none text-[#B57A00]" />
+    <div className="sticky top-[calc(4rem+1px+env(safe-area-inset-top))] z-20 -mx-4 flex items-start gap-2 border-b border-gold/30 bg-gold-soft px-4 py-3 text-sm text-gold-deep shadow-sm">
+      <Eye className="mt-0.5 h-4 w-4 flex-none text-gold-deep" />
       <p>
         <strong>Prévia:</strong> estas conversas são exemplos. A comunidade ainda não está aberta e
         ninguém está lendo.
@@ -183,7 +182,7 @@ function PreviewBanner() {
 
 function ExampleTag() {
   return (
-    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+    <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">
       exemplo
     </span>
   );
@@ -191,21 +190,21 @@ function ExampleTag() {
 
 function LockScreen({ mentor = false, onPreview }: { mentor?: boolean; onPreview: () => void }) {
   return (
-    <div className="-mx-4 flex min-h-[calc(100dvh-var(--nav-h,62px)-190px)] flex-col items-center justify-center bg-[#F7FAFC] px-6 py-10 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#E1F5EE]">
+    <div className="-mx-4 flex min-h-[calc(100dvh-var(--nav-h,62px)-190px)] flex-col items-center justify-center bg-background px-6 py-10 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-teal-soft">
         {mentor ? (
-          <Users className="h-8 w-8 text-[#16BFAC]" />
+          <Users className="h-8 w-8 text-teal-deep" />
         ) : (
-          <Lock className="h-8 w-8 text-[#16BFAC]" />
+          <Lock className="h-8 w-8 text-teal-deep" />
         )}
       </div>
 
-      <h2 className="mt-4 text-xl font-bold text-[#16233C]">
+      <h2 className="mt-5 text-xl font-semibold text-navy">
         {mentor ? "A rede de mentores está em construção" : "A comunidade está em construção"}
       </h2>
-      <p className="mt-2 max-w-sm text-sm leading-relaxed text-slate-600">
-        Estou formando a rede de pessoas e mentores voluntários. Deixe seu e-mail e eu aviso assim
-        que ela abrir, com gente de verdade do outro lado.
+      <p className="mt-2 max-w-sm text-sm leading-relaxed text-navy/80">
+        A gente está formando a rede de pessoas e mentores voluntários. Deixe seu e-mail e a gente
+        avisa assim que ela abrir, com gente de verdade do outro lado.
       </p>
 
       <div className="mt-5 w-full max-w-sm">
@@ -215,8 +214,8 @@ function LockScreen({ mentor = false, onPreview }: { mentor?: boolean; onPreview
           cta={mentor ? "Quero ser mentor" : "Entrar na lista"}
           successText={
             mentor
-              ? "Assim que a rede de mentores começar, eu te chamo."
-              : "Assim que a comunidade abrir com pessoas de verdade, eu te aviso."
+              ? "Assim que a rede de mentores começar, a gente te chama."
+              : "Assim que a comunidade abrir com pessoas de verdade, a gente te avisa."
           }
         />
       </div>
@@ -225,7 +224,7 @@ function LockScreen({ mentor = false, onPreview }: { mentor?: boolean; onPreview
         <button
           type="button"
           onClick={onPreview}
-          className="text-[13px] text-[#596273] underline underline-offset-2"
+          className="min-h-11 text-sm text-muted-foreground underline underline-offset-2"
         >
           {mentor
             ? "Ver uma prévia fictícia de como serão os mentores"
@@ -241,7 +240,7 @@ function BackToLock({ onBack }: { onBack: () => void }) {
     <button
       type="button"
       onClick={onBack}
-      className="flex items-center gap-1.5 text-sm font-semibold text-[#16233C]"
+      className="-ml-2 flex min-h-11 items-center gap-1.5 rounded-full px-2 text-sm font-semibold text-navy"
     >
       <ArrowLeft className="h-4 w-4" />
       Voltar
@@ -254,18 +253,21 @@ function Comunidade() {
   const [previewMentores, setPreviewMentores] = useState(false);
 
   return (
-    <AppShell title="Comunidade">
+    <AppShell
+      title="Comunidade"
+      intro="Um espaço anônimo para trocar com quem entende. Ainda em construção."
+    >
       <Tabs defaultValue="forum" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 rounded-full bg-slate-100 p-1">
+        <TabsList className="grid w-full grid-cols-2 rounded-full bg-muted p-1">
           <TabsTrigger
             value="forum"
-            className="rounded-full data-[state=active]:bg-[#16BFAC] data-[state=active]:text-white"
+            className="min-h-10 rounded-full data-[state=active]:bg-teal-deep data-[state=active]:text-white"
           >
             Fórum
           </TabsTrigger>
           <TabsTrigger
             value="mentores"
-            className="rounded-full data-[state=active]:bg-[#16BFAC] data-[state=active]:text-white"
+            className="min-h-10 rounded-full data-[state=active]:bg-teal-deep data-[state=active]:text-white"
           >
             Mentores
           </TabsTrigger>
@@ -298,7 +300,6 @@ function Comunidade() {
           )}
         </TabsContent>
       </Tabs>
-      {(previewForum || previewMentores) && <SensitiveFooter className="!mt-6" />}
     </AppShell>
   );
 }
@@ -322,8 +323,8 @@ function Forum({ onBack }: { onBack: () => void }) {
       <BackToLock onBack={onBack} />
 
       {/* Aviso de convivência */}
-      <div className="flex items-start gap-2 rounded-2xl bg-[#F5A623]/10 p-3 text-sm text-[#7a4e00]">
-        <ShieldAlert className="mt-0.5 h-4 w-4 flex-none text-[#F5A623]" />
+      <div className="flex items-start gap-2 rounded-2xl bg-gold-soft p-3 text-sm text-gold-deep">
+        <ShieldAlert className="mt-0.5 h-4 w-4 flex-none text-gold-deep" />
         <p>
           <strong>Espaço anônimo e de respeito.</strong> Proibido divulgar apostas, casas de bet ou
           links de jogos.
@@ -344,7 +345,7 @@ function Forum({ onBack }: { onBack: () => void }) {
                   "whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-semibold transition",
                   active
                     ? "border-transparent text-white shadow"
-                    : "border-slate-200 bg-white text-slate-600 hover:border-slate-300",
+                    : "border-border bg-card text-navy/80 hover:border-border",
                 )}
                 style={active ? { backgroundColor: r.color } : undefined}
               >
@@ -360,7 +361,7 @@ function Forum({ onBack }: { onBack: () => void }) {
         className="w-full rounded-2xl border border-transparent p-4 text-white shadow-sm"
         style={{ backgroundColor: room.color }}
       >
-        <p className="text-xs uppercase tracking-wide opacity-80">Sala</p>
+        <p className="text-xs opacity-80">Sala</p>
         <h2 className="text-lg font-bold">{room.label}</h2>
         <p className="mt-1 text-xs opacity-90">Quando abrir, tudo será anônimo</p>
       </div>
@@ -370,16 +371,16 @@ function Forum({ onBack }: { onBack: () => void }) {
         {messages.map((m, i) => (
           <div
             key={`${m.nick}-${i}`}
-            className="w-full rounded-2xl border border-slate-200 bg-white p-3 opacity-85"
+            className="w-full rounded-2xl border border-border bg-card p-3 opacity-85"
           >
             <div className="flex items-center justify-between gap-2 text-xs">
-              <span className="font-semibold text-[#16233C]">{m.nick}</span>
+              <span className="font-semibold text-navy">{m.nick}</span>
               <div className="flex items-center gap-2">
-                <span className="text-slate-400">{m.when}</span>
+                <span className="text-muted-foreground">{m.when}</span>
                 <ExampleTag />
               </div>
             </div>
-            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">{m.text}</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-navy/80">{m.text}</p>
           </div>
         ))}
       </div>
@@ -402,7 +403,7 @@ const MENTORES: Mentor[] = [
     name: "Rafa",
     timeLabel: "2 anos livre",
     bio: "Já estive onde você está. Bora conversar.",
-    color: "#16BFAC",
+    color: "#0D6B60",
     initials: "RA",
   },
   {
@@ -410,7 +411,7 @@ const MENTORES: Mentor[] = [
     name: "Juliana",
     timeLabel: "1 ano e 4 meses livre",
     bio: "Um dia de cada vez também funcionou pra mim.",
-    color: "#E8197E",
+    color: "#0D6B60",
     initials: "JU",
   },
   {
@@ -418,7 +419,7 @@ const MENTORES: Mentor[] = [
     name: "Marcos",
     timeLabel: "3 anos livre",
     bio: "Recaí várias vezes antes de conseguir. Tá tudo bem recomeçar.",
-    color: "#1CA0D8",
+    color: "#0A5249",
     initials: "MA",
   },
   {
@@ -426,7 +427,7 @@ const MENTORES: Mentor[] = [
     name: "Bia",
     timeLabel: "1 ano e 8 meses livre",
     bio: "A vida do outro lado é mais leve. Vem conversar.",
-    color: "#F5A623",
+    color: "#7D5200",
     initials: "BI",
   },
 ];
@@ -437,8 +438,8 @@ function Mentores({ onBack }: { onBack: () => void }) {
       <PreviewBanner />
       <BackToLock onBack={onBack} />
 
-      <div className="flex items-start gap-2 rounded-2xl bg-[#1CA0D8]/10 p-3 text-sm text-[#0b4f6c]">
-        <Info className="mt-0.5 h-4 w-4 flex-none text-[#1CA0D8]" />
+      <div className="flex items-start gap-2 rounded-2xl bg-teal-soft p-3 text-sm text-teal-ink">
+        <Info className="mt-0.5 h-4 w-4 flex-none text-teal-deep" />
         <p>
           Estamos formando a rede de mentores voluntários (pessoas com 1 ano ou mais livres das
           apostas). Mentores oferecem escuta e apoio, mas{" "}
@@ -450,7 +451,7 @@ function Mentores({ onBack }: { onBack: () => void }) {
         {MENTORES.map((m) => (
           <div
             key={m.id}
-            className="rounded-2xl border border-slate-200 bg-white p-4 opacity-85 shadow-sm"
+            className="rounded-2xl border border-border bg-card p-4 opacity-85 shadow-sm"
           >
             <div className="flex items-start gap-3">
               <div
@@ -461,19 +462,19 @@ function Mentores({ onBack }: { onBack: () => void }) {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="font-semibold text-[#16233C]">
-                    {m.name} · <span className="font-normal text-slate-600">{m.timeLabel}</span>
+                  <p className="font-semibold text-navy">
+                    {m.name} · <span className="font-normal text-navy/80">{m.timeLabel}</span>
                   </p>
                   <ExampleTag />
                 </div>
-                <p className="mt-0.5 text-sm text-slate-600">{m.bio}</p>
+                <p className="mt-0.5 text-sm text-navy/80">{m.bio}</p>
               </div>
             </div>
             <button
               type="button"
               disabled
               aria-disabled="true"
-              className="mt-3 w-full cursor-not-allowed rounded-full bg-[#16BFAC] py-2.5 text-sm font-semibold text-white opacity-40"
+              className="mt-3 w-full cursor-not-allowed rounded-full bg-teal-deep py-2.5 text-sm font-semibold text-white opacity-40"
             >
               Em breve
             </button>

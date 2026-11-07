@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CheckCircle2, Phone, Users, Calculator, ClipboardCheck } from "lucide-react";
+import { Calculator, ClipboardCheck, Phone } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 
@@ -98,113 +98,90 @@ const STEPS = [
 
 function GuiaPararDeApostar() {
   return (
-    <AppShell title="Como parar de apostar online">
-      <Link
-        to="/"
-        className="mb-4 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-navy"
-      >
-        <ArrowLeft className="h-3.5 w-3.5" />
-        Voltar ao início
-      </Link>
-
-      <header className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wider text-teal">
-          Guia prático
-        </p>
-        <h2 className="mt-1 text-xl font-bold leading-tight text-navy">
-          Como parar de apostar online: 7 passos pra recomeçar
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          Um caminho passo a passo, sem julgamento, pra quem decidiu sair do
-          ciclo das bets. Vai no seu ritmo: cada passo já é uma vitória.
-        </p>
-      </header>
-
-      <ol className="space-y-4">
+    <AppShell
+      title="Como parar de apostar online"
+      intro="Sete passos, sem julgamento, para quem decidiu sair do ciclo das bets. Vai no seu ritmo: cada passo já conta."
+    >
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-16">
+      <ol className="relative lg:col-span-7">
+        <span
+          aria-hidden="true"
+          className="absolute bottom-6 left-[17px] top-4 w-[2px] rounded-full bg-border lg:left-[21px]"
+        />
         {STEPS.map((s) => (
-          <li
-            key={s.n}
-            className="rounded-3xl border border-border bg-card p-5 shadow-card"
-          >
-            <div className="flex items-start gap-3">
-              <div className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-teal/10 text-sm font-bold text-teal">
-                {s.n}
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-navy">{s.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                  {s.text}
-                </p>
-              </div>
+          <li key={s.n} id={`passo-${s.n}`} className="relative flex scroll-mt-28 gap-4 pb-8 last:pb-0 lg:gap-6 lg:pb-12">
+            <span className="tabular relative z-10 grid h-9 w-9 flex-none place-items-center rounded-full border-2 border-teal-deep bg-background text-sm font-semibold text-teal-deep lg:h-11 lg:w-11 lg:text-base">
+              {s.n}
+            </span>
+            <div className="min-w-0 pt-1">
+              <h2 className="text-[1.1rem] font-semibold leading-snug text-navy lg:text-[1.5rem] lg:tracking-[-0.01em]">{s.title}</h2>
+              <p className="mt-2 max-w-[62ch] leading-relaxed text-navy/80 lg:mt-3 lg:text-lg lg:leading-[1.7]">{s.text}</p>
             </div>
           </li>
         ))}
       </ol>
 
-      <section className="mt-8 rounded-3xl bg-gradient-to-br from-teal to-[#0fa693] p-6 text-teal-foreground shadow-soft">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider opacity-90">
-          <CheckCircle2 className="h-3.5 w-3.5" />
-          Próximo passo
-        </div>
-        <h3 className="mt-2 text-lg font-bold">Comece agora, com um passo só</h3>
-        <p className="mt-1 text-sm opacity-95">
-          Escolha uma ação abaixo. Não precisa fazer tudo hoje.
+      <aside className="lg:sticky lg:top-28 lg:col-span-5">
+      <nav aria-label="Passos do guia" className="hidden rounded-[2rem] border border-border bg-card p-6 lg:block">
+        <p className="text-sm font-semibold text-navy">Neste guia</p>
+        <ol className="mt-3 space-y-1">
+          {STEPS.map((s) => (
+            <li key={s.n}>
+              <a
+                href={`#passo-${s.n}`}
+                className="flex min-h-10 items-center gap-3 rounded-xl px-2 text-sm text-navy/80 transition-colors hover:bg-teal-soft hover:text-navy"
+              >
+                <span className="tabular w-5 text-right font-semibold text-teal-deep">{s.n}</span>
+                {s.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+      <section className="mt-12 rounded-3xl bg-teal-soft p-6 lg:mt-6 lg:rounded-[2rem] lg:p-8" aria-labelledby="comece">
+        <p className="font-script text-[1.75rem] font-bold leading-none text-teal-deep">
+          Um passo só
         </p>
-        <div className="mt-4 grid gap-2">
-          <Button
-            asChild
-            className="h-11 rounded-full bg-white/20 text-sm font-semibold text-white hover:bg-white/30"
-          >
-            <Link to="/autoavaliacao">
-              <ClipboardCheck className="mr-1 h-4 w-4" />
-              Fazer a autoavaliação
-            </Link>
-          </Button>
-          <Button
-            asChild
-            className="h-11 rounded-full bg-white/20 text-sm font-semibold text-white hover:bg-white/30"
-          >
-            <Link to="/simulador">
-              <Calculator className="mr-1 h-4 w-4" />
-              Ver quanto deixo de perder
-            </Link>
-          </Button>
-          <Button
-            asChild
-            className="h-11 rounded-full bg-white/20 text-sm font-semibold text-white hover:bg-white/30"
-          >
-            <Link to="/comunidade">
-              <Users className="mr-1 h-4 w-4" />
-              Entrar na Comunidade
-            </Link>
-          </Button>
-        </div>
+        <h2 id="comece" className="mt-2 text-[1.3rem] font-semibold leading-snug text-navy">
+          Não precisa fazer tudo hoje.
+        </h2>
+        <p className="mt-2 leading-relaxed text-navy/80">
+          Um bom começo é entender onde você está agora.
+        </p>
+        <Button
+          asChild
+          className="mt-5 min-h-12 w-full rounded-full bg-teal-deep text-sm font-semibold text-white hover:bg-teal-ink"
+        >
+          <Link to="/autoavaliacao">
+            <ClipboardCheck className="mr-1 h-4 w-4" />
+            Fazer a autoavaliação
+          </Link>
+        </Button>
+        <Link
+          to="/simulador"
+          className="mt-2 flex min-h-11 items-center justify-center gap-1.5 text-sm font-semibold text-teal-ink hover:underline"
+        >
+          <Calculator className="h-4 w-4" />
+          Ou ver o que seu dinheiro pode virar
+        </Link>
       </section>
 
-      <section className="mt-5 rounded-3xl border border-coral/30 bg-coral/5 p-5">
-        <div className="flex items-start gap-3">
-          <div className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-coral/15 text-coral">
-            <Phone className="h-4 w-4" />
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-navy">
-              Em crise? Ligue 188 (CVV)
-            </h3>
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              Atendimento 24h, gratuito e sigiloso. Este guia é um apoio e não
-              substitui acompanhamento profissional.
-            </p>
-            <div className="mt-3">
-              <Button
-                asChild
-                className="h-10 rounded-full bg-coral text-coral-foreground transition-all duration-200 hover:bg-[#eb4436]"
-              >
-                <Link to="/ajuda">Ver canais de apoio</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <p className="mt-6 flex items-start gap-2 text-sm leading-relaxed text-muted-foreground">
+        <Phone className="mt-0.5 h-4 w-4 flex-none text-coral-deep" />
+        <span>
+          Em crise, ligue{" "}
+          <a href="tel:188" className="font-semibold text-navy underline">
+            188 (CVV)
+          </a>
+          , 24h e gratuito, ou veja os{" "}
+          <Link to="/ajuda" className="font-semibold text-navy underline">
+            canais de apoio
+          </Link>
+          .
+        </span>
+      </p>
+      </aside>
+      </div>
     </AppShell>
   );
 }

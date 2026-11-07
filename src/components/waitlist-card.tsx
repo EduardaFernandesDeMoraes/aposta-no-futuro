@@ -64,13 +64,13 @@ export function WaitlistCard({
         className={
           plain
             ? "flex items-start gap-3 text-left"
-            : "flex items-start gap-3 rounded-2xl border border-[#16BFAC] bg-[#E1F5EE] p-4"
+            : "flex items-start gap-3 rounded-2xl border border-teal-deep/30 bg-teal-soft p-4"
         }
       >
-        <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-[#16BFAC]" />
+        <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-teal-deep" />
         <div>
-          <p className="font-semibold text-[#16233C]">Pronto! Você está na lista.</p>
-          <p className="mt-1 text-sm text-slate-600">{successText}</p>
+          <p className="font-semibold text-navy">Pronto! Você está na lista.</p>
+          <p className="mt-1 text-sm text-navy/80">{successText}</p>
         </div>
       </div>
     );
@@ -81,15 +81,15 @@ export function WaitlistCard({
   return (
     <form
       onSubmit={submit}
-      className={plain ? "w-full text-left" : "rounded-2xl border border-[#16BFAC] bg-[#E1F5EE] p-4"}
+      className={plain ? "w-full text-left" : "rounded-2xl border border-teal-deep/30 bg-teal-soft p-4"}
     >
       {title && (
         <div className="flex items-center gap-2">
-          <Mail className="h-4 w-4 flex-none text-[#16BFAC]" />
-          <h3 className="font-semibold text-[#16233C]">{title}</h3>
+          <Mail className="h-4 w-4 flex-none text-teal-deep" />
+          <h3 className="font-semibold text-navy">{title}</h3>
         </div>
       )}
-      {description && <p className="mt-1 text-sm text-slate-600">{description}</p>}
+      {description && <p className="mt-1 text-sm text-navy/80">{description}</p>}
 
       <label htmlFor={inputId} className="sr-only">
         Seu e-mail
@@ -104,20 +104,21 @@ export function WaitlistCard({
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="seu@email.com"
-        className="mt-3 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-base outline-none placeholder:text-slate-400 focus:border-[#16BFAC]"
+        aria-invalid={Boolean(error)}
+        className="mt-3 min-h-12 w-full rounded-2xl border border-input bg-card px-4 text-base outline-none placeholder:text-muted-foreground focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
       />
-      {error && <p className="mt-1.5 text-xs text-[#FF5B4C]">{error}</p>}
+      {error && <p role="alert" className="mt-2 text-sm font-medium text-destructive">{error}</p>}
 
       <Button
         type="submit"
         disabled={sending}
-        className="mt-3 w-full rounded-full bg-[#16BFAC] text-white hover:bg-[#14ac9b]"
+        className="mt-3 min-h-12 w-full rounded-full bg-teal-deep text-white hover:bg-teal-ink"
       >
         {sending ? "Enviando…" : cta}
       </Button>
 
-      <p className="mt-2 text-xs text-slate-500">
-        Só uso seu e-mail para esse aviso. Nada de spam.
+      <p className="mt-2 text-xs text-muted-foreground">
+        A gente só usa seu e-mail para esse aviso. Nada de spam.
       </p>
     </form>
   );

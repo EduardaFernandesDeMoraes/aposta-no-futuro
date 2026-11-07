@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Area,
-  AreaChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { Share2, Sparkles, Trophy, Lock, Download } from "lucide-react";
+  ArrowLeftRight,
+  Check,
+  ChevronRight,
+  Copy,
+  PiggyBank,
+  Share2,
+  Sprout,
+} from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Button } from "@/components/ui/button";
@@ -19,12 +19,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
 import { InstallCard } from "@/components/install-card";
 import { useAccess } from "@/lib/access";
 import { findPartner } from "@/lib/partners";
 import { useFutureBets } from "@/components/minhas-apostas";
-import { ArrowLeftRight, PiggyBank } from "lucide-react";
 
 export const Route = createFileRoute("/perfil")({
   head: () => ({
@@ -39,7 +37,7 @@ export const Route = createFileRoute("/perfil")({
       {
         property: "og:description",
         content:
-          "Veja sua economia, medalhas conquistadas e evolução ao longo dos dias sem apostar.",
+          "Veja o dinheiro que ficou com você e o caminho que você já fez sem apostar.",
       },
       { property: "og:url", content: "https://apostanofuturo.online/perfil" },
     ],
@@ -58,20 +56,10 @@ type Saved = { weekly: number; calculatedAt: string } | null;
 
 type MetasState = {
   completed: Record<string, boolean>;
-  points: number;
-  medals: number;
+  careDays?: string[];
 };
 
-type Milestone = { days: number; label: string; emoji: string };
-
-const MILESTONES: Milestone[] = [
-  { days: 1, label: "1 dia", emoji: "🌱" },
-  { days: 7, label: "1 semana", emoji: "🌿" },
-  { days: 30, label: "1 mês", emoji: "⭐" },
-  { days: 90, label: "3 meses", emoji: "🔥" },
-  { days: 180, label: "6 meses", emoji: "💎" },
-  { days: 365, label: "1 ano", emoji: "👑" },
-];
+const MILESTONE_DAYS = [1, 7, 30, 90, 180, 365];
 
 const brl = (n: number) =>
   n.toLocaleString("pt-BR", {
@@ -92,342 +80,217 @@ function Perfil() {
   const [bets] = useFutureBets();
   const betsSaved = bets.reduce((a, b) => a + b.saved, 0);
   const betsTarget = bets.reduce((a, b) => a + b.target, 0);
-  const [metas] = useLocalStorage<MetasState>("anf.desafios", {
-    completed: {},
-    points: 0,
-    medals: 0,
-  });
+  const [metas] = useLocalStorage<MetasState>("anf.desafios", { completed: {} });
 
-  const now = Date.now();
-  const startMs = profile.firstFreeDay
-    ? new Date(profile.firstFreeDay).getTime()
-    : now;
-  const elapsed = Math.max(0, now - startMs);
+  // `now` só no aparelho, para o HTML do servidor bater com o do navegador.
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => setNow(Date.now()), []);
+
+  const started = Boolean(profile.firstFreeDay);
+  const startMs = started ? new Date(profile.firstFreeDay).getTime() : (now ?? 0);
+  const elapsed = now === null ? 0 : Math.max(0, now - startMs);
   const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
 
   const weekly = saved?.weekly ?? 0;
   const moneySaved = Math.round((weekly * days) / 7);
-
-  const completedCount = Object.values(metas.completed).filter(Boolean)
-    .length;
-  const totalChallenges = 8;
-  const challengeProgress = Math.round((completedCount / totalChallenges) * 100);
-
-  const achieved = MILESTONES.filter((m) => days >= m.days);
-
-  // Simple evolution chart (up to 12 evenly spaced points from start to today)
-  const chartData = useMemo(() => {
-    if (!profile.firstFreeDay || days < 1) {
-      return [{ label: "hoje", dias: days }];
-    }
-    const points = Math.min(12, days + 1);
-    return Array.from({ length: points }, (_, i) => {
-      const d = Math.round((days * i) / (points - 1));
-      return { label: `${d}d`, dias: d };
-    });
-  }, [profile.firstFreeDay, days]);
+  const careDays = metas.careDays?.length ?? 0;
+  const milestones = started ? MILESTONE_DAYS.filter((d) => days >= d).length : 0;
 
   const [shareOpen, setShareOpen] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  const shareText = `Estou há ${days} ${days === 1 ? "dia" : "dias"} sem apostar 💚\nUm dia de cada vez. Aposta no Futuro.`;
 
   async function handleShare() {
-    const text = `Estou há ${days} ${days === 1 ? "dia" : "dias"} sem apostar 💚\nUm dia de cada vez. Aposta no Futuro.`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: "Minha conquista", text });
+        await navigator.share({ title: "Minha conquista", text: shareText });
         return;
       }
     } catch {
-      // fall through to dialog
+      // segue para o cartão
     }
     setShareOpen(true);
   }
 
   async function copyText() {
-    const text = `Estou há ${days} ${days === 1 ? "dia" : "dias"} sem apostar 💚 · Aposta no Futuro.`;
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(shareText.replace("\n", " · "));
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      // ignore
+      // ignora
     }
   }
 
+  const initial = profile.name.trim().charAt(0).toUpperCase();
+
   return (
-    <AppShell title="Perfil">
-      {/* Header */}
-      <section className="rounded-3xl bg-gradient-to-br from-navy to-[#0f1a2e] p-6 text-white shadow-soft">
-        <div className="flex items-center gap-4">
-          <div className="grid h-16 w-16 place-items-center rounded-full bg-[#0d6b60] text-4xl leading-none text-white shadow-[inset_0_2px_6px_rgba(0,0,0,0.25)] ring-2 ring-white/10">
-            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
-              {profile.name ? profile.name.charAt(0).toUpperCase() : "🌱"}
-            </span>
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-lg font-semibold">
-              {profile.name || "Você"}
-            </div>
-            <div className="mt-0.5 flex items-center gap-1.5 text-sm text-white/80">
-              <Sparkles className="h-3.5 w-3.5 text-gold" />
-              <span>
-                {days === 0
+    <AppShell title="Perfil" titleAs="p">
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
+      <div className="lg:sticky lg:top-28 lg:col-span-5">
+      {/* Quem */}
+      <div className="flex items-center gap-4 pb-6 lg:pb-8">
+        <span className="grid h-16 w-16 flex-none place-items-center rounded-full bg-teal-soft text-2xl font-semibold text-teal-deep lg:h-20 lg:w-20 lg:text-3xl">
+          {initial || <Sprout className="h-7 w-7" />}
+        </span>
+        <div className="min-w-0">
+          <h1 className="truncate text-[1.6rem] font-semibold leading-tight tracking-[-0.02em] text-navy lg:text-[2.5rem] lg:tracking-[-0.03em]">
+            {profile.name.trim() || "Você"}
+          </h1>
+          <p className="mt-0.5 text-[0.95rem] text-muted-foreground lg:text-lg">
+            {!started
+              ? "Seu contador ainda não começou"
+              : now === null
+                ? " "
+                : days === 0
                   ? "Começando agora"
                   : `${days} ${days === 1 ? "dia" : "dias"} sem apostar`}
-              </span>
-            </div>
-          </div>
+          </p>
         </div>
-      </section>
+      </div>
 
-      {/* Money saved */}
-      <section className="mt-4 overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-gold/15 via-gold/5 to-transparent p-5 shadow-card">
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-gold">
-          Dinheiro que você não perdeu
-        </div>
-        {weekly > 0 ? (
+      {/* Dinheiro que ficou com você */}
+      <section className="rounded-3xl bg-gold-soft p-5 lg:rounded-[2rem] lg:p-8" aria-labelledby="dinheiro">
+        <h2 id="dinheiro" className="text-[0.95rem] font-medium text-gold-deep">
+          Dinheiro que ficou com você
+        </h2>
+        {weekly > 0 && started ? (
           <>
-            <div className="mt-1 text-4xl font-bold text-navy tabular-nums">
-              {brl(moneySaved)}
-            </div>
-            <div className="mt-1 text-xs text-muted-foreground">
-              Baseado em {brl(weekly)}/semana × {days}{" "}
-              {days === 1 ? "dia" : "dias"} livres.
-            </div>
+            <p className="tabular mt-1 text-[2.5rem] font-semibold leading-none tracking-[-0.03em] text-navy lg:mt-3 lg:text-[4rem] lg:tracking-[-0.04em]">
+              {now === null ? "–" : brl(moneySaved)}
+            </p>
+            <p className="mt-2 text-sm text-gold-deep">
+              Com base em {brl(weekly)} por semana, em {days} {days === 1 ? "dia" : "dias"} sem apostar.
+            </p>
           </>
         ) : (
           <>
-            <div className="mt-1 text-2xl font-bold text-navy">—</div>
-            <div className="mt-1 text-xs text-muted-foreground">
-              Use o Simulador para registrar quanto você apostava por semana e
-              ver o valor economizado aqui.
-            </div>
+            <p className="mt-1 text-[0.95rem] leading-relaxed text-navy">
+              {started
+                ? "Diga no Simulador quanto você apostava por semana e a gente mostra aqui o que já ficou com você."
+                : "Quando o contador começar, a gente mostra aqui o dinheiro que ficou com você."}
+            </p>
+            <Link
+              to={started ? "/simulador" : "/"}
+              className="mt-3 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-gold-deep underline underline-offset-4"
+            >
+              {started ? "Abrir o Simulador" : "Ir para o contador"}
+              <ChevronRight className="h-4 w-4" />
+            </Link>
           </>
         )}
       </section>
+      </div>
 
-      {/* Challenges */}
-      <section className="mt-4 rounded-3xl bg-card p-5 shadow-card">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-teal">
-              Metas concluídas
-            </div>
-            <div className="mt-1 text-2xl font-bold text-navy tabular-nums">
-              {completedCount}
-              <span className="text-base font-medium text-muted-foreground">
-                /{totalChallenges}
+      <div className="lg:col-span-7 lg:pt-[7.5rem]">
+      {/* Números do caminho */}
+      <dl className="mt-4 grid grid-cols-2 gap-3 lg:mt-0 lg:gap-4">
+        <div className="rounded-3xl border border-border bg-card p-4">
+          <dt className="text-sm text-muted-foreground">Marcos da trilha</dt>
+          <dd className="tabular mt-1 text-2xl font-semibold text-navy">
+            {milestones} <span className="text-base font-normal text-muted-foreground">de 6</span>
+          </dd>
+        </div>
+        <div className="rounded-3xl border border-border bg-card p-4">
+          <dt className="text-sm text-muted-foreground">Dias em que se cuidou</dt>
+          <dd className="tabular mt-1 text-2xl font-semibold text-navy">{careDays}</dd>
+        </div>
+      </dl>
+
+      <ul className="mt-6 divide-y divide-border overflow-hidden rounded-3xl border border-border bg-card">
+        <li>
+          <Link
+            to="/simulador"
+            hash="minhas-apostas"
+            className="flex min-h-[4.5rem] items-center gap-4 px-4 py-3 transition-colors hover:bg-background"
+          >
+            <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-gold-soft text-gold-deep">
+              <PiggyBank className="h-5 w-5" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-medium text-navy">Minhas apostas no futuro</span>
+              <span className="block text-sm text-muted-foreground">
+                {bets.length === 0
+                  ? "Crie seu primeiro objetivo"
+                  : `${bets.length} ${bets.length === 1 ? "objetivo" : "objetivos"} · ${brl(betsSaved)} de ${brl(betsTarget)}`}
               </span>
-            </div>
-          </div>
-          <div className="grid h-12 w-12 place-items-center rounded-full bg-teal/10 text-teal">
-            <Trophy className="h-5 w-5" />
-          </div>
-        </div>
-        <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-teal to-cyan transition-all"
-            style={{ width: `${challengeProgress}%` }}
-          />
-        </div>
-        <div className="mt-2 text-xs text-muted-foreground">
-          {metas.points} pontos · {Math.floor(completedCount / 3)} medalhas
-          de missão
-        </div>
-      </section>
+            </span>
+            <ChevronRight className="h-5 w-5 flex-none text-muted-foreground" />
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/acesso"
+            className="flex min-h-[4.5rem] items-center gap-4 px-4 py-3 transition-colors hover:bg-background"
+          >
+            <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
+              <ArrowLeftRight className="h-5 w-5" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-medium text-navy">
+                AF People{partner ? ` + ${partner.shortName}` : " · acesso livre"}
+              </span>
+              <span className="block text-sm text-muted-foreground">
+                Trocar instituição ou perfil
+              </span>
+            </span>
+            <ChevronRight className="h-5 w-5 flex-none text-muted-foreground" />
+          </Link>
+        </li>
+      </ul>
 
-      {/* Achievements */}
-      <section className="mt-4">
-        <h2 className="mb-3 text-sm font-semibold text-navy">
-          Minhas conquistas
-        </h2>
-        <div className="grid grid-cols-3 gap-2">
-          {MILESTONES.map((m) => {
-            const done = days >= m.days;
-            return (
-              <div
-                key={m.days}
-                className={cn(
-                  "rounded-2xl border p-3 text-center transition",
-                  done
-                    ? "border-gold/40 bg-gradient-to-b from-gold/15 to-gold/5 shadow-card"
-                    : "border-border bg-card/60",
-                )}
-              >
-                <div
-                  className={cn(
-                    "mx-auto grid h-11 w-11 place-items-center rounded-full text-xl",
-                    done
-                      ? "bg-gold text-gold-foreground shadow-soft"
-                      : "bg-muted text-muted-foreground",
-                  )}
-                >
-                  {done ? m.emoji : <Lock className="h-4 w-4" />}
-                </div>
-                <div
-                  className={cn(
-                    "mt-2 text-[11px] font-semibold",
-                    done ? "text-navy" : "text-muted-foreground",
-                  )}
-                >
-                  {m.label}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="mt-2 text-xs text-muted-foreground">
-          {achieved.length} de {MILESTONES.length} marcos conquistados.
-        </div>
-      </section>
+      {/* Compartilhar */}
+      {started && (
+        <section className="mt-6">
+          <Button
+            onClick={handleShare}
+            className="min-h-12 w-full rounded-full bg-teal-deep text-base font-semibold text-white hover:bg-teal-ink"
+          >
+            <Share2 className="mr-2 h-5 w-5" />
+            Compartilhar minha conquista
+          </Button>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Só você decide. Nada é publicado sem você tocar aqui.
+          </p>
+        </section>
+      )}
 
-      {/* Evolution chart */}
-      <section className="mt-4 rounded-3xl bg-card p-5 shadow-card">
-        <div className="mb-2 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-navy">Sua evolução</h2>
-          <span className="text-xs text-muted-foreground">
-            dias livres ao longo do tempo
-          </span>
-        </div>
-        <div className="h-40 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={chartData}
-              margin={{ top: 10, right: 8, left: -12, bottom: 0 }}
-            >
-              <defs>
-                <linearGradient id="perfilArea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#16BFAC" stopOpacity={0.55} />
-                  <stop offset="100%" stopColor="#16BFAC" stopOpacity={0.02} />
-                </linearGradient>
-              </defs>
-              <XAxis
-                dataKey="label"
-                tick={{ fontSize: 10, fill: "#7280A0" }}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                tick={{ fontSize: 10, fill: "#7280A0" }}
-                tickLine={false}
-                axisLine={false}
-                width={28}
-                allowDecimals={false}
-              />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: 12,
-                  border: "1px solid #e5e7eb",
-                  fontSize: 12,
-                }}
-                formatter={(v: number) => [`${v} dias`, "Livre"]}
-                labelFormatter={() => ""}
-              />
-              <Area
-                type="monotone"
-                dataKey="dias"
-                stroke="#16BFAC"
-                strokeWidth={2.5}
-                fill="url(#perfilArea)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </section>
-
-      {/* Minhas apostas no futuro */}
-      <Link
-        to="/simulador"
-        hash="minhas-apostas"
-        className="mt-4 flex items-center gap-3 rounded-3xl bg-card p-4 shadow-card transition-all hover:shadow-soft"
-      >
-        <span className="grid h-11 w-11 flex-none place-items-center rounded-2xl bg-[#E1F5EE] text-[#0d6b60]">
-          <PiggyBank className="h-5 w-5" />
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block text-sm font-semibold text-navy">Minhas apostas no futuro</span>
-          <span className="block text-xs text-muted-foreground">
-            {bets.length === 0
-              ? "Crie seu primeiro objetivo no Simulador"
-              : `${bets.length} ${bets.length === 1 ? "objetivo" : "objetivos"} · ${brl(betsSaved)} de ${brl(betsTarget)} registrados`}
-          </span>
-        </span>
-      </Link>
-
-      {/* Instituição e perfil */}
-      <section className="mt-4 flex items-center gap-3 rounded-3xl bg-card p-4 shadow-card">
-        <span className="min-w-0 flex-1">
-          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Seu acesso
-          </span>
-          <span className="mt-0.5 block text-sm font-semibold text-navy">
-            AF People{partner ? ` + ${partner.shortName}` : " · acesso livre"}
-          </span>
-        </span>
-        <Link
-          to="/acesso"
-          className="inline-flex flex-none items-center gap-1.5 rounded-full border border-teal/40 px-3 py-2 text-xs font-semibold text-[#0d6b60] hover:bg-[#E1F5EE]"
-        >
-          <ArrowLeftRight className="h-4 w-4" /> Alterar instituição / perfil
-        </Link>
-      </section>
-
-      {/* Share */}
-      <section className="mt-5">
-        <Button
-          onClick={handleShare}
-          className="w-full rounded-full bg-magenta py-6 text-base font-semibold text-white shadow-soft transition-all duration-200 hover:bg-[#d11570]"
-        >
-          <Share2 className="mr-2 h-5 w-5" />
-          Compartilhar minha conquista
-        </Button>
-        <p className="mt-2 text-center text-[11px] text-muted-foreground">
-          Você escolhe se quer compartilhar. Nada é publicado sem você tocar aqui.
-        </p>
-      </section>
-
-      {/* Share card dialog */}
       <Dialog open={shareOpen} onOpenChange={setShareOpen}>
         <DialogContent className="max-w-sm rounded-3xl">
           <DialogHeader>
-            <DialogTitle className="text-center text-navy">
-              Sua conquista
-            </DialogTitle>
+            <DialogTitle className="text-center text-xl text-navy">Sua conquista</DialogTitle>
             <DialogDescription className="text-center">
-              Faça uma captura de tela pra compartilhar com quem você quiser.
+              Faça uma captura de tela para mandar para quem você quiser.
             </DialogDescription>
           </DialogHeader>
 
-          <div
-            ref={cardRef}
-            className="relative mx-auto mt-2 aspect-[4/5] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-navy via-[#173154] to-teal p-6 text-white shadow-soft"
-          >
-            <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-magenta/30 blur-3xl" />
-            <div className="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-gold/25 blur-3xl" />
-
+          <div className="relative mx-auto mt-2 aspect-[4/5] w-full overflow-hidden rounded-3xl bg-teal-ink p-6 text-white">
+            <img
+              src="/logo-maos-coracao.svg"
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-12 -right-10 h-56 w-56 opacity-[0.12] brightness-[3] grayscale"
+            />
             <div className="relative flex h-full flex-col">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest opacity-90">
-                <Sparkles className="h-3.5 w-3.5 text-gold" />
-                Aposta no Futuro
-              </div>
-
+              <p className="text-sm font-semibold">
+                Aposta no <span className="text-[#7fe6da]">Futuro</span>
+              </p>
               <div className="mt-auto">
-                <div className="text-sm opacity-90">Estou há</div>
-                <div className="mt-1 flex items-baseline gap-2">
-                  <span className="text-7xl font-bold leading-none tabular-nums text-gold">
+                <p className="text-[0.95rem] text-white/85">Estou há</p>
+                <p className="mt-1 flex items-baseline gap-2">
+                  <span className="tabular text-7xl font-semibold leading-none tracking-[-0.03em] text-gold">
                     {days}
                   </span>
-                  <span className="text-lg font-semibold">
-                    {days === 1 ? "dia" : "dias"}
-                  </span>
-                </div>
-                <div className="mt-1 text-lg font-semibold">sem apostar 💚</div>
+                  <span className="text-lg font-semibold">{days === 1 ? "dia" : "dias"}</span>
+                </p>
+                <p className="mt-1 text-lg font-semibold">sem apostar</p>
                 {weekly > 0 && moneySaved > 0 && (
-                  <div className="mt-4 inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs backdrop-blur">
-                    Já não perdi {brl(moneySaved)}
-                  </div>
+                  <p className="mt-4 inline-flex rounded-full bg-white/10 px-3 py-1 text-sm">
+                    {brl(moneySaved)} ficaram comigo
+                  </p>
                 )}
-                <div className="mt-6 text-[11px] uppercase tracking-widest opacity-70">
-                  Um dia de cada vez.
-                </div>
+                <p className="mt-6 font-script text-2xl text-white/85">Um dia de cada vez.</p>
               </div>
             </div>
           </div>
@@ -436,14 +299,14 @@ function Perfil() {
             <Button
               variant="outline"
               onClick={copyText}
-              className="flex-1 rounded-full"
+              className="min-h-11 flex-1 rounded-full border-border"
             >
-              <Download className="mr-2 h-4 w-4" />
-              Copiar texto
+              {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+              {copied ? "Copiado" : "Copiar texto"}
             </Button>
             <Button
               onClick={() => setShareOpen(false)}
-              className="flex-1 rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
+              className="min-h-11 flex-1 rounded-full bg-teal-deep text-white hover:bg-teal-ink"
             >
               Fechar
             </Button>
@@ -451,21 +314,9 @@ function Perfil() {
         </DialogContent>
       </Dialog>
 
-      <InstallCard className="mt-5" />
-
-      <nav className="mt-6 flex items-center justify-center gap-3 text-sm">
-        <Link to="/privacidade" className="font-medium text-teal underline underline-offset-2">
-          Privacidade
-        </Link>
-        <span aria-hidden="true" className="text-muted-foreground">·</span>
-        <Link to="/termos" className="font-medium text-teal underline underline-offset-2">
-          Termos de uso
-        </Link>
-        <span aria-hidden="true" className="text-muted-foreground">·</span>
-        <Link to="/sobre" className="font-medium text-teal underline underline-offset-2">
-          Sobre nós
-        </Link>
-      </nav>
+      <InstallCard className="mt-6" />
+      </div>
+      </div>
     </AppShell>
   );
 }

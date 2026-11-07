@@ -46,16 +46,26 @@
   --color-gold-foreground: var(--gold-foreground);
   --color-cyan: var(--cyan);
   --color-cyan-foreground: var(--cyan-foreground);
+  --color-teal-deep: var(--teal-deep);
+  --color-teal-ink: var(--teal-ink);
+  --color-teal-soft: var(--teal-soft);
+  --color-coral-deep: var(--coral-deep);
+  --color-coral-soft: var(--coral-soft);
+  --color-gold-deep: var(--gold-deep);
+  --color-gold-soft: var(--gold-soft);
 
-  --shadow-soft: 0 4px 20px -6px rgb(22 35 60 / 0.12);
-  --shadow-card: 0 2px 12px -4px rgb(22 35 60 / 0.08);
+  --shadow-soft: 0 10px 30px -14px rgb(22 35 60 / 0.22);
+  --shadow-card: 0 1px 2px rgb(22 35 60 / 0.04), 0 6px 18px -10px rgb(22 35 60 / 0.14);
 }
 
 :root {
   --radius: 1rem;
-  --nav-h: 52px;
+  --nav-h: 60px;
 
-  --background: #f7fafc;
+  /* Mundo "acolhedor e calmo" (repaginação 11/2026, aprovada pela Eduarda):
+     fundo de névoa tingida pelo teal da marca, tinta navy, teal profundo
+     para ação, coral só para ajuda, dourado só para conquista. */
+  --background: #f2f6f4;
   --foreground: #16233c;
 
   --card: #ffffff;
@@ -63,35 +73,47 @@
   --popover: #ffffff;
   --popover-foreground: #16233c;
 
-  --primary: #16bfac;
+  --primary: #0d6b60;
   --primary-foreground: #ffffff;
 
-  --secondary: #eef7f6;
+  --secondary: #e1f1ec;
   --secondary-foreground: #16233c;
 
-  --muted: #eef1f5;
-  --muted-foreground: #5b6b83;
+  --muted: #e6edea;
+  --muted-foreground: #526075;
 
-  --accent: #eef7f6;
+  --accent: #e1f1ec;
   --accent-foreground: #16233c;
 
-  --destructive: #ff5b4c;
+  --destructive: #c2392c;
   --destructive-foreground: #ffffff;
 
-  --border: #e3e8ef;
-  --input: #e3e8ef;
-  --ring: #16bfac;
+  --border: #dce6e2;
+  --input: #cbd8d3;
+  --ring: #0d6b60;
 
   --navy: #16233c;
   --navy-foreground: #ffffff;
+  /* Teal da marca: preenchimentos, barras de progresso, ícones grandes.
+     Nunca como cor de texto sobre fundo claro. */
   --teal: #16bfac;
   --teal-foreground: #16233c;
+  --teal-deep: #0d6b60;
+  --teal-ink: #0a5249;
+  --teal-soft: #dcf0ea;
+  /* Coral: reservado para ajuda e cuidado imediato. */
   --coral: #ff5b4c;
   --coral-foreground: #ffffff;
+  --coral-deep: #b83427;
+  --coral-soft: #fdebe6;
+  /* Dourado: conquistas e marcos. */
+  --gold: #f5a623;
+  --gold-foreground: #16233c;
+  --gold-deep: #7d5200;
+  --gold-soft: #fbf0db;
+  /* Mantidas por compatibilidade; não usar em telas novas. */
   --magenta: #e8197e;
   --magenta-foreground: #ffffff;
-  --gold: #f5a623;
-  --gold-foreground: #ffffff;
   --cyan: #1ca0d8;
   --cyan-foreground: #ffffff;
 }
@@ -106,13 +128,14 @@
     height: auto;
     overflow-y: visible;
     -webkit-text-size-adjust: 100%;
-    background-color: #16233C;
+    background-color: var(--background);
   }
 
   body {
     font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
-    background-color: #16233C;
+    background-color: var(--background);
     color: var(--color-foreground);
+    caret-color: var(--teal-deep);
     -webkit-font-smoothing: antialiased;
     /* Nenhuma tela pode arrastar para os lados, mas a rolagem vertical
        continua sendo a do documento (overflow-x: hidden no <html> quebra
@@ -142,6 +165,23 @@
   textarea,
   select {
     -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background-color: rgb(22 191 172 / 0.28);
+    color: var(--navy);
+  }
+
+  /* Foco visível e consistente em toda a interface (teclado). */
+  :focus-visible {
+    outline: 2px solid var(--teal-deep);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  a {
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
   }
 }
 
@@ -241,8 +281,28 @@
   .intro-splash-logo, .intro-splash-text { animation: none; }
 }
 
-#lovable-badge {
-  display: none !important;
+/* Um único momento de movimento por tela; quem pede menos movimento
+   recebe a interface parada. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise-in { animation: rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Números que contam e comparam sempre alinhados. */
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Evita o zoom automático do iOS Safari ao focar campos editáveis:
@@ -258,6 +318,8 @@
 /* Placeholder nunca corta no meio de uma palavra: usa ellipsis. */
 input::placeholder,
 textarea::placeholder {
+  color: var(--muted-foreground);
+  opacity: 1;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

@@ -14,12 +14,17 @@ function readOnboarded(): boolean {
 function Splash() {
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#16233C] px-6"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-background px-6"
       aria-hidden="true"
     >
-      <p className="text-center text-2xl font-semibold tracking-tight text-white">
-        Aposta no Futuro
-      </p>
+      <img
+        src="/logo-maos-coracao.svg"
+        alt=""
+        width={64}
+        height={64}
+        className="h-16 w-16 select-none opacity-90"
+        draggable={false}
+      />
     </div>
   );
 }

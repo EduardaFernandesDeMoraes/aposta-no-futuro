@@ -6,6 +6,8 @@ import {
   Check,
   Smartphone,
   MoreVertical,
+  X,
+  ChevronDown,
 } from "lucide-react";
 import { track, trackOnce } from "@/lib/analytics";
 import {
@@ -62,6 +64,7 @@ export function InstallCard({ className = "" }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const [ios, setIos] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setIos(isIOS());
@@ -99,26 +102,46 @@ export function InstallCard({ className = "" }: { className?: string }) {
 
   return (
     <section
-      className={`rounded-2xl bg-card p-4 shadow-card ${className}`}
+      className={`rounded-3xl border border-border bg-card ${className}`}
       aria-label="Instalar o app na tela inicial"
     >
-      <div className="flex items-start gap-3">
-        <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-teal/15 text-teal">
+      <div className="flex items-center gap-3 p-4">
+        <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
           <Smartphone className="h-5 w-5" />
         </span>
-        <div className="min-w-0">
-          <h2 className="text-sm font-semibold text-navy">
-            Deixe o app na sua tela inicial
+        <div className="min-w-0 flex-1">
+          <h2 className="font-semibold leading-snug text-navy">
+            Deixe o app na tela inicial
           </h2>
-          <p className="mt-1 text-sm leading-relaxed text-slate-600">
-            Fica igual a um aplicativo, abre mais rápido e continua sem ocupar
-            espaço no celular.
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            Abre mais rápido e não ocupa espaço.
           </p>
         </div>
+        <button
+          type="button"
+          onClick={dismiss}
+          aria-label="Dispensar por 7 dias"
+          className="grid h-11 w-11 flex-none place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-navy"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
 
-      {ios ? (
-        <ol className="mt-4 space-y-2">
+      {!open && !(prompt && !ios) ? (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-expanded={false}
+          className="flex min-h-12 w-full items-center justify-center gap-1.5 border-t border-border text-sm font-semibold text-teal-deep transition-colors hover:bg-background"
+        >
+          Ver como fazer
+          <ChevronDown className="h-4 w-4" />
+        </button>
+      ) : null}
+
+      <div className={!open && !(prompt && !ios) ? "hidden" : "px-4 pb-4"}>
+      {!open && !(prompt && !ios) ? null : ios ? (
+        <ol className="space-y-2">
           <Step
             icon={<Share className="h-4 w-4" />}
             text="Toque no botão Compartilhar (ícone de quadrado com seta para cima) na barra do Safari."
@@ -136,13 +159,13 @@ export function InstallCard({ className = "" }: { className?: string }) {
         <button
           type="button"
           onClick={install}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-teal px-4 py-3 text-sm font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b] active:scale-95"
+          className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-teal-deep px-4 text-sm font-semibold text-white transition-colors hover:bg-teal-ink"
         >
           <Download className="h-4 w-4" />
           Adicionar agora
         </button>
       ) : (
-        <ol className="mt-4 space-y-2">
+        <ol className="space-y-2">
           <Step
             icon={<MoreVertical className="h-4 w-4" />}
             text="Toque no menu do navegador (três pontos, no canto superior)."
@@ -157,25 +180,18 @@ export function InstallCard({ className = "" }: { className?: string }) {
           />
         </ol>
       )}
-
-      <button
-        type="button"
-        onClick={dismiss}
-        className="mt-2 w-full rounded-full py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-navy"
-      >
-        Agora não
-      </button>
+      </div>
     </section>
   );
 }
 
 function Step({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <li className="flex items-start gap-3 rounded-xl bg-[#E1F5EE] p-3">
-      <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-white text-teal">
+    <li className="flex items-start gap-3 rounded-2xl bg-background p-3">
+      <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
         {icon}
       </span>
-      <span className="text-sm leading-relaxed text-slate-600">{text}</span>
+      <span className="text-sm leading-relaxed text-navy">{text}</span>
     </li>
   );
 }

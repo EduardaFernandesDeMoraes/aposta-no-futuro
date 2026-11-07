@@ -1,18 +1,8 @@
 import { track, EVENTS } from "@/lib/analytics";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  Cell,
-} from "recharts";
-import { Calculator, Sparkles, Info, TrendingUp } from "lucide-react";
+import { ArrowDown, ChevronDown, Info, PiggyBank } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
@@ -48,13 +38,11 @@ const weeklySchema = z
   .max(100000, "Valor muito alto");
 
 const PERIODS = [
-  { key: "6m", label: "Em 6 meses", weeks: 26, months: 6 },
-  { key: "1a", label: "Em 1 ano", weeks: 52, months: 12 },
-  { key: "3a", label: "Em 3 anos", weeks: 156, months: 36 },
-  { key: "5a", label: "Em 5 anos", weeks: 260, months: 60 },
+  { key: "6m", label: "6 meses", weeks: 26 },
+  { key: "1a", label: "1 ano", weeks: 52 },
+  { key: "3a", label: "3 anos", weeks: 156 },
+  { key: "5a", label: "5 anos", weeks: 260 },
 ] as const;
-
-const BAR_COLORS = ["#1CA0D8", "#16BFAC", "#E8197E", "#F5A623"];
 
 const brl = (n: number) =>
   n.toLocaleString("pt-BR", {
@@ -63,7 +51,7 @@ const brl = (n: number) =>
     maximumFractionDigits: 0,
   });
 
-// Future value of monthly deposits at rate r for n months
+// Valor futuro de depósitos mensais com taxa r por n meses
 function fvMonthlyDeposits(pmt: number, months: number, r = 0.008) {
   if (r === 0) return pmt * months;
   return pmt * ((Math.pow(1 + r, months) - 1) / r);
@@ -77,24 +65,55 @@ function dreamFor(yearAmount: number) {
   return "um grande sonho: sua independência, um imóvel ou o começo do seu próprio negócio.";
 }
 
+/** Conta de 0 até `target` uma vez, com desaceleração suave. */
+function useCountUp(target: number, duration = 1100) {
+  const [value, setValue] = useState(target);
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      setValue(target);
+      return;
+    }
+    let raf = 0;
+    const start = performance.now();
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / duration);
+      const eased = 1 - Math.pow(2, -10 * p);
+      setValue(target * (p >= 1 ? 1 : eased));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    setValue(0);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]);
+  return value;
+}
+
 type Saved = { weekly: number; calculatedAt: string };
 
 function Simulador() {
-  const [saved, setSaved] = useLocalStorage<Saved | null>(
-    "anf.simulador",
-    null,
-  );
-  const [raw, setRaw] = useState<string>(
-    saved ? String(saved.weekly).replace(".", ",") : "",
-  );
-  const [weekly, setWeekly] = useState<number | null>(
-    saved ? saved.weekly : null,
-  );
+  const [saved, setSaved] = useLocalStorage<Saved | null>("anf.simulador", null);
+  const [raw, setRaw] = useState<string>("");
+  const [weekly, setWeekly] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const restored = useRef(false);
+
+  // Depois da hidratação, retoma o último valor calculado no aparelho.
+  useEffect(() => {
+    if (restored.current || !saved) return;
+    restored.current = true;
+    setRaw(String(saved.weekly).replace(".", ","));
+    setWeekly(saved.weekly);
+  }, [saved]);
 
   function calculate(input: string) {
+    restored.current = true;
     const num = Number(input.replace(/\./g, "").replace(",", "."));
     const result = weeklySchema.safeParse(num);
+    if (!input.trim()) {
+      setError("Digite um valor ou escolha um dos valores rápidos.");
+      setWeekly(null);
+      return;
+    }
     if (!result.success) {
       setError(result.error.issues[0]?.message ?? "Valor inválido");
       setWeekly(null);
@@ -117,235 +136,172 @@ function Simulador() {
     calculate(s);
   }
 
-  const rows = weekly !== null
-    ? PERIODS.map((p, i) => ({
-        ...p,
-        saved: weekly * p.weeks,
-        color: BAR_COLORS[i],
-      }))
-    : [];
-
+  const rows =
+    weekly !== null ? PERIODS.map((p) => ({ ...p, saved: weekly * p.weeks })) : [];
+  const max = rows.length ? rows[rows.length - 1].saved : 0;
   const monthly = weekly !== null ? weekly * (52 / 12) : 0;
-  const fv1y = weekly !== null ? fvMonthlyDeposits(monthly, 12) : 0;
   const fv5y = weekly !== null ? fvMonthlyDeposits(monthly, 60) : 0;
   const yearAmount = weekly !== null ? weekly * 52 : 0;
+  const fiveYears = weekly !== null ? weekly * 260 : 0;
+  const shown = useCountUp(fiveYears);
 
   return (
-    <AppShell title="Simulador">
-      {/* Intro */}
-      <div className="rounded-3xl bg-gradient-to-br from-navy to-[#0f1a2c] p-5 text-white shadow-soft">
-        <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider opacity-90">
-          <Calculator className="h-4 w-4" />
-          Simulador de economia
-        </div>
-        <p className="mt-2 text-sm opacity-95">
-          Veja uma estimativa do quanto você pode deixar de perder ao não
-          apostar.
-        </p>
-      </div>
-
-      {/* Input */}
+    <AppShell
+      title="Simulador"
+      intro="Quanto você costumava apostar? Veja o que esse dinheiro pode virar quando fica com você."
+    >
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
+      <div className="lg:sticky lg:top-28 lg:col-span-5">
+      {/* Entrada */}
       <form
         onSubmit={handleCalc}
-        className="mt-4 rounded-3xl bg-card p-5 shadow-card"
+        noValidate
+        className="lg:rounded-[2rem] lg:border lg:border-border lg:bg-card lg:p-8"
       >
-        <label htmlFor="weekly" className="block text-sm font-semibold text-navy">
-          Quanto você costumava apostar por semana?
+        <label htmlFor="weekly" className="block font-semibold text-navy">
+          Valor por semana
         </label>
-        <div className="mt-2 flex items-center gap-2 rounded-2xl border border-border bg-background px-4 focus-within:border-teal">
-          <span className="text-sm font-semibold text-muted-foreground">R$</span>
+        <div className="mt-2 flex min-h-14 items-center gap-2 rounded-2xl border border-input bg-card px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
+          <span className="text-lg font-semibold text-muted-foreground">R$</span>
           <input
             id="weekly"
             inputMode="decimal"
-            placeholder="0,00"
+            placeholder="0"
             maxLength={10}
             value={raw}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? "weekly-erro" : "weekly-nota"}
             onChange={(e) => setRaw(e.target.value.replace(/[^0-9,.]/g, ""))}
-            className="w-full bg-transparent py-3 text-base outline-none tabular-nums"
+            className="tabular w-full bg-transparent py-3 text-2xl font-semibold text-navy outline-none placeholder:text-muted-foreground"
           />
         </div>
         {error && (
-          <p className="mt-2 text-xs font-medium text-destructive">{error}</p>
+          <p id="weekly-erro" className="mt-2 text-sm font-medium text-destructive">
+            {error}
+          </p>
         )}
-        <div className="mt-3 flex flex-wrap gap-2" aria-label="Valores rápidos">
+        <div className="mt-3 grid grid-cols-4 gap-2" aria-label="Valores rápidos">
           {[20, 50, 100, 200].map((v) => (
             <button
               key={v}
               type="button"
               onClick={() => quickPick(v)}
+              aria-pressed={weekly === v}
               className={cn(
-                "rounded-full border px-3 py-1.5 text-xs font-semibold tabular-nums transition-colors",
+                "tabular min-h-11 rounded-full border text-sm font-semibold transition-colors",
                 weekly === v
-                  ? "border-teal bg-[#E1F5EE] text-[#0d6b60]"
-                  : "border-border bg-background text-navy/80 hover:border-teal/40",
+                  ? "border-teal-deep bg-teal-soft text-teal-ink"
+                  : "border-border bg-card text-navy hover:border-teal-deep/40",
               )}
             >
               R$ {v}
             </button>
           ))}
         </div>
-        <p className="mt-3 text-[11px] text-muted-foreground">
-          O valor fica só no seu aparelho. Usamos 52 semanas por ano, sem juros.
+        <p id="weekly-nota" className="mt-3 text-sm text-muted-foreground">
+          O valor fica só no seu aparelho.
         </p>
         <Button
           type="submit"
-          className="mt-4 h-12 w-full rounded-full bg-teal text-base font-semibold text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
+          className="mt-5 h-12 w-full rounded-full bg-teal-deep text-base font-semibold text-white hover:bg-teal-ink"
         >
-          Calcular
+          Ver o que pode virar
         </Button>
       </form>
+      </div>
 
+      <div className="lg:col-span-7">
+      {weekly === null && (
+        <div className="hidden h-full min-h-[26rem] flex-col items-center justify-center rounded-[2rem] border-2 border-dashed border-border px-10 text-center lg:flex">
+          <span className="grid h-16 w-16 place-items-center rounded-full bg-gold-soft text-gold-deep">
+            <PiggyBank className="h-7 w-7" />
+          </span>
+          <p className="mt-5 max-w-[32ch] text-lg leading-relaxed text-navy">
+            Escolha um valor ao lado e veja o que ele pode virar em 5 anos.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">Nada é enviado: a conta acontece no seu aparelho.</p>
+        </div>
+      )}
       {weekly !== null && (
-        <div className="animate-fade-in">
-          {/* Result cards */}
-          <section className="mt-6">
-            <h2 className="mb-3 text-sm font-semibold text-navy">
-              Economia estimada
-            </h2>
-            <div className="grid grid-cols-2 gap-3">
-              {rows.map((r) => (
-                <div
-                  key={r.key}
-                  className={cn(
-                    "rounded-2xl border border-border bg-card p-4 shadow-card",
-                  )}
-                >
-                  <div
-                    className="h-1 w-8 rounded-full"
-                    style={{ backgroundColor: r.color }}
-                  />
-                  <div className="mt-2 text-xs font-medium text-muted-foreground">
-                    {r.label}
-                  </div>
-                  <div className="mt-1 text-xl font-bold text-navy tabular-nums">
-                    {brl(r.saved)}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
-              Estimativa baseada no valor que você informou, sem considerar
-              juros ou variações. Serve para dar noção de grandeza, não como
-              previsão financeira.
+        <div className="rise-in" key={weekly}>
+          {/* A revelação */}
+          <section
+            aria-live="polite"
+            className="relative mt-10 overflow-hidden rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:mt-0 lg:rounded-[2.25rem] lg:p-10"
+          >
+            <p className="text-[0.95rem] text-white/85 lg:text-lg">
+              Em 5 anos sem apostar, você teria
             </p>
-          </section>
-
-          {/* Chart */}
-          <section className="mt-6 rounded-3xl bg-card p-4 shadow-card">
-            <div className="mb-2 flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-teal" />
-              <h2 className="text-sm font-semibold text-navy">
-                Projeção ao longo do tempo
-              </h2>
-            </div>
-            <div className="h-52 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={rows.map((r) => ({
-                    name: r.label.replace("Em ", ""),
-                    valor: Math.round(r.saved),
-                    color: r.color,
-                  }))}
-                  margin={{ top: 10, right: 8, left: -12, bottom: 0 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e3e8ef" vertical={false} />
-                  <XAxis
-                    dataKey="name"
-                    tick={{ fontSize: 11, fill: "#5b6b83" }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    tick={{ fontSize: 10, fill: "#5b6b83" }}
-                    axisLine={false}
-                    tickLine={false}
-                    tickFormatter={(v) =>
-                      v >= 1000 ? `${Math.round(v / 1000)}k` : String(v)
-                    }
-                  />
-                  <Tooltip
-                    cursor={{ fill: "rgba(22,191,172,0.08)" }}
-                    formatter={(v: number) => [brl(v), "Economia estimada"]}
-                    contentStyle={{
-                      borderRadius: 12,
-                      border: "1px solid #e3e8ef",
-                      fontSize: 12,
-                    }}
-                  />
-                  <Bar dataKey="valor" radius={[8, 8, 0, 0]}>
-                    {rows.map((r) => (
-                      <Cell key={r.key} fill={r.color} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
-              Estimativa baseada no valor que você informou, sem considerar
-              juros ou variações. Serve para dar noção de grandeza, não como
-              previsão financeira.
+            <p className="tabular mt-2 text-[2.75rem] font-semibold leading-none tracking-[-0.03em] lg:mt-3 lg:text-[5rem] lg:tracking-[-0.045em]">
+              {brl(Math.round(shown))}
             </p>
-          </section>
-
-          {/* Compound scenario */}
-          <section className="mt-6 rounded-3xl bg-gradient-to-br from-cyan to-[#0f7fb0] p-5 text-white shadow-soft">
-            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider opacity-90">
-              <Sparkles className="h-4 w-4" />E se você guardasse?
-            </div>
-            <p className="mt-2 text-sm opacity-95">
-              Se você depositasse aproximadamente{" "}
-              <strong className="tabular-nums">{brl(monthly)}</strong> por mês,
-              rendendo cerca de 0,8% ao mês, a projeção seria:
-            </p>
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
-                <div className="text-[11px] opacity-90">Em 1 ano</div>
-                <div className="mt-1 text-lg font-bold tabular-nums">
-                  {brl(fv1y)}
-                </div>
-              </div>
-              <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
-                <div className="text-[11px] opacity-90">Em 5 anos</div>
-                <div className="mt-1 text-lg font-bold tabular-nums">
-                  {brl(fv5y)}
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 flex items-start gap-2 rounded-xl bg-white/10 p-3 text-[11px] leading-snug opacity-95">
-              <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-              <span>
-                Projeção educativa. Não é promessa de rendimento nem
-                recomendação de investimento.
-              </span>
-            </div>
-          </section>
-
-          {/* Motivational message */}
-          <section className="mt-6 rounded-3xl border border-magenta/20 bg-magenta/5 p-5">
-            <div className="text-xs font-semibold uppercase tracking-wider text-magenta">
-              Isso pode virar
-            </div>
-            <p className="mt-2 text-sm leading-relaxed text-navy">
-              Em 1 ano,{" "}
-              <strong className="tabular-nums">{brl(yearAmount)}</strong> pode
-              ser {dreamFor(yearAmount)}
+            <p className="mt-5 max-w-[46ch] text-[0.95rem] leading-relaxed text-white lg:mt-6 lg:text-lg">
+              Só no primeiro ano, <strong className="tabular">{brl(yearAmount)}</strong>{" "}
+              já pode virar {dreamFor(yearAmount)}
             </p>
             <a
               href="#minhas-apostas"
-              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-magenta px-4 py-2 text-xs font-semibold text-white shadow-soft transition-colors hover:bg-[#c9156b]"
+              className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-teal-ink transition-colors hover:bg-teal-soft"
             >
-              Transformar em uma aposta no futuro →
+              Criar uma aposta no futuro
+              <ArrowDown className="h-4 w-4" />
             </a>
           </section>
 
+          {/* Linha do tempo */}
+          <section className="mt-8" aria-labelledby="tempo-titulo">
+            <h2 id="tempo-titulo" className="text-lg font-semibold text-navy">
+              Ao longo do tempo
+            </h2>
+            <ul className="mt-4 space-y-3">
+              {rows.map((r) => (
+                <li key={r.key} className="grid grid-cols-[4.5rem_1fr_auto] items-center gap-3">
+                  <span className="text-sm text-muted-foreground">{r.label}</span>
+                  <span className="h-2.5 overflow-hidden rounded-full bg-muted">
+                    <span
+                      className="block h-full rounded-full bg-teal transition-[width] duration-700 ease-out"
+                      style={{ width: `${max ? Math.max(4, (r.saved / max) * 100) : 0}%` }}
+                    />
+                  </span>
+                  <span className="tabular text-right text-sm font-semibold text-navy">
+                    {brl(r.saved)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <details className="group mt-6 rounded-2xl border border-border bg-card">
+            <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 px-4 text-sm font-semibold text-navy">
+              <span className="flex items-center gap-2">
+                <Info className="h-4 w-4 text-teal-deep" />
+                Como calculamos
+              </span>
+              <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+            </summary>
+            <div className="space-y-2 px-4 pb-4 text-sm leading-relaxed text-muted-foreground">
+              <p>
+                Multiplicamos o valor por 52 semanas por ano, sem juros. Serve
+                para dar noção de grandeza, não como previsão.
+              </p>
+              <p>
+                Se você guardasse cerca de <strong className="tabular text-navy">{brl(monthly)}</strong>{" "}
+                por mês rendendo uns 0,8% ao mês, em 5 anos seriam por volta de{" "}
+                <strong className="tabular text-navy">{brl(fv5y)}</strong>.
+              </p>
+              <p>
+                Projeção educativa: não é promessa de rendimento nem
+                recomendação de investimento. Este app não oferece consultoria
+                financeira.
+              </p>
+            </div>
+          </details>
         </div>
       )}
+      </div>
+      </div>
 
       <MinhasApostas weekly={weekly} suggestedTarget={weekly !== null ? weekly * 52 : 0} />
-
-      <p className="mt-4 text-center text-[11px] text-muted-foreground">
-        Conteúdo educativo. Este app não oferece consultoria financeira.
-      </p>
     </AppShell>
   );
 }

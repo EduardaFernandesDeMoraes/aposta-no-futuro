@@ -1,7 +1,8 @@
 import { track, EVENTS } from "@/lib/analytics";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { ArrowRight, Calendar, HandHeart, PiggyBank, ShieldCheck } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { OnboardingGate } from "@/components/onboarding-gate";
 import { IntroSplash } from "@/components/intro-splash";
@@ -46,30 +47,42 @@ type Profile = {
   onboarded: boolean;
 };
 
-const STEPS = [
+type Stage = "parei" | "diminuir" | "entender";
+
+const STAGES: { id: Stage; title: string; text: string }[] = [
   {
-    icon: Calendar,
-    color: "bg-teal",
-    title: "Acompanhe seus dias livres",
-    text: "Cada dia sem apostar é uma conquista sua. A gente celebra junto.",
+    id: "parei",
+    title: "Já parei de apostar",
+    text: "Quero contar meus dias e não voltar.",
   },
   {
-    icon: PiggyBank,
-    color: "bg-magenta",
-    title: "Veja quanto você economiza",
-    text: "Descubra o poder do dinheiro que voltou pro seu bolso.",
+    id: "diminuir",
+    title: "Ainda aposto e quero diminuir",
+    text: "O contador começa quando você quiser.",
   },
   {
-    icon: HandHeart,
-    color: "bg-coral",
-    title: "Você não caminha sozinho",
-    text: "Uma comunidade acolhedora, metas e apoio quando precisar.",
+    id: "entender",
+    title: "Só quero entender melhor",
+    text: "Sem compromisso. Explore no seu ritmo.",
   },
-] as const;
+];
+
+/** Data de hoje no fuso do aparelho, no formato do <input type="date">. */
+function todayLocal() {
+  const d = new Date();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
+/** "2026-11-06" → meia-noite local desse dia, em ISO. */
+function localMidnightIso(ymd: string) {
+  const [y, m, d] = ymd.split("-").map(Number);
+  return new Date(y, (m ?? 1) - 1, d ?? 1).toISOString();
+}
 
 function Onboarding() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
   const [phase, setPhase] = useState<"access" | "intro">("access");
   const [, setAccess] = useAccess();
 
@@ -92,210 +105,219 @@ function Onboarding() {
     }
     setPhase("intro");
   }
+
   const [profile, setProfile] = useLocalStorage<Profile>("anf.profile", {
     name: "",
     firstFreeDay: "",
     onboarded: false,
   });
   const [name, setName] = useState(profile.name);
-  const [date, setDate] = useState(
-    profile.firstFreeDay || new Date().toISOString().slice(0, 10),
-  );
+  const [stage, setStage] = useState<Stage | null>(null);
+  const [date, setDate] = useState("");
+  const today = useMemo(() => (phase === "intro" ? todayLocal() : ""), [phase]);
 
-  const isLast = step === STEPS.length;
+  useEffect(() => {
+    if (phase === "intro" && !date) setDate(todayLocal());
+  }, [phase, date]);
 
-  function next() {
-    if (isLast) {
-      setProfile({ name: name.trim(), firstFreeDay: date, onboarded: true });
-      track(EVENTS.onboardingDone);
-      track(EVENTS.counterStarted);
-      navigate({ to: "/" });
-    } else {
-      setStep((s) => s + 1);
-    }
+  function finish() {
+    const startsNow = stage === "parei";
+    const safeDate = date && date <= todayLocal() ? date : todayLocal();
+    setProfile({
+      name: name.trim(),
+      firstFreeDay: startsNow ? localMidnightIso(safeDate) : "",
+      onboarded: true,
+    });
+    track(EVENTS.onboardingDone);
+    if (startsNow) track(EVENTS.counterStarted);
+    navigate({ to: "/" });
   }
 
   if (phase === "access") {
     return (
-      <div className="min-h-dvh bg-background">
-        <main className="mx-auto flex min-h-dvh max-w-md flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+2rem)] pt-10">
+      <OnboardingFrame>
+        <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-[calc(env(safe-area-inset-top)+2.5rem)] lg:min-h-0 lg:w-full lg:py-16">
           <h1 className="sr-only">Bem-vindo ao Aposta no Futuro</h1>
           <AccessChooser onDone={handleAccess} />
-          <p className="mt-auto pt-8 text-center text-[11px] text-muted-foreground">
-            Este app é um apoio e não substitui tratamento profissional. Em
-            crise, ligue 188 (CVV).
-          </p>
         </main>
-      </div>
+      </OnboardingFrame>
     );
   }
 
   return (
-    <div className="min-h-dvh bg-background">
-      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+2rem)] pt-10">
-        <h1 className="sr-only">Bem-vindo ao Aposta no Futuro</h1>
-        <div className="flex items-center justify-between">
-          <div className="flex gap-1.5">
-            {[0, 1, 2, 3].map((i) => (
-              <span
-                key={i}
-                className={`h-1.5 w-8 rounded-full ${
-                  i <= step ? "bg-teal" : "bg-border"
-                }`}
-              />
-            ))}
+    <OnboardingFrame>
+      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-[calc(env(safe-area-inset-top)+1rem)] lg:min-h-0 lg:w-full lg:py-16">
+        <button
+          type="button"
+          onClick={() => setPhase("access")}
+          className="-ml-2 inline-flex min-h-11 w-fit items-center gap-1 rounded-full px-2 text-sm font-medium text-muted-foreground hover:text-navy"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Voltar
+        </button>
+
+        <div className="rise-in mt-4">
+          <p className="font-script text-[2rem] font-bold leading-none text-teal-deep">
+            Do seu jeito,
+          </p>
+          <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy">
+            no seu tempo.
+          </h1>
+          <p className="mt-3 text-[0.95rem] leading-relaxed text-muted-foreground">
+            Aqui ninguém te julga. Você conta seus dias, vê o que seu dinheiro
+            pode virar e encontra apoio quando precisar.
+          </p>
+        </div>
+
+        <fieldset className="mt-8">
+          <legend className="text-lg font-semibold text-navy">Onde você está hoje?</legend>
+          <div className="mt-3 space-y-2.5" role="radiogroup">
+            {STAGES.map((s) => {
+              const selected = stage === s.id;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => setStage(s.id)}
+                  className={cn(
+                    "flex w-full items-center gap-3 rounded-2xl border-2 bg-card p-4 text-left transition-colors",
+                    selected
+                      ? "border-teal-deep bg-teal-soft"
+                      : "border-border hover:border-teal-deep/40",
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "grid h-5 w-5 flex-none place-items-center rounded-full border-2",
+                      selected ? "border-teal-deep" : "border-input",
+                    )}
+                  >
+                    {selected && <span className="h-2.5 w-2.5 rounded-full bg-teal-deep" />}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-semibold leading-snug text-navy">{s.title}</span>
+                    <span className="mt-0.5 block text-sm text-muted-foreground">{s.text}</span>
+                  </span>
+                </button>
+              );
+            })}
           </div>
-          {!isLast && (
-            <button
-              onClick={() => setStep(STEPS.length)}
-              className="text-xs font-medium text-navy/80 underline underline-offset-2"
-            >
-              Pular
-            </button>
-          )}
-        </div>
+        </fieldset>
 
-        <div
-          className={
-            isLast ? "mt-6" : "mt-10 flex flex-1 flex-col justify-center"
-          }
-        >
-
-          {!isLast ? (
-            <StepView step={step} />
-          ) : (
-            <FinalStep
-              name={name}
-              date={date}
-              onName={setName}
-              onDate={setDate}
-            />
-          )}
-        </div>
-
-        <Button
-          onClick={next}
-          className="mt-8 h-12 w-full rounded-full bg-[#0d6b60] text-base font-semibold text-white shadow-soft transition-all duration-200 hover:bg-[#0a5a51] active:scale-[0.97] active:opacity-90"
-        >
-          {isLast ? "Começar minha jornada" : "Continuar"}
-          <ArrowRight className="ml-1 h-5 w-5" />
-        </Button>
-
-
-        <p className="mt-4 text-center text-[11px] text-muted-foreground">
-          Este app é um apoio e não substitui tratamento profissional. Em
-          crise, ligue 188 (CVV).
-        </p>
-      </main>
-    </div>
-  );
-}
-
-function StepView({ step }: { step: number }) {
-  const s = STEPS[step];
-  const Icon = s.icon;
-  return (
-    <div className="flex flex-col items-center text-center">
-      <div
-        className={`grid h-28 w-28 place-items-center rounded-3xl ${s.color} text-white shadow-soft`}
-      >
-        <Icon className="h-12 w-12" strokeWidth={2.2} />
-      </div>
-      <h2 className="mt-8 text-balance text-2xl font-bold leading-tight text-navy">
-        {s.title}
-      </h2>
-      <p className="mt-3 max-w-xs text-sm text-muted-foreground">{s.text}</p>
-    </div>
-  );
-}
-
-function FinalStep({
-  name,
-  date,
-  onName,
-  onDate,
-}: {
-  name: string;
-  date: string;
-  onName: (v: string) => void;
-  onDate: (v: string) => void;
-}) {
-  const isAnonymous = name.trim() === "";
-
-  return (
-    <div>
-      <h2 className="text-2xl font-bold leading-tight text-navy">
-        Vamos nos conhecer?
-      </h2>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Você pode continuar de forma anônima, do seu jeito.
-      </p>
-
-      <div className="mt-4 flex items-start gap-3 rounded-2xl bg-[#E1F5EE] p-4">
-        <span className="grid h-9 w-9 flex-none place-items-center rounded-full bg-white/70">
-          <ShieldCheck className="h-5 w-5 text-[#16BFAC]" strokeWidth={2.4} />
-        </span>
-        <p className="text-sm font-medium leading-snug text-navy">
-          Seu nome é opcional. Ele não é salvo em nenhum servidor e não é
-          enviado a ninguém: fica só no seu aparelho.
-        </p>
-      </div>
-
-      <div className="mt-5 space-y-4">
-        <label className="block" htmlFor="onboarding-name">
-          <span className="mb-1.5 flex items-center gap-2 text-sm font-medium text-navy">
-            Como podemos te chamar?
-            <span className="rounded-full bg-[#E1F5EE] px-2 py-0.5 text-[11px] font-semibold text-[#0d6b60]">
-              opcional
+        {stage === "parei" && (
+          <label className="rise-in mt-5 block" htmlFor="primeiro-dia-livre">
+            <span className="mb-1.5 block font-medium text-navy">
+              Desde quando você está sem apostar?
             </span>
+            <input
+              id="primeiro-dia-livre"
+              type="date"
+              value={date}
+              max={today}
+              onChange={(e) => setDate(e.target.value)}
+              className="min-h-12 w-full rounded-2xl border border-input bg-card px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
+            />
+          </label>
+        )}
+
+        <label className="mt-6 block" htmlFor="onboarding-name">
+          <span className="mb-1.5 flex items-center gap-2 font-medium text-navy">
+            Como podemos te chamar?
+            <span className="text-sm font-normal text-muted-foreground">(opcional)</span>
           </span>
           <input
             id="onboarding-name"
             value={name}
-            onChange={(e) => onName(e.target.value)}
-            placeholder="Ex.: Alex (ou deixe em branco)"
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Um apelido, ou deixe em branco"
             aria-describedby="name-help"
-            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-base outline-none md:text-sm transition-colors duration-200 focus:border-teal"
+            autoComplete="nickname"
+            className="min-h-12 w-full rounded-2xl border border-input bg-card px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
           />
-          {isAnonymous && (
-            <span
-              id="name-help"
-              className="mt-1.5 block text-xs font-medium text-[#0d6b60]"
-            >
-              Tudo certo, você vai continuar no anonimato ✓
-            </span>
-          )}
-        </label>
-
-        <label className="block" htmlFor="primeiro-dia-livre">
-          <span className="mb-1.5 block text-sm font-medium text-navy">
-            Meu primeiro dia livre de apostas
+          <span id="name-help" className="mt-2 flex items-start gap-2 text-sm text-muted-foreground">
+            <ShieldCheck className="mt-0.5 h-4 w-4 flex-none text-teal-deep" />
+            Fica só no seu aparelho. Não vai para nenhum servidor.
           </span>
-          <input
-            id="primeiro-dia-livre"
-            type="date"
-            value={date}
-            onChange={(e) => onDate(e.target.value)}
-            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-base outline-none md:text-sm focus:border-teal"
-          />
         </label>
-      </div>
 
-      <ul className="mt-6 space-y-2.5">
-        {[
-          { icon: Calendar, text: "Contador dos seus dias livres, em tempo real" },
-          { icon: PiggyBank, text: "Simulador do quanto você deixa de perder" },
-          { icon: HandHeart, text: "Comunidade anônima e acolhedora" },
-        ].map(({ icon: Icon, text }) => (
-          <li key={text} className="flex items-center gap-3 text-sm text-navy/80">
-            <span className="grid h-8 w-8 flex-none place-items-center rounded-xl bg-[#E1F5EE]">
-              <Icon className="h-4 w-4 text-[#16BFAC]" strokeWidth={2.4} />
-            </span>
-            {text}
-          </li>
-        ))}
-      </ul>
-    </div>
+        <div className="mt-auto pt-8">
+          <Button
+            onClick={finish}
+            disabled={!stage}
+            className="h-12 w-full rounded-full bg-teal-deep text-base font-semibold text-white hover:bg-teal-ink disabled:opacity-40"
+          >
+            Começar
+            <ArrowRight className="ml-1 h-5 w-5" />
+          </Button>
+          {!stage && (
+            <p className="mt-2 text-center text-sm text-muted-foreground">
+              Escolha uma opção acima para continuar.
+            </p>
+          )}
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            Este app é um apoio e não substitui tratamento profissional. Em
+            crise, ligue <a href="tel:188" className="font-semibold text-navy underline">188</a> (CVV).
+          </p>
+        </div>
+      </main>
+    </OnboardingFrame>
   );
 }
 
+/**
+ * No celular, só o conteúdo. No desktop, tela dividida: painel azul-escuro
+ * com a marca à esquerda e o passo atual à direita.
+ */
+function OnboardingFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-dvh bg-background lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <aside className="relative hidden overflow-hidden bg-navy text-white lg:flex lg:min-h-dvh lg:flex-col lg:justify-between lg:p-14 xl:p-20">
+        <img
+          src="/logo-maos-coracao.svg"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-24 -right-24 h-[30rem] w-[30rem] select-none opacity-[0.08] grayscale brightness-[3]"
+          draggable={false}
+        />
+        <div className="relative flex items-center gap-3">
+          <img
+            src="/logo-maos-coracao.svg"
+            alt=""
+            aria-hidden="true"
+            width={48}
+            height={48}
+            className="h-12 w-12 select-none"
+            draggable={false}
+          />
+          <p className="text-xl font-bold tracking-tight">
+            Aposta no <span className="text-[#7fe6da]">Futuro</span>
+          </p>
+        </div>
+
+        <div className="relative">
+          <p className="font-script text-[3rem] font-bold leading-none text-[#7fe6da]">
+            Menos apostas.
+          </p>
+          <p className="mt-2 text-[3.25rem] font-semibold leading-[1.05] tracking-[-0.035em]">
+            Mais futuro.
+          </p>
+          <ul className="mt-10 max-w-[36ch] space-y-4 text-lg leading-snug text-white/85">
+            <li>Conte seus dias sem apostar, no seu ritmo.</li>
+            <li>Veja o que o seu dinheiro pode virar.</li>
+            <li>Encontre apoio quando precisar, sem julgamento.</li>
+          </ul>
+        </div>
+
+        <p className="relative text-sm text-white/70">
+          Gratuito e anônimo. Nada do que você registra sai do seu aparelho.
+        </p>
+      </aside>
+      <div className="lg:flex lg:min-h-dvh lg:items-center lg:justify-center lg:px-12">
+        {children}
+      </div>
+    </div>
+  );
+}

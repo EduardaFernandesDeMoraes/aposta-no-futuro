@@ -17,19 +17,35 @@ import "../lib/install-prompt";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+    <div className="flex min-h-screen items-center justify-center bg-background px-5">
+      <div className="max-w-sm text-center">
+        <img
+          src="/logo-maos-coracao.svg"
+          alt=""
+          aria-hidden="true"
+          width={64}
+          height={64}
+          className="mx-auto h-16 w-16 select-none"
+        />
+        <h1 className="mt-6 text-[1.75rem] font-semibold leading-tight tracking-[-0.02em] text-navy">
+          Essa página não existe
+        </h1>
+        <p className="mt-2 text-[0.95rem] leading-relaxed text-muted-foreground">
+          O endereço pode ter mudado ou estar com um errinho de digitação. Seu
+          progresso continua salvo no aparelho.
         </p>
-        <div className="mt-6">
+        <div className="mt-6 flex flex-col gap-2">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-teal-deep px-5 text-sm font-semibold text-white transition-colors hover:bg-teal-ink"
           >
-            Go home
+            Voltar para o início
+          </Link>
+          <Link
+            to="/ajuda"
+            className="inline-flex min-h-12 items-center justify-center rounded-full px-5 text-sm font-semibold text-coral-deep transition-colors hover:bg-coral-soft"
+          >
+            Preciso de ajuda agora
           </Link>
         </div>
       </div>
@@ -42,29 +58,44 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+    <div className="flex min-h-screen items-center justify-center bg-background px-5">
+      <div className="max-w-sm text-center">
+        <img
+          src="/logo-maos-coracao.svg"
+          alt=""
+          aria-hidden="true"
+          width={64}
+          height={64}
+          className="mx-auto h-16 w-16 select-none"
+        />
+        <h1 className="mt-6 text-[1.75rem] font-semibold leading-tight tracking-[-0.02em] text-navy">
+          Algo não carregou direito
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <p className="mt-2 text-[0.95rem] leading-relaxed text-muted-foreground">
+          O erro foi do nosso lado, não seu. Tente de novo; seu progresso
+          continua salvo no aparelho.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-6 flex flex-col gap-2">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-teal-deep px-5 text-sm font-semibold text-white transition-colors hover:bg-teal-ink"
           >
-            Try again
+            Tentar de novo
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-card px-5 text-sm font-semibold text-navy transition-colors hover:bg-muted"
           >
-            Go home
+            Voltar para o início
+          </a>
+          <a
+            href="tel:188"
+            className="inline-flex min-h-11 items-center justify-center text-sm font-medium text-coral-deep underline underline-offset-4"
+          >
+            Em crise? Ligue 188 (CVV)
           </a>
         </div>
       </div>

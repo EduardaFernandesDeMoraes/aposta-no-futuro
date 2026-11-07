@@ -17,7 +17,7 @@ export function CampusSupportCard({
   return (
     <section
       className={cn(
-        "overflow-hidden rounded-3xl border border-teal/30 bg-card shadow-card",
+        "overflow-hidden rounded-3xl border border-border bg-card",
         className,
       )}
     >
@@ -28,16 +28,16 @@ export function CampusSupportCard({
           setOpen((v) => !v);
         }}
         aria-expanded={open}
-        className="flex w-full items-center gap-3 p-4 text-left"
+        className="flex min-h-16 w-full items-center gap-3 p-4 text-left"
       >
-        <span className="grid h-10 w-10 flex-none place-items-center rounded-xl bg-[#E1F5EE] text-[#0d6b60]">
+        <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
           <MapPin className="h-5 w-5" />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-sm font-semibold leading-tight text-navy">
+          <span className="block font-semibold leading-tight text-navy">
             Apoio no seu campus
           </span>
-          <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+          <span className="mt-0.5 block truncate text-sm text-muted-foreground">
             {partner.supportTitle}
           </span>
         </span>
@@ -51,7 +51,7 @@ export function CampusSupportCard({
 
       {open && (
         <div className="animate-fade-in border-t border-border px-4 pb-4 pt-3">
-          <p className="text-xs leading-relaxed text-muted-foreground">{partner.supportText}</p>
+          <p className="text-sm leading-relaxed text-muted-foreground">{partner.supportText}</p>
           <ul className="mt-3 space-y-2">
             {partner.channels.map((c) => (
               <li key={c.label}>
@@ -59,10 +59,10 @@ export function CampusSupportCard({
                   href={c.href}
                   target={c.href?.startsWith("http") ? "_blank" : undefined}
                   rel={c.href?.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2.5 transition-colors hover:bg-[#F0FAF7]"
+                  className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2.5 transition-colors hover:bg-teal-soft"
                 >
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[11px] font-semibold uppercase tracking-wider text-[#0d6b60]">
+                    <span className="block text-xs font-medium text-muted-foreground">
                       {c.label}
                     </span>
                     <span className="block break-words text-sm font-medium leading-snug text-navy">
@@ -78,12 +78,12 @@ export function CampusSupportCard({
           </ul>
           <a
             href="tel:188"
-            className="mt-3 flex items-center justify-center gap-2 rounded-full bg-coral px-4 py-3 text-sm font-semibold text-coral-foreground shadow-soft transition-colors hover:bg-[#eb4436]"
+            className="mt-3 flex min-h-12 items-center justify-center gap-2 rounded-full bg-coral-soft px-4 text-sm font-semibold text-coral-deep transition-colors hover:bg-[#fbdcd4]"
           >
             <Phone className="h-4 w-4" strokeWidth={2.5} />
             Em crise? Ligue 188 (CVV, 24h)
           </a>
-          <p className="mt-2 text-center text-[10px] text-muted-foreground">
+          <p className="mt-3 text-center text-xs text-muted-foreground">
             Contatos públicos divulgados pela instituição. Confirme horários no site oficial.
           </p>
         </div>

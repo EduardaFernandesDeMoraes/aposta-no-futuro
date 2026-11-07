@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Instagram, Heart } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { SensitiveFooter } from "@/components/sensitive-footer";
 import { track, trackOnce } from "@/lib/analytics";
 import eduardaPhoto from "@/assets/eduarda.webp";
 import luizPhoto from "@/assets/luiz.webp";
@@ -42,7 +41,7 @@ const PEOPLE: Person[] = [
     photo: eduardaPhoto,
     name: "Eduarda Fernandes de Moraes",
     role: "Idealizadora",
-    rolePill: "bg-teal text-white",
+    rolePill: "bg-teal-deep text-white",
     text: "22 anos, de Uberlândia. Jovem Aprendiz Espro e estudante do último ano de Ciências Contábeis. Idealizou o Aposta no Futuro e cuidou das telas, dos textos e da lógica do app.",
   },
   {
@@ -61,11 +60,11 @@ function Sobre() {
 
   return (
     <AppShell title="Sobre nós">
-      <div className="flex items-start gap-3 rounded-2xl border border-[#16BFAC] bg-[#E1F5EE] p-4">
-        <Heart className="mt-0.5 h-5 w-5 flex-none text-[#16BFAC]" />
+      <div className="flex items-start gap-3 rounded-2xl border border-teal-deep/30 bg-teal-soft p-4">
+        <Heart className="mt-0.5 h-5 w-5 flex-none text-teal-deep" />
         <div>
-          <h1 className="font-semibold text-[#16233C]">Sobre nós</h1>
-          <p className="mt-1 text-sm text-slate-600">
+          <h1 className="font-semibold text-navy">Sobre nós</h1>
+          <p className="mt-1 text-sm text-navy/80">
             A história por trás do app e quem constrói ele todo dia.
           </p>
         </div>
@@ -75,7 +74,7 @@ function Sobre() {
         <h2 className="text-sm font-semibold text-navy">
           Como o Aposta no Futuro surgiu
         </h2>
-        <div className="mt-2 space-y-3 text-sm leading-relaxed text-slate-600">
+        <div className="mt-2 space-y-3 text-sm leading-relaxed text-navy/80">
           <p>
             O Aposta no Futuro começou com uma história real: alguém muito
             próximo de mim entrou no vício em apostas, e eu acompanhei essa
@@ -101,7 +100,7 @@ function Sobre() {
               key={p.name}
               className="flex h-full flex-col items-center rounded-2xl bg-card p-4 text-center shadow-card"
             >
-              <div className="rounded-full bg-[#E1F5EE] p-1.5">
+              <div className="rounded-full bg-teal-soft p-1.5">
                 <img
                   src={p.photo}
                   alt={`Foto de ${p.name}`}
@@ -117,11 +116,11 @@ function Sobre() {
                 </h3>
               </div>
               <span
-                className={`mt-2 inline-block rounded-full px-3 py-1 text-[11px] font-semibold ${p.rolePill}`}
+                className={`mt-2 inline-block rounded-full px-3 py-1 text-xs font-semibold ${p.rolePill}`}
               >
                 {p.role}
               </span>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">
+              <p className="mt-3 text-sm leading-relaxed text-navy/80">
                 {p.text}
               </p>
             </article>
@@ -129,7 +128,7 @@ function Sobre() {
         </div>
       </section>
 
-      <section className="mt-5 rounded-2xl bg-[#16233C] p-5 text-white shadow-card">
+      <section className="mt-5 rounded-2xl bg-navy p-5 text-white shadow-card">
         <h2 className="text-sm font-semibold">Acompanhe o projeto</h2>
         <p className="mt-0.5 text-sm text-white/80">
           Conteúdo e apoio todos os dias.
@@ -141,7 +140,7 @@ function Sobre() {
             rel="noopener noreferrer"
             onClick={() => track("instagram_clicado")}
             aria-label="Abrir o Instagram do Aposta no Futuro"
-            className="flex min-h-[52px] w-full items-center gap-3 rounded-full bg-teal px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#14ac9b] active:scale-95"
+            className="flex min-h-[52px] w-full items-center gap-3 rounded-full bg-teal-deep text-white px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-teal-ink active:scale-95"
           >
             <Instagram className="h-6 w-6 flex-none" />
             <span>@apostanofuturo.oficial</span>
@@ -149,7 +148,6 @@ function Sobre() {
         </div>
       </section>
 
-      <SensitiveFooter />
     </AppShell>
   );
 }

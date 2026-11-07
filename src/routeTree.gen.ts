@@ -16,6 +16,7 @@ import { Route as AutoavaliacaoRouteImport } from './routes/autoavaliacao'
 import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as CampusRouteImport } from './routes/campus'
 import { Route as ComunidadeRouteImport } from './routes/comunidade'
+import { Route as CuidarRouteImport } from './routes/cuidar'
 import { Route as DesafiosRouteImport } from './routes/desafios'
 import { Route as MetasRouteImport } from './routes/metas'
 import { Route as PerfilRouteImport } from './routes/perfil'
@@ -59,6 +60,11 @@ const CampusRoute = CampusRouteImport.update({
 const ComunidadeRoute = ComunidadeRouteImport.update({
   id: '/comunidade',
   path: '/comunidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CuidarRoute = CuidarRouteImport.update({
+  id: '/cuidar',
+  path: '/cuidar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesafiosRoute = DesafiosRouteImport.update({
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/bem-vindo': typeof BemVindoRoute
   '/campus': typeof CampusRoute
   '/comunidade': typeof ComunidadeRoute
+  '/cuidar': typeof CuidarRoute
   '/desafios': typeof DesafiosRoute
   '/metas': typeof MetasRoute
   '/perfil': typeof PerfilRoute
@@ -133,6 +140,7 @@ export interface FileRoutesByTo {
   '/bem-vindo': typeof BemVindoRoute
   '/campus': typeof CampusRoute
   '/comunidade': typeof ComunidadeRoute
+  '/cuidar': typeof CuidarRoute
   '/desafios': typeof DesafiosRoute
   '/metas': typeof MetasRoute
   '/perfil': typeof PerfilRoute
@@ -152,6 +160,7 @@ export interface FileRoutesById {
   '/bem-vindo': typeof BemVindoRoute
   '/campus': typeof CampusRoute
   '/comunidade': typeof ComunidadeRoute
+  '/cuidar': typeof CuidarRoute
   '/desafios': typeof DesafiosRoute
   '/metas': typeof MetasRoute
   '/perfil': typeof PerfilRoute
@@ -172,6 +181,7 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/campus'
     | '/comunidade'
+    | '/cuidar'
     | '/desafios'
     | '/metas'
     | '/perfil'
@@ -190,6 +200,7 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/campus'
     | '/comunidade'
+    | '/cuidar'
     | '/desafios'
     | '/metas'
     | '/perfil'
@@ -208,6 +219,7 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/campus'
     | '/comunidade'
+    | '/cuidar'
     | '/desafios'
     | '/metas'
     | '/perfil'
@@ -227,6 +239,7 @@ export interface RootRouteChildren {
   BemVindoRoute: typeof BemVindoRoute
   CampusRoute: typeof CampusRoute
   ComunidadeRoute: typeof ComunidadeRoute
+  CuidarRoute: typeof CuidarRoute
   DesafiosRoute: typeof DesafiosRoute
   MetasRoute: typeof MetasRoute
   PerfilRoute: typeof PerfilRoute
@@ -287,6 +300,13 @@ declare module '@tanstack/react-router' {
       path: '/comunidade'
       fullPath: '/comunidade'
       preLoaderRoute: typeof ComunidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cuidar': {
+      id: '/cuidar'
+      path: '/cuidar'
+      fullPath: '/cuidar'
+      preLoaderRoute: typeof CuidarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/desafios': {
@@ -363,6 +383,7 @@ const rootRouteChildren: RootRouteChildren = {
   BemVindoRoute: BemVindoRoute,
   CampusRoute: CampusRoute,
   ComunidadeRoute: ComunidadeRoute,
+  CuidarRoute: CuidarRoute,
   DesafiosRoute: DesafiosRoute,
   MetasRoute: MetasRoute,
   PerfilRoute: PerfilRoute,

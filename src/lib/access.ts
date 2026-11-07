@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 /**
  * Perfil de acesso do AF People. Fica só no aparelho (localStorage):
@@ -17,28 +17,13 @@ export const ACCESS_KEY = "anf.access";
 /** Quem já usava o app antes do AF 2.0 continua no acesso livre. */
 export const DEFAULT_ACCESS: Access = { mode: "free" };
 
-function readAccess(): Access {
-  if (typeof window === "undefined") return DEFAULT_ACCESS;
-  try {
-    const raw = window.localStorage.getItem(ACCESS_KEY);
-    return raw ? (JSON.parse(raw) as Access) : DEFAULT_ACCESS;
-  } catch {
-    return DEFAULT_ACCESS;
-  }
-}
-
-/** Diferente do useLocalStorage, só grava quando a pessoa escolhe de fato. */
+/**
+ * Diferente de antes, a leitura acontece depois da hidratação (sem erro de
+ * HTML diferente entre servidor e aparelho), e só grava quando a pessoa
+ * escolhe de fato.
+ */
 export function useAccess() {
-  const [access, setState] = useState<Access>(readAccess);
-  const setAccess = useCallback((next: Access) => {
-    setState(next);
-    try {
-      window.localStorage.setItem(ACCESS_KEY, JSON.stringify(next));
-    } catch {
-      // ignore
-    }
-  }, []);
-  return [access, setAccess] as const;
+  return useLocalStorage<Access>(ACCESS_KEY, DEFAULT_ACCESS);
 }
 
 export function readAccessChosen(): boolean {

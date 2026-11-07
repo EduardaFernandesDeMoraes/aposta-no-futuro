@@ -1,20 +1,23 @@
 import { track, EVENTS } from "@/lib/analytics";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  ClipboardCheck,
   ArrowLeft,
   ArrowRight,
-  RefreshCw,
-  LifeBuoy,
-  Users,
-  Phone,
-  Info,
+  BookOpen,
+  Calculator,
+  ChevronRight,
+  History,
   MapPin,
-  ExternalLink,
+  Phone,
+  RefreshCw,
+  Sparkles,
+  type LucideIcon,
 } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
-import { SensitiveFooter } from "@/components/sensitive-footer";
+import { AppShell, openXande } from "@/components/app-shell";
+import { CampusSupportCard } from "@/components/campus-support-card";
+import { useAccess } from "@/lib/access";
+import { findPartner } from "@/lib/partners";
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
@@ -66,56 +69,53 @@ type SavedResult = {
   at: string;
 };
 
+type TierId = "nenhum" | "leve" | "moderado" | "alto";
+
 type Tier = {
+  id: TierId;
   min: number;
   max: number;
+  short: string;
   label: string;
   message: string;
-  color: string;
-  bg: string;
-  showHelp: boolean;
 };
 
 const TIERS: Tier[] = [
   {
+    id: "nenhum",
     min: 0,
     max: 0,
+    short: "Sem risco",
     label: "Sem indícios de risco",
     message:
       "Suas respostas não indicam sinais de risco por enquanto. Continue cuidando de você e observando seus hábitos.",
-    color: "text-teal",
-    bg: "bg-teal/10",
-    showHelp: true,
   },
   {
+    id: "leve",
     min: 1,
     max: 2,
+    short: "Leve",
     label: "Alguns indícios de risco",
     message:
       "Suas respostas indicam alguns sinais leves. Pode ser um bom momento para refletir sobre suas apostas e conversar com alguém de confiança.",
-    color: "text-cyan",
-    bg: "bg-cyan/10",
-    showHelp: true,
   },
   {
+    id: "moderado",
     min: 3,
     max: 7,
+    short: "Moderado",
     label: "Indícios de risco moderado",
     message:
       "Suas respostas indicam sinais de risco moderado. Pode ser um bom momento para pedir apoio e conversar com alguém de confiança.",
-    color: "text-gold",
-    bg: "bg-gold/15",
-    showHelp: true,
   },
   {
+    id: "alto",
     min: 8,
     max: 27,
+    short: "Alto",
     label: "Indícios de risco alto",
     message:
-      "Suas respostas indicam sinais de risco alto. Você não está sozinho(a). Conversar com um profissional ou acessar um canal de apoio é um ato de cuidado.",
-    color: "text-coral",
-    bg: "bg-coral/10",
-    showHelp: true,
+      "Suas respostas indicam sinais de risco alto. Você não está sozinho(a): conversar com um profissional ou com um canal de apoio é um ato de cuidado, e muita gente sai desse lugar.",
   },
 ];
 
@@ -123,53 +123,56 @@ function tierFor(score: number): Tier {
   return TIERS.find((t) => score >= t.min && score <= t.max) ?? TIERS[0];
 }
 
+const dateFmt = (iso: string) =>
+  new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long" });
+
 function Autoavaliacao() {
   const [answers, setAnswers] = useState<(number | null)[]>(
     Array(QUESTIONS.length).fill(null),
   );
   const [step, setStep] = useState(0);
   const [finished, setFinished] = useState(false);
-  const [, setSaved] = useLocalStorage<SavedResult | null>(
-    "anf.autoavaliacao",
-    null,
-  );
+  const [saved, setSaved] = useLocalStorage<SavedResult | null>("anf.autoavaliacao", null);
+  const [shownScore, setShownScore] = useState<number | null>(null);
+  const advanceTimer = useRef<number | null>(null);
 
-  const score = useMemo(
-    () => answers.reduce<number>((s, v) => s + (v ?? 0), 0),
-    [answers],
-  );
+  useEffect(() => () => {
+    if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
+  }, []);
 
   const currentAnswer = answers[step];
   const isLast = step === QUESTIONS.length - 1;
-  const progress = ((step + (currentAnswer !== null ? 1 : 0)) / QUESTIONS.length) * 100;
+  const answeredCount = answers.filter((a) => a !== null).length;
+  const progress = (answeredCount / QUESTIONS.length) * 100;
 
   function select(value: number) {
     const next = [...answers];
     next[step] = value;
     setAnswers(next);
+    // Avança sozinho para a próxima pergunta (menos rolagem no celular).
+    if (!isLast) {
+      if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
+      advanceTimer.current = window.setTimeout(() => setStep((s) => s + 1), 260);
+    }
   }
 
-  function goNext() {
-    if (currentAnswer === null) return;
-    if (isLast) {
-      const finalScore = answers.reduce<number>(
-        (s, v) => s + (v ?? 0),
-        0,
-      );
-      setSaved({
-        score: finalScore,
-        answers: answers.map((a) => a ?? 0),
-        at: new Date().toISOString(),
-      });
-      track(EVENTS.assessmentDone);
-      setFinished(true);
-      return;
-    }
-    setStep((s) => s + 1);
+  function finish() {
+    if (answers.some((a) => a === null)) return;
+    const finalScore = answers.reduce<number>((s, v) => s + (v ?? 0), 0);
+    setSaved({
+      score: finalScore,
+      answers: answers.map((a) => a ?? 0),
+      at: new Date().toISOString(),
+    });
+    track(EVENTS.assessmentDone);
+    setShownScore(finalScore);
+    setFinished(true);
+    window.scrollTo({ top: 0 });
   }
 
   function goBack() {
     if (step === 0) return;
+    if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
     setStep((s) => s - 1);
   }
 
@@ -177,271 +180,351 @@ function Autoavaliacao() {
     setAnswers(Array(QUESTIONS.length).fill(null));
     setStep(0);
     setFinished(false);
+    setShownScore(null);
+    window.scrollTo({ top: 0 });
   }
 
-  if (finished) {
-    return <Result score={score} onRestart={restart} />;
+  if (finished && shownScore !== null) {
+    return <Result score={shownScore} onRestart={restart} />;
   }
 
   return (
-    <AppShell title="Autoavaliação">
-      {/* Intro */}
-      <section className="rounded-3xl bg-navy p-5 text-navy-foreground shadow-soft">
-        <div className="flex items-center gap-3">
-          <div className="grid h-11 w-11 place-items-center rounded-2xl bg-teal/20 text-teal">
-            <ClipboardCheck className="h-5 w-5" />
-          </div>
-          <div>
-            <div className="text-sm font-semibold">Teste rápido e anônimo</div>
-            <div className="text-[11px] text-white/70">
-              Baseado no PGSI · 9 perguntas
-            </div>
-          </div>
-        </div>
-        <p className="mt-3 text-sm leading-relaxed text-white/85">
-          Este é um teste rápido e anônimo para você se conhecer melhor. Pense
-          nos últimos 12 meses.
-        </p>
-      </section>
+    <AppShell
+      title="Autoavaliação"
+      intro="9 perguntas sobre os últimos 12 meses. É uma triagem baseada no PGSI, não um diagnóstico. As respostas ficam só no seu aparelho."
+    >
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
+      <div className="lg:sticky lg:top-28 lg:col-span-4 lg:rounded-[2rem] lg:border lg:border-border lg:bg-card lg:p-6 lg:order-1">
+      {saved && answeredCount === 0 && (
+        <button
+          type="button"
+          onClick={() => {
+            setShownScore(saved.score);
+            setFinished(true);
+          }}
+          className="mb-6 flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-left transition-colors hover:bg-teal-soft/50 lg:border-0 lg:bg-background"
+        >
+          <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
+            <History className="h-5 w-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-medium text-navy">Ver seu último resultado</span>
+            <span className="block text-sm text-muted-foreground">
+              {tierFor(saved.score).label}, em {dateFmt(saved.at)}
+            </span>
+          </span>
+          <ChevronRight className="h-5 w-5 flex-none text-muted-foreground" />
+        </button>
+      )}
 
-      {/* Disclaimer before first question */}
-      <p className="mt-5 flex items-start gap-2 rounded-2xl bg-teal/10 p-3 text-xs leading-relaxed text-navy/90">
-        <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-teal" />
-        Esta é uma triagem baseada em um índice internacional (PGSI). Ela ajuda
-        você a enxergar sinais, mas não é um diagnóstico e não substitui a
-        avaliação de um profissional de saúde.
-      </p>
-
-      {/* Progress */}
-      <div className="mt-5">
-        <div className="mb-2 flex items-center justify-between text-xs font-medium text-muted-foreground">
-          <span>
+      {/* Progresso */}
+      <div>
+        <div className="mb-2 flex items-center justify-between text-sm">
+          <span className="font-medium text-navy">
             Pergunta {step + 1} de {QUESTIONS.length}
           </span>
-          <span>{Math.round(progress)}%</span>
+          {step > 0 && (
+            <button
+              type="button"
+              onClick={goBack}
+              className="-mr-2 inline-flex min-h-11 items-center gap-1 rounded-full px-2 font-medium text-muted-foreground hover:text-navy"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Anterior
+            </button>
+          )}
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-secondary">
+        <div
+          className="h-2 overflow-hidden rounded-full bg-muted"
+          role="progressbar"
+          aria-label="Progresso da autoavaliação"
+          aria-valuenow={Math.round(progress)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
           <div
-            className="h-full rounded-full bg-teal transition-all duration-300"
+            className="h-full rounded-full bg-teal transition-[width] duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
+        <ol className="mt-5 hidden grid-cols-9 gap-1.5 lg:grid" aria-hidden="true">
+          {QUESTIONS.map((_, i) => (
+            <li
+              key={i}
+              className={cn(
+                "tabular grid h-8 place-items-center rounded-lg text-xs font-semibold",
+                i === step
+                  ? "bg-teal-deep text-white"
+                  : answers[i] !== null
+                    ? "bg-teal-soft text-teal-ink"
+                    : "bg-muted text-muted-foreground",
+              )}
+            >
+              {i + 1}
+            </li>
+          ))}
+        </ol>
+      </div>
       </div>
 
-      {/* Question card */}
-      <section className="mt-5 rounded-3xl border border-border bg-card p-5 shadow-card">
-        <h2 className="text-base font-semibold leading-snug text-navy">
+      {/* Pergunta */}
+      <section className="rise-in mt-6 lg:order-0 lg:col-span-8 lg:mt-0" key={step} aria-live="polite">
+        <h2 className="text-[1.3rem] font-semibold leading-snug text-navy lg:max-w-[28ch] lg:text-[2rem] lg:leading-tight lg:tracking-[-0.02em]">
           {QUESTIONS[step]}
         </h2>
 
-        <div className="mt-4 space-y-2">
+        <div className="mt-5 space-y-2.5 lg:mt-8 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0" role="radiogroup" aria-label="Com que frequência?">
           {OPTIONS.map((opt) => {
             const active = currentAnswer === opt.value;
             return (
               <button
                 key={opt.value}
                 type="button"
+                role="radio"
+                aria-checked={active}
                 onClick={() => select(opt.value)}
                 className={cn(
-                  "flex w-full items-center justify-between rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition-all active:scale-[0.99]",
+                  "flex min-h-14 w-full items-center gap-3 rounded-2xl border-2 bg-card px-4 text-left font-medium transition-colors lg:min-h-20 lg:px-6 lg:text-lg",
                   active
-                    ? "border-teal bg-teal/10 text-navy"
-                    : "border-border bg-background text-navy/80 hover:border-teal/50",
+                    ? "border-teal-deep bg-teal-soft text-navy"
+                    : "border-border text-navy hover:border-teal-deep/40",
                 )}
               >
-                <span>{opt.label}</span>
                 <span
+                  aria-hidden="true"
                   className={cn(
-                    "grid h-6 w-6 place-items-center rounded-full border-2 text-[11px] font-bold",
-                    active
-                      ? "border-teal bg-teal text-teal-foreground"
-                      : "border-border text-muted-foreground",
+                    "grid h-5 w-5 flex-none place-items-center rounded-full border-2",
+                    active ? "border-teal-deep" : "border-input",
                   )}
                 >
-                  {opt.value}
+                  {active && <span className="h-2.5 w-2.5 rounded-full bg-teal-deep" />}
                 </span>
+                {opt.label}
               </button>
             );
           })}
         </div>
+
+        {isLast && (
+          <Button
+            type="button"
+            onClick={finish}
+            disabled={currentAnswer === null}
+            className="mt-6 h-12 w-full rounded-full bg-teal-deep text-base font-semibold text-white hover:bg-teal-ink disabled:opacity-40 lg:w-auto lg:px-10"
+          >
+            Ver meu resultado
+            <ArrowRight className="ml-1 h-5 w-5" />
+          </Button>
+        )}
       </section>
-
-      {/* Nav buttons */}
-      <div className="mt-5 flex items-center gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={goBack}
-          disabled={step === 0}
-          className="rounded-full"
-        >
-          <ArrowLeft className="mr-1 h-4 w-4" />
-          Voltar
-        </Button>
-        <Button
-          type="button"
-          onClick={goNext}
-          disabled={currentAnswer === null}
-          className="ml-auto rounded-full bg-teal text-teal-foreground transition-all duration-200 hover:bg-[#14ac9b]"
-        >
-          {isLast ? "Ver resultado" : "Próxima"}
-          <ArrowRight className="ml-1 h-4 w-4" />
-        </Button>
       </div>
-
-      <p className="mt-6 flex items-start gap-2 rounded-2xl bg-secondary p-3 text-[11px] text-muted-foreground">
-        <Info className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
-        Isto não é um diagnóstico médico. Suas respostas ficam só no seu
-        aparelho.
-      </p>
-      <SensitiveFooter />
     </AppShell>
   );
 }
 
-function Result({
-  score,
-  onRestart,
-}: {
-  score: number;
-  onRestart: () => void;
-}) {
-  const tier = tierFor(score);
-  const isHighRisk = score >= 8;
-  const helpBox = (
-    <section className="space-y-3">
-      <div
-        className={cn(
-          "rounded-3xl border p-5 shadow-card",
-          isHighRisk ? "border-coral/30 bg-coral/5" : "border-border bg-card",
-        )}
-      >
-        <div
-          className={cn(
-            "flex items-center gap-2",
-            isHighRisk ? "text-coral" : "text-navy",
-          )}
-        >
-          <LifeBuoy className="h-5 w-5" />
-          <span className="text-sm font-bold">
-            {isHighRisk ? "Cuidado de você é prioridade" : "Cuidar de você também é uma opção"}
-          </span>
-        </div>
-        <p className="mt-2 text-xs text-navy/80">
-          {isHighRisk
-            ? "Suas respostas indicam sinais que merecem atenção. Conversar com um profissional de saúde ou com um canal de apoio pode fazer diferença."
-            : "Se quiser conversar, o CVV e os CAPS do SUS são gratuitos, sigilosos e acolhedores. Não precisa estar em crise para pedir apoio."}
-        </p>
-        <div className="mt-3 space-y-2">
-          <a
-            href="tel:188"
-            className="flex items-center gap-3 rounded-2xl bg-coral p-3 text-coral-foreground shadow-soft"
-          >
-            <div className="grid h-10 w-10 place-items-center rounded-full bg-white/20">
-              <Phone className="h-4 w-4" />
-            </div>
-            <div>
-              <div className="text-sm font-semibold">CVV: ligar 188</div>
-              <div className="text-[11px] opacity-90">
-                24h · gratuito · sigiloso
-              </div>
-            </div>
-          </a>
-          <a
-            href="https://www.google.com/maps/search/CAPS+perto+de+mim"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => track(EVENTS.capsClicked)}
-            aria-label="Abrir busca por CAPS perto de mim no Google Maps"
-            className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3 text-navy shadow-soft transition-colors active:scale-[0.99]"
-          >
-            <div className="grid h-10 w-10 place-items-center rounded-full bg-navy/10">
-              <MapPin className="h-4 w-4 text-navy" />
-            </div>
-            <div className="flex-1">
-              <div className="text-sm font-semibold">CAPS mais próximo</div>
-              <div className="text-[11px] text-muted-foreground">
-                Toque para encontrar o CAPS mais próximo de você.
-              </div>
-            </div>
-            <ExternalLink className="h-4 w-4 flex-none text-muted-foreground" />
-          </a>
-        </div>
-      </div>
+type NextStep = {
+  title: string;
+  desc: string;
+  icon: LucideIcon;
+  to?: string;
+  href?: string;
+  onClick?: () => void;
+  strong?: boolean;
+};
 
-      <Link
-        to="/comunidade"
-        className="flex items-center gap-3 rounded-2xl bg-magenta p-4 text-white shadow-soft active:scale-[0.99]"
-      >
-        <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white/20">
-          <Users className="h-5 w-5" />
-        </div>
-        <div className="flex-1">
-          <div className="text-sm font-semibold">
-            Você não precisa passar por isso sozinho(a)
-          </div>
-          <div className="text-[11px] opacity-90">
-            Entre na lista de espera da Comunidade.
-          </div>
-        </div>
-        <ArrowRight className="h-5 w-5" />
-      </Link>
-    </section>
-  );
+function nextStepsFor(tier: TierId): NextStep[] {
+  const cvv: NextStep = {
+    title: "Conversar com alguém preparado",
+    desc: "CVV 188, 24h, gratuito e sigiloso. Não precisa estar em crise para ligar.",
+    icon: Phone,
+    href: "tel:188",
+    strong: true,
+  };
+  const guia: NextStep = {
+    title: "Ler o guia para parar de apostar",
+    desc: "Passos práticos: bloquear sites, cuidar do dinheiro, lidar com gatilhos.",
+    icon: BookOpen,
+    to: "/guia/parar-de-apostar",
+  };
+  const xande: NextStep = {
+    title: "Quando bater vontade, chamar o Xande",
+    desc: "Ele te ajuda a segurar o impulso por alguns minutos.",
+    icon: Sparkles,
+    onClick: openXande,
+  };
+  const sim: NextStep = {
+    title: "Ver o que seu dinheiro pode virar",
+    desc: "Um jeito concreto de enxergar o que está em jogo.",
+    icon: Calculator,
+    to: "/simulador",
+  };
+  const caps: NextStep = {
+    title: "Se quiser conversar, procure um CAPS",
+    desc: "Atendimento gratuito do SUS, inclusive para dependências.",
+    icon: MapPin,
+    href: "https://www.google.com/maps/search/CAPS+perto+de+mim",
+  };
+  if (tier === "alto") return [cvv, guia, xande];
+  if (tier === "moderado") return [guia, xande, caps];
+  return [sim, guia, xande];
+}
+
+function Result({ score, onRestart }: { score: number; onRestart: () => void }) {
+  const tier = tierFor(score);
+  const steps = nextStepsFor(tier.id);
+  const [access] = useAccess();
+  const partner = access.mode === "student" ? findPartner(access.partner) : undefined;
 
   return (
-    <AppShell title="Seu resultado">
-      {isHighRisk && helpBox}
+    <AppShell title="Seu resultado" titleAs="p">
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
+      <div className="lg:sticky lg:top-28 lg:col-span-5">
+      <div className="rise-in">
+        <p className="font-script text-[2rem] font-bold leading-none text-teal-deep lg:text-[2.75rem]">
+          Obrigado
+        </p>
+        <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[2.75rem] lg:tracking-[-0.03em]">
+          por responder com honestidade.
+        </h1>
+        <p className="mt-2 text-[0.95rem] leading-relaxed text-muted-foreground">
+          Olhar para isso já é um passo de cuidado.
+        </p>
+      </div>
 
-      <section
-        className={cn(
-          "mt-6 rounded-3xl border border-border p-6 shadow-card",
-          tier.bg,
-        )}
-      >
-        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Sua pontuação
-        </div>
-        <div className="mt-2 flex items-end gap-2">
-          <span className={cn("text-6xl font-bold leading-none tabular-nums", tier.color)}>
-            {score}
-          </span>
-          <span className="pb-1 text-sm text-muted-foreground">/ 27</span>
-        </div>
-        <div className={cn("mt-3 text-lg font-bold", tier.color)}>
+      {/* Resultado */}
+      <section className="mt-8 rounded-3xl border border-border bg-card p-5" aria-labelledby="faixa">
+        <h2 id="faixa" className="text-[1.3rem] font-semibold leading-snug text-navy">
           {tier.label}
+        </h2>
+        <p className="mt-2 text-[0.95rem] leading-relaxed text-navy/85">{tier.message}</p>
+
+        <div className="mt-5" aria-hidden="true">
+          <div className="grid grid-cols-4 gap-1.5">
+            {TIERS.map((t) => (
+              <span
+                key={t.id}
+                className={cn(
+                  "h-2 rounded-full",
+                  t.id === tier.id ? "bg-teal-deep" : "bg-muted",
+                )}
+              />
+            ))}
+          </div>
+          <div className="mt-2 grid grid-cols-4 gap-1.5 text-xs">
+            {TIERS.map((t) => (
+              <span
+                key={t.id}
+                className={cn(
+                  t.id === tier.id ? "font-semibold text-navy" : "text-muted-foreground",
+                )}
+              >
+                {t.short}
+              </span>
+            ))}
+          </div>
         </div>
-        <p className="mt-2 text-sm leading-relaxed text-navy/85">
-          {tier.message}
+        <p className="tabular mt-4 text-sm text-muted-foreground">
+          Pontuação: <span className="font-semibold text-navy">{score}</span> de 27
         </p>
       </section>
+      </div>
 
-      {!isHighRisk && <div className="mt-5">{helpBox}</div>}
+      <div className="lg:col-span-7">
+      {/* Próximo passo */}
+      <section className="mt-8 lg:mt-0" aria-labelledby="proximo">
+        <h2 id="proximo" className="text-lg font-semibold text-navy lg:text-2xl">
+          Seu próximo passo
+        </h2>
+        <ol className="mt-3 space-y-2.5">
+          {steps.map((s, i) => {
+            const Icon = s.icon;
+            const inner = (
+              <>
+                <span
+                  className={cn(
+                    "grid h-11 w-11 flex-none place-items-center rounded-full",
+                    s.strong ? "bg-white/15 text-white" : "bg-teal-soft text-teal-deep",
+                  )}
+                >
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className={cn("block text-xs font-medium", s.strong ? "text-white/80" : "text-muted-foreground")}>
+                    Passo {i + 1}
+                  </span>
+                  <span className={cn("block font-semibold leading-snug", s.strong ? "text-white" : "text-navy")}>
+                    {s.title}
+                  </span>
+                  <span className={cn("mt-0.5 block text-sm leading-snug", s.strong ? "text-white/85" : "text-muted-foreground")}>
+                    {s.desc}
+                  </span>
+                </span>
+                <ChevronRight className={cn("h-5 w-5 flex-none", s.strong ? "text-white" : "text-muted-foreground")} />
+              </>
+            );
+            const cls = cn(
+              "flex w-full items-center gap-4 rounded-2xl p-4 text-left transition-colors",
+              s.strong
+                ? "bg-teal-ink hover:bg-navy"
+                : "border border-border bg-card hover:bg-teal-soft/50",
+            );
+            return (
+              <li key={s.title}>
+                {s.to ? (
+                  <Link to={s.to} className={cls}>
+                    {inner}
+                  </Link>
+                ) : s.href ? (
+                  <a
+                    href={s.href}
+                    className={cls}
+                    {...(s.href.startsWith("http")
+                      ? {
+                          target: "_blank",
+                          rel: "noopener noreferrer",
+                          onClick: () => track(EVENTS.capsClicked),
+                        }
+                      : {})}
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <button type="button" onClick={s.onClick} className={cls}>
+                    {inner}
+                  </button>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </section>
 
-      <div className="mt-5 flex flex-col gap-2">
+      {partner && <CampusSupportCard partner={partner} className="mt-6" />}
+
+      <div className="mt-8 flex flex-col gap-2 lg:flex-row">
         <Button
           onClick={onRestart}
           variant="outline"
-          className="w-full rounded-full"
+          className="min-h-12 w-full rounded-full border-border bg-card text-navy lg:w-auto lg:px-6"
         >
           <RefreshCw className="mr-2 h-4 w-4" />
           Refazer autoavaliação
         </Button>
         <Link
           to="/"
-          className="w-full rounded-full bg-navy px-4 py-2.5 text-center text-sm font-semibold text-navy-foreground shadow-soft"
+          className="inline-flex min-h-12 w-full items-center justify-center rounded-full text-sm font-semibold text-teal-deep hover:bg-teal-soft lg:w-auto lg:px-6"
         >
           Voltar para o início
         </Link>
       </div>
 
-      <p className="mt-6 flex items-start gap-2 rounded-2xl bg-secondary p-3 text-[11px] text-muted-foreground">
-        <Info className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
-        Isto não é um diagnóstico médico. É uma ferramenta educativa baseada
-        no PGSI (Problem Gambling Severity Index). Suas respostas ficam só no
-        seu aparelho.
+      </div>
+      </div>
+
+      <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
+        Ferramenta educativa baseada no PGSI (Problem Gambling Severity Index).
+        Não é diagnóstico. Suas respostas ficam só no seu aparelho.
       </p>
-      <SensitiveFooter />
     </AppShell>
   );
 }

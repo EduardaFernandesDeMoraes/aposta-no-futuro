@@ -11,7 +11,6 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { PARTNERS, type Partner } from "@/lib/partners";
-import { cn } from "@/lib/utils";
 
 export type AccessChoice =
   | { kind: "student"; partner: string }
@@ -51,45 +50,63 @@ function ProfileStep({
   onManager: () => void;
 }) {
   return (
-    <div className="animate-fade-in">
-      <h2 className="text-balance text-center text-2xl font-bold leading-tight text-navy">
-        Bem-vindo ao Aposta no Futuro 💙
+    <div className="rise-in flex flex-1 flex-col">
+      <div className="flex items-center gap-2.5 lg:hidden">
+        <img
+          src="/logo-maos-coracao.svg"
+          alt=""
+          aria-hidden="true"
+          width={44}
+          height={44}
+          className="h-11 w-11 select-none"
+          draggable={false}
+        />
+        <p className="text-lg font-bold tracking-tight text-navy">
+          Aposta no <span className="text-teal-deep">Futuro</span>
+        </p>
+      </div>
+
+      <h2 className="mt-10 text-balance text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:mt-0 lg:text-[2.5rem]">
+        Que bom que você chegou.
       </h2>
-      <p className="mt-2 text-balance text-center text-sm text-muted-foreground">
-        Sua jornada de autocuidado e clareza financeira. Como você deseja acessar hoje?
+      <p className="mt-3 text-[0.95rem] leading-relaxed text-muted-foreground">
+        Um espaço sem julgamento para cuidar da sua relação com as apostas e do
+        seu dinheiro. Gratuito e anônimo.
       </p>
 
-      <div className="mt-6 space-y-3">
+      <p className="mt-8 font-semibold text-navy">Como você quer entrar?</p>
+      <div className="mt-3 space-y-2.5">
         <ProfileCard
           onClick={onStudent}
-          icon={<GraduationCap className="h-6 w-6" />}
-          tone="bg-teal text-white"
+          icon={<GraduationCap className="h-5 w-5" />}
           title="Sou estudante universitário"
-          text="Acesso 100% gratuito, privado e sem necessidade de cadastro."
-        />
-        <ProfileCard
-          onClick={onManager}
-          icon={<Building2 className="h-6 w-6" />}
-          tone="bg-navy text-white"
-          title="Sou gestor ou colaborador de uma instituição"
-          text="Acesso ao painel institucional de indicadores e campanhas."
+          text="Com o apoio do seu campus. Sem cadastro."
         />
         <ProfileCard
           onClick={onFree}
-          icon={<Globe className="h-6 w-6" />}
-          tone="bg-cyan text-white"
-          title="Quero fazer meu acesso livre (sem vínculo)"
-          text="Acesse de forma totalmente independente e anônima."
+          icon={<Globe className="h-5 w-5" />}
+          title="Quero entrar sem vínculo"
+          text="Acesso livre, totalmente anônimo."
         />
       </div>
 
-      <Link
-        to="/ajuda"
-        className="mt-6 flex items-center justify-center gap-2 rounded-full bg-coral/10 px-4 py-3 text-sm font-semibold text-[#c2392c] transition-colors hover:bg-coral/15"
-      >
-        <Phone className="h-4 w-4" strokeWidth={2.5} />
-        Preciso de ajuda agora
-      </Link>
+      <div className="mt-auto pt-10 lg:pt-8">
+        <Link
+          to="/ajuda"
+          className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-coral-soft px-4 text-sm font-semibold text-coral-deep transition-colors hover:bg-[#fbdcd4]"
+        >
+          <Phone className="h-4 w-4" strokeWidth={2.4} />
+          Preciso de ajuda agora
+        </Link>
+        <button
+          type="button"
+          onClick={onManager}
+          className="mt-3 flex min-h-11 w-full items-center justify-center gap-1.5 text-sm font-medium text-muted-foreground underline underline-offset-4 hover:text-navy"
+        >
+          <Building2 className="h-4 w-4" />
+          Sou gestor de uma instituição
+        </button>
+      </div>
     </div>
   );
 }
@@ -97,13 +114,11 @@ function ProfileStep({
 function ProfileCard({
   onClick,
   icon,
-  tone,
   title,
   text,
 }: {
   onClick: () => void;
   icon: React.ReactNode;
-  tone: string;
   title: string;
   text: string;
 }) {
@@ -111,14 +126,14 @@ function ProfileCard({
     <button
       type="button"
       onClick={onClick}
-      className="group flex w-full items-center gap-4 rounded-3xl border border-border bg-card p-4 text-left shadow-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-soft active:scale-[0.98]"
+      className="group flex min-h-[4.75rem] w-full items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition-colors hover:border-teal-deep/40 hover:bg-teal-soft/50"
     >
-      <span className={cn("grid h-12 w-12 flex-none place-items-center rounded-2xl", tone)}>
+      <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
         {icon}
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[15px] font-semibold leading-snug text-navy">{title}</span>
-        <span className="mt-1 block text-xs leading-snug text-muted-foreground">{text}</span>
+        <span className="block font-semibold leading-snug text-navy">{title}</span>
+        <span className="mt-0.5 block text-sm leading-snug text-muted-foreground">{text}</span>
       </span>
       <ChevronRight className="h-5 w-5 flex-none text-muted-foreground transition-transform group-hover:translate-x-0.5" />
     </button>
@@ -146,22 +161,22 @@ function InstitutionStep({
   }, [query]);
 
   return (
-    <div className="animate-fade-in">
+    <div className="rise-in">
       <button
         type="button"
         onClick={onBack}
-        className="-ml-1 inline-flex items-center gap-1 rounded-full px-1 py-1 text-xs font-semibold text-navy/80 hover:text-navy"
+        className="-ml-2 inline-flex min-h-11 items-center gap-1 rounded-full px-2 text-sm font-medium text-muted-foreground hover:text-navy"
       >
         <ArrowLeft className="h-4 w-4" /> Voltar
       </button>
-      <h2 className="mt-3 text-balance text-2xl font-bold leading-tight text-navy">
+      <h2 className="mt-3 text-balance text-[1.6rem] font-semibold leading-[1.2] tracking-[-0.02em] text-navy">
         Em qual instituição de ensino você estuda?
       </h2>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Selecione sua faculdade ou universidade para carregar as redes de apoio do seu campus.
+      <p className="mt-2 text-[0.95rem] leading-relaxed text-muted-foreground">
+        Assim a gente mostra os canais de apoio do seu campus.
       </p>
 
-      <label className="mt-5 flex items-center gap-2 rounded-2xl border border-border bg-card px-4 focus-within:border-teal">
+      <label className="mt-5 flex min-h-12 items-center gap-2 rounded-2xl border border-input bg-card px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
         <Search className="h-4 w-4 text-muted-foreground" />
         <span className="sr-only">Buscar instituição</span>
         <input
@@ -178,14 +193,14 @@ function InstitutionStep({
             <button
               type="button"
               onClick={() => onPick(p)}
-              className="flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-3.5 text-left shadow-card transition-all duration-200 hover:border-teal/40 hover:bg-[#F0FAF7] active:scale-[0.98]"
+              className="flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-3.5 text-left transition-colors hover:border-teal-deep/40 hover:bg-teal-soft/50"
             >
-              <span className="grid h-11 w-11 flex-none place-items-center rounded-xl bg-navy text-[#0AF0FB]">
+              <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
                 <GraduationCap className="h-5 w-5" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-navy">{p.name}</span>
-                <span className="block text-xs text-muted-foreground">{p.city}</span>
+                <span className="block font-semibold leading-snug text-navy">{p.name}</span>
+                <span className="block text-sm text-muted-foreground">{p.city}</span>
               </span>
               <ChevronRight className="h-5 w-5 flex-none text-muted-foreground" />
             </button>
@@ -201,14 +216,14 @@ function InstitutionStep({
       <button
         type="button"
         onClick={onNotPartner}
-        className="mt-4 w-full rounded-full border border-teal/40 bg-white px-4 py-3 text-sm font-semibold text-[#0d6b60] transition-colors hover:bg-[#E1F5EE]"
+        className="mt-4 min-h-12 w-full rounded-full border border-teal-deep/30 bg-card px-4 text-sm font-semibold text-teal-deep transition-colors hover:bg-teal-soft"
       >
         Minha instituição ainda não é parceira
       </button>
 
-      <div className="mt-5 flex items-start gap-3 rounded-2xl bg-[#E1F5EE] p-4">
-        <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-[#0d6b60]" strokeWidth={2.4} />
-        <p className="text-xs font-medium leading-snug text-navy">
+      <div className="mt-6 flex items-start gap-3 px-1">
+        <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-teal-deep" strokeWidth={2.2} />
+        <p className="text-sm leading-relaxed text-muted-foreground">
           Não pedimos e-mail, senha nem matrícula. A instituição escolhida fica salva só no seu
           aparelho e serve apenas para mostrar o apoio do seu campus.
         </p>

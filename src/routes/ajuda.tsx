@@ -1,8 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Phone, MapPin, Heart, ArrowLeft, MessageSquare, ExternalLink } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Phone, MapPin, Heart, MessageSquare, ExternalLink } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { SensitiveFooter } from "@/components/sensitive-footer";
-import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { trackOnce, EVENTS } from "@/lib/analytics";
 
@@ -63,124 +61,95 @@ function AjudaPage() {
   }, []);
 
   return (
-    <AppShell title="Apoio">
-      <Link
-        to="/"
-        className="mb-4 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-navy"
-      >
-        <ArrowLeft className="h-3.5 w-3.5" />
-        Voltar ao início
-      </Link>
-
-      {/* Welcome */}
-      <section className="mb-6 text-center">
-        <div className="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-full bg-teal/10 text-2xl">
-          💚
-        </div>
-        <h2 className="text-lg font-bold text-navy">
-          Você não está sozinho(a)
-        </h2>
-        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-          Pedir ajuda é um ato de força. Respira. Estamos com você.
+    <AppShell title="Apoio" titleAs="p">
+      {/* Acolhimento */}
+      <div className="pb-6 lg:pb-10">
+        <p className="font-script text-[2rem] font-bold leading-none text-teal-deep lg:text-[2.75rem]">
+          Respira.
         </p>
-      </section>
+        <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[3rem] lg:tracking-[-0.03em]">
+          Você não está sozinho(a).
+        </h1>
+        <p className="mt-2 max-w-[56ch] text-[0.95rem] leading-relaxed text-muted-foreground lg:mt-3 lg:text-lg">
+          Pedir ajuda é um ato de força. Estes canais são gratuitos, sigilosos
+          e preparados para te ouvir.
+        </p>
+      </div>
 
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
       {/* CVV */}
-      <section className="mb-5 overflow-hidden rounded-3xl bg-gradient-to-br from-[#0d6b60] to-[#094e46] text-white shadow-soft">
-        <div className="p-6">
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white/90">
-            <Heart className="h-3.5 w-3.5" />
-            Atendimento imediato
-          </div>
-          <h2 className="mt-2 text-xl font-bold text-white">
-            CVV: Centro de Valorização da Vida
-          </h2>
-          <p className="mt-1 text-sm text-white/95">
-            Atendimento 24 horas, gratuito e sigiloso. Pode ligar ou conversar
-            pelo site.
-          </p>
-
-          <a
-            href="tel:188"
-            className="mt-5 flex items-center gap-3 rounded-2xl bg-white/20 p-4 text-white backdrop-blur-sm transition-transform active:scale-[0.98]"
-            aria-label="Ligar para o CVV 188"
-          >
-            <div className="grid h-12 w-12 place-items-center rounded-full bg-white/25">
-              <Phone className="h-5 w-5" />
-            </div>
-            <div>
-              <div className="text-2xl font-extrabold tracking-tight">Ligar 188</div>
-              <div className="text-xs text-white/90">
-                24h · gratuito · sigiloso
-              </div>
-            </div>
-          </a>
-
-          <a
-            href="https://www.cvv.org.br"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-white/20"
-          >
-            <MessageSquare className="h-4 w-4" />
-            Acessar chat no site do CVV
-            <ExternalLink className="ml-auto h-3.5 w-3.5 text-white/80" />
-          </a>
-        </div>
-      </section>
-
-      {/* CAPS */}
-      <section className="mb-5 rounded-3xl border border-border bg-card p-6 shadow-card">
-        <div className="flex items-center gap-2">
-          <div className="grid h-10 w-10 place-items-center rounded-full bg-cyan/10 text-cyan">
-            <MapPin className="h-5 w-5" />
-          </div>
-          <div>
-            <h2 className="text-base font-bold text-navy">
-              CAPS: Centros de Atenção Psicossocial
-            </h2>
-            <p className="text-[11px] text-muted-foreground">
-              Gratuito pelo SUS
-            </p>
-          </div>
-        </div>
-
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Os CAPS oferecem atendimento psicossocial gratuito, incluindo
-          acompanhamento para dependências. Procure a unidade mais próxima do
-          seu município. Você pode buscar no site da Prefeitura ou na UBS da
-          sua região.
+      <section
+        aria-labelledby="cvv"
+        className="overflow-hidden rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:col-span-7 lg:rounded-[2.25rem] lg:p-10"
+      >
+        <h2 id="cvv" className="text-xl font-semibold leading-snug lg:text-[1.75rem]">
+          CVV: Centro de Valorização da Vida
+        </h2>
+        <p className="mt-1 text-[0.95rem] text-white/85">
+          24 horas, gratuito e sigiloso. Pode ligar ou conversar pelo site.
         </p>
 
-        <div className="mt-4 rounded-2xl bg-secondary p-4">
-          <p className="text-xs leading-relaxed text-secondary-foreground">
-            <strong className="text-navy">Como encontrar:</strong> ligue para a
-            UBS (Unidade Básica de Saúde) do seu bairro e peça o endereço do
-            CAPS mais próximo. Ou busque no site da Prefeitura da sua cidade
-            por “CAPS + nome do seu município”.
-          </p>
-        </div>
+        <a
+          href="tel:188"
+          className="mt-5 flex items-center gap-4 rounded-2xl bg-white p-4 text-teal-ink transition-colors hover:bg-teal-soft lg:mt-8 lg:p-6"
+          aria-label="Ligar para o CVV 188"
+        >
+          <span className="grid h-12 w-12 flex-none place-items-center rounded-full bg-teal-soft">
+            <Phone className="h-5 w-5" />
+          </span>
+          <span>
+            <span className="block text-2xl font-bold tracking-tight lg:text-[2.25rem]">Ligar 188</span>
+            <span className="block text-sm text-teal-ink/80">24h · gratuito · sigiloso</span>
+          </span>
+        </a>
 
+        <a
+          href="https://www.cvv.org.br"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 flex min-h-12 items-center gap-2 rounded-2xl px-4 text-sm font-semibold text-white ring-1 ring-white/30 transition-colors hover:bg-white/10"
+        >
+          <MessageSquare className="h-4 w-4" />
+          Conversar pelo chat do CVV
+          <ExternalLink className="ml-auto h-4 w-4 text-white/80" />
+        </a>
+      </section>
+
+      <div className="lg:col-span-5">
+      {/* CAPS */}
+      <section aria-labelledby="caps" className="mt-8 lg:mt-0 lg:rounded-[2rem] lg:border lg:border-border lg:bg-card lg:p-8">
+        <h2 id="caps" className="text-lg font-semibold text-navy">
+          CAPS: atendimento pelo SUS
+        </h2>
+        <p className="mt-2 leading-relaxed text-navy/80">
+          Os Centros de Atenção Psicossocial oferecem acompanhamento gratuito,
+          inclusive para dependências. Para achar o seu, ligue para a UBS do
+          seu bairro e peça o endereço, ou busque “CAPS + nome da sua cidade”
+          no site da Prefeitura.
+        </p>
         <a
           href="https://www.google.com/search?q=CAPS+mais+pr%C3%B3ximo+de+mim"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 flex items-center gap-2 rounded-2xl border border-cyan/40 bg-cyan/5 px-4 py-3 text-sm font-semibold text-cyan transition-colors hover:bg-cyan/10"
+          className="mt-4 flex min-h-12 items-center gap-2 rounded-2xl border border-border bg-card px-4 text-sm font-semibold text-teal-deep transition-colors hover:bg-teal-soft"
         >
           <MapPin className="h-4 w-4" />
           Buscar o CAPS mais próximo
-          <ExternalLink className="ml-auto h-3.5 w-3.5 opacity-80" />
+          <ExternalLink className="ml-auto h-4 w-4 text-muted-foreground" />
         </a>
       </section>
 
       {/* Emergência */}
-      <section className="mb-5 rounded-3xl border border-coral/40 bg-coral/10 p-5">
-        <p className="text-sm font-semibold leading-relaxed text-navy">
-          Se for uma emergência, ligue 192 ou vá ao pronto-socorro mais próximo.
+      <section aria-labelledby="emergencia" className="mt-8 rounded-3xl bg-coral-soft p-5">
+        <h2 id="emergencia" className="font-semibold leading-snug text-navy">
+          Emergência médica
+        </h2>
+        <p className="mt-1 text-sm leading-relaxed text-navy/80">
+          Ligue 192 (SAMU) ou vá ao pronto-socorro mais próximo.
         </p>
         <a
           href="tel:192"
-          className="mt-3 inline-flex items-center gap-2 rounded-full bg-coral px-5 py-2.5 text-sm font-semibold text-coral-foreground shadow-soft transition-transform active:scale-[0.98]"
+          className="mt-4 inline-flex min-h-12 items-center gap-2 rounded-full bg-coral-deep px-5 text-sm font-semibold text-white transition-colors hover:bg-[#9c2b20]"
           aria-label="Ligar para o SAMU 192"
         >
           <Phone className="h-4 w-4" />
@@ -188,36 +157,13 @@ function AjudaPage() {
         </a>
       </section>
 
-
-      {/* Disclaimer */}
-      <section className="rounded-3xl border border-border bg-card p-6 shadow-card">
-        <div className="flex items-start gap-3">
-          <div className="mt-0.5 grid h-8 w-8 flex-shrink-0 place-items-center rounded-full bg-gold/10 text-gold">
-            <Heart className="h-4 w-4" />
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-navy">
-              Lembrete gentil
-            </h3>
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              Este app é um apoio e não substitui o atendimento de um
-              profissional de saúde. Se você está em crise ou precisa de ajuda
-              especializada, os canais acima estão preparados para te
-              acolher.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <div className="mt-8 text-center">
-        <Button
-          asChild
-          className="rounded-full bg-navy px-6 text-navy-foreground transition-all duration-200 hover:bg-navy/90"
-        >
-          <Link to="/comunidade">Ir para a Comunidade</Link>
-        </Button>
+      <p className="mt-8 flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+        <Heart className="mt-0.5 h-4 w-4 flex-none text-teal-deep" />
+        Quando a vontade de apostar apertar, o Xande pode te ajudar a segurar
+        alguns minutos. Toque no ícone de brilho no topo da tela.
+      </p>
       </div>
-      <SensitiveFooter />
+      </div>
     </AppShell>
   );
 }
