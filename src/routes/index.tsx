@@ -62,18 +62,18 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://apostanofuturo.online/" },
       {
         property: "og:image",
-        content: "https://apostanofuturo.online/og-image.jpg",
+        content: "https://apostanofuturo.online/og-image.png",
       },
       {
         property: "og:image:secure_url",
-        content: "https://apostanofuturo.online/og-image.jpg",
+        content: "https://apostanofuturo.online/og-image.png",
       },
-      { property: "og:image:type", content: "image/jpeg" },
+      { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "640" },
+      { property: "og:image:height", content: "630" },
       {
         property: "og:image:alt",
-        content: "Aposta no Futuro: apoio anônimo e gratuito contra o vício em apostas",
+        content: "Logo do Aposta no Futuro, duas mãos segurando um coração, sobre fundo azul-marinho, com o texto: Apoio anônimo e gratuito contra o vício em apostas",
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
@@ -91,7 +91,7 @@ export const Route = createFileRoute("/")({
       },
       {
         name: "twitter:image",
-        content: "https://apostanofuturo.online/og-image.jpg",
+        content: "https://apostanofuturo.online/og-image.png",
       },
     ],
     links: [{ rel: "canonical", href: "https://apostanofuturo.online/" }],

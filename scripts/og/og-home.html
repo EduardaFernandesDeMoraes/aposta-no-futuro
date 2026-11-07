@@ -1,0 +1,111 @@
+<!doctype html>
+<!--
+  Fonte da imagem de compartilhamento da home (WhatsApp, LinkedIn, X).
+  Não é publicada: gere o PNG com scripts/og/render.sh e ele vai para
+  public/og-image.png. Tamanho fixo 1200x630; o conteúdo importante fica
+  na faixa central (285-915px) para sobreviver ao recorte quadrado.
+-->
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1200, initial-scale=1" />
+    <title>OG home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=block"
+    />
+    <style>
+      :root {
+        --navy: #16233c;
+        --navy-deep: #0f192d;
+        --brand-cyan: #0af0fb;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: var(--navy);
+      }
+      body {
+        position: relative;
+        font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+        background:
+          radial-gradient(520px 340px at 50% 30%, rgb(10 240 251 / 0.13), transparent 70%),
+          radial-gradient(900px 420px at 50% 120%, rgb(22 191 172 / 0.16), transparent 70%),
+          linear-gradient(180deg, var(--navy) 0%, var(--navy) 55%, var(--navy-deep) 100%);
+      }
+
+      /* Arcos finos e discretos: "horizonte" calmo, sem a gramática das bets. */
+      .arc {
+        position: absolute;
+        left: 50%;
+        border-radius: 50%;
+        border: 1.5px solid rgb(10 240 251 / 0.14);
+        transform: translateX(-50%);
+      }
+      .arc--1 { width: 1500px; height: 1500px; top: 470px; }
+      .arc--2 { width: 1900px; height: 1900px; top: 520px; border-color: rgb(10 240 251 / 0.06); }
+
+      .stage {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-top: 60px;
+      }
+      .logo {
+        width: 216px;
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 10px 30px rgb(0 0 0 / 0.28));
+      }
+      .name {
+        margin-top: 28px;
+        font-size: 92px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.025em;
+      }
+      .name span { color: var(--brand-cyan); }
+      .tagline {
+        margin-top: 22px;
+        font-size: 34px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: rgb(255 255 255 / 0.84);
+      }
+      .domain {
+        position: absolute;
+        bottom: 34px;
+        left: 0;
+        right: 0;
+        font-size: 22px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        color: rgb(255 255 255 / 0.58);
+      }
+
+      [data-nextjs-dialog-overlay],
+      [data-nextjs-dialog],
+      nextjs-portal,
+      #__next-build-indicator { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <div class="arc arc--1" aria-hidden="true"></div>
+    <div class="arc arc--2" aria-hidden="true"></div>
+    <main class="stage">
+      <img class="logo" src="../../public/logo-maos-coracao.svg" alt="" width="216" height="218" />
+      <h1 class="name">Aposta no <span>Futuro</span></h1>
+      <p class="tagline">Apoio anônimo e gratuito contra o vício em apostas</p>
+      <p class="domain">apostanofuturo.online</p>
+    </main>
+  </body>
+</html>
