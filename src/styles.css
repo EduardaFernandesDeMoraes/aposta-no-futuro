@@ -469,6 +469,10 @@ html[data-splash="skip"] #af-splash {
 }
 .rise-in { animation: rise-in 0.6s var(--ease-out) both; }
 
+/* Saudação da home: a primeira frase chega, a segunda vem logo atrás. */
+.greeting-in { animation: rise-in 0.6s var(--ease-out) both; }
+.greeting-in > span:last-child { animation: rise-in 0.7s var(--ease-out) 0.18s both; }
+
 @keyframes fade-only {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -480,7 +484,9 @@ html[data-splash="skip"] #af-splash {
   html {
     scroll-behavior: auto;
   }
-  .rise-in {
+  .rise-in,
+  .greeting-in,
+  .greeting-in > span:last-child {
     animation: fade-only 0.2s ease-out both;
   }
   /* Abertura: sem deslocamentos nem batidas; tudo aparece com um fade

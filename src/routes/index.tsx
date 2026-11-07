@@ -36,6 +36,7 @@ import { OnboardingGate } from "@/components/onboarding-gate";
 import { CampusSupportCard } from "@/components/campus-support-card";
 import { useAccess } from "@/lib/access";
 import { findPartner } from "@/lib/partners";
+import { pickGreeting, type Greeting } from "@/lib/greetings";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -191,6 +192,13 @@ function Home() {
 
   const phrase = useMemo(() => encourage(totalMinutes), [totalMinutes]);
 
+  // Saudação: escolhida no aparelho (hora local), uma por visita.
+  const [greeting, setGreeting] = useState<Greeting | null>(null);
+  useEffect(() => {
+    if (now === null || greeting) return;
+    setGreeting(pickGreeting({ hour: new Date(now).getHours(), started, days }));
+  }, [now, greeting, started, days]);
+
   useEffect(() => {
     trackOnce(EVENTS.homeView);
   }, []);
@@ -210,20 +218,28 @@ function Home() {
 
   return (
     <AppShell title="Aposta no Futuro" titleAs="p">
-      {/* Saudação + título da página */}
+      {/* A saudação é o título da página e muda a cada visita */}
       <div className="pb-6 lg:pb-10">
-        <p className="text-lg leading-snug text-muted-foreground lg:text-xl">
-          {firstName ? (
-            <>
-              Oi, <span className="font-semibold text-teal-deep">{firstName}</span>. Que bom
-              te ver.
-            </>
+        <h1 className="text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[2.75rem] lg:tracking-[-0.03em]">
+          {greeting ? (
+            <span key={greeting.key} className="greeting-in block">
+              {greeting.open}
+              {firstName && (
+                <>
+                  , <span className="text-teal-deep">{firstName}</span>
+                </>
+              )}
+              {greeting.close}{" "}
+              <span className="block font-normal text-muted-foreground lg:inline-block">
+                {greeting.rest}
+              </span>
+            </span>
           ) : (
-            "Que bom te ver por aqui."
+            // Antes de saber a hora local: reserva o espaço sem mostrar nada.
+            <span className="invisible block" aria-hidden="true">
+              Oi. <span className="block lg:inline">Que bom te ver.</span>
+            </span>
           )}
-        </p>
-        <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[2.75rem] lg:tracking-[-0.03em]">
-          Menos apostas. Mais futuro.
         </h1>
       </div>
 
