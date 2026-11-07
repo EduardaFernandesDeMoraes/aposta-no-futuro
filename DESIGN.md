@@ -42,7 +42,9 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 - Listas em linhas (`divide-y` dentro de um cartão) em vez de grades de cartões iguais.
 - Área de toque mínima de 44px; foco visível em teal profundo (`:focus-visible`).
 - Ícones Lucide, nunca emoji como ícone.
-- Movimento: um momento por tela (`.rise-in` ou a contagem do Simulador). Tudo para com `prefers-reduced-motion`.
+- Movimento: um momento por tela (`.rise-in` ou a contagem do Simulador). Curvas só dos tokens `--ease-out`, `--ease-in-out` e `--ease-drawer` (em `styles.css`). Com `prefers-reduced-motion`, sem deslocamentos: só fades curtos.
+- **Abertura**: fundo navy, logo de alta resolução (`/logo-af-splash.webp`, mesmo navy do fundo) e "Aposta no Futuro". Uma vez por visita (sessionStorage `anf.abertura`), ligada por um script inline antes do primeiro desenho; nunca em `/ajuda`. ~1,35s: entra em 600ms com `--ease-out`, sai em 400ms.
+- **Troca AF People ⇄ AF Campus** (`src/lib/product-switch.ts`): cortina navy cobre a tela, "People" sai e "Campus" entra (ou o contrário), a rota troca com a tela coberta e a cortina revela o outro produto. ~1,9s, WAAPI, com teto de tempo em cada etapa e trava de 4s para o overlay nunca ficar preso.
 - `useLocalStorage` usa `useSyncExternalStore`: o servidor renderiza o valor inicial e o aparelho troca pelo salvo depois da hidratação. Não ler `Date.now()` nem localStorage durante a renderização do servidor.
 - Abrir o Xande de qualquer tela: `openXande()` de `@/components/app-shell`.
 

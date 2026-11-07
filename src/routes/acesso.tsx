@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { track, EVENTS } from "@/lib/analytics";
+import { playProductSwitch } from "@/lib/product-switch";
 import { AccessChooser, type AccessChoice } from "@/components/access-chooser";
 import { useAccess } from "@/lib/access";
 import { AppShell } from "@/components/app-shell";
@@ -29,7 +30,7 @@ function AcessoRoute() {
   function handle(choice: AccessChoice) {
     if (choice.kind === "manager") {
       track(EVENTS.accessManager);
-      navigate({ to: "/campus" });
+      void playProductSwitch("Campus", () => navigate({ to: "/campus" }));
       return;
     }
     if (choice.kind === "student") {

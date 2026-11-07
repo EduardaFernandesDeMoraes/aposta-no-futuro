@@ -1,11 +1,11 @@
 import { track, EVENTS } from "@/lib/analytics";
+import { playProductSwitch } from "@/lib/product-switch";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { OnboardingGate } from "@/components/onboarding-gate";
-import { IntroSplash } from "@/components/intro-splash";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { AccessChooser, type AccessChoice } from "@/components/access-chooser";
 import { readAccessChosen, useAccess } from "@/lib/access";
@@ -36,7 +36,6 @@ function OnboardingRoute() {
   return (
     <OnboardingGate expect="new">
       <Onboarding />
-      <IntroSplash />
     </OnboardingGate>
   );
 }
@@ -93,7 +92,7 @@ function Onboarding() {
   function handleAccess(choice: AccessChoice) {
     if (choice.kind === "manager") {
       track(EVENTS.accessManager);
-      navigate({ to: "/campus" });
+      void playProductSwitch("Campus", () => navigate({ to: "/campus" }));
       return;
     }
     if (choice.kind === "student") {

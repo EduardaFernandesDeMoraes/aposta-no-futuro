@@ -164,13 +164,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+/**
+ * Abertura: liga uma vez por visita (sessionStorage), antes do primeiro
+ * desenho da página. Nunca aparece em /ajuda: quem está em crise não espera.
+ */
+const SPLASH_SCRIPT = `(function(){var d=document.documentElement;try{var p=location.pathname;if(p.indexOf("/ajuda")===0||sessionStorage.getItem("anf.abertura")){d.setAttribute("data-splash","off");return}sessionStorage.setItem("anf.abertura","1");d.setAttribute("data-splash","on")}catch(e){d.setAttribute("data-splash","off")}})();`;
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: SPLASH_SCRIPT }} />
+        <link rel="preload" as="image" href="/logo-af-splash.webp" type="image/webp" />
         <HeadContent />
       </head>
       <body>
+        <div id="af-splash" aria-hidden="true">
+          <img
+            src="/logo-af-splash.webp"
+            alt=""
+            width={112}
+            height={112}
+            className="af-splash-logo"
+            draggable={false}
+          />
+          <p className="af-splash-name">
+            Aposta no <span>Futuro</span>
+          </p>
+        </div>
         {children}
         <Scripts />
       </body>

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
   Bar,
@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { PARTNERS, findPartner, type Partner } from "@/lib/partners";
 import { CAMPUS_SESSION_KEY } from "@/lib/access";
 import { track, EVENTS } from "@/lib/analytics";
+import { playProductSwitch } from "@/lib/product-switch";
 
 export const Route = createFileRoute("/campus")({
   head: () => ({
@@ -133,6 +134,7 @@ function Dashboard({
   onChangePartner: (code: string) => void;
 }) {
   const d = useDemoData(partner);
+  const navigate = useNavigate();
 
   useEffect(() => {
     track(EVENTS.campusDashboardView);
@@ -220,14 +222,15 @@ function Dashboard({
                 </option>
               ))}
             </select>
-            <Link
-              to="/acesso"
+            <button
+              type="button"
+              onClick={() => void playProductSwitch("People", () => navigate({ to: "/acesso" }))}
               className="inline-flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
             >
               <LogOut className="h-4 w-4" />
               <span className="hidden sm:inline">Sair do Campus</span>
               <span className="sr-only sm:hidden">Sair do Campus</span>
-            </Link>
+            </button>
           </div>
         </div>
       </header>

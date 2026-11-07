@@ -62,6 +62,11 @@
   --radius: 1rem;
   --nav-h: 60px;
 
+  /* Curvas de movimento (Emil Kowalski): use sempre estas. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
   /* Mundo "acolhedor e calmo" (repaginação 11/2026, aprovada pela Eduarda):
      fundo de névoa tingida pelo teal da marca, tinta navy, teal profundo
      para ação, coral só para ajuda, dourado só para conquista. */
@@ -260,25 +265,101 @@
   50% { transform: scale(1.05); }
 }
 
-/* Abertura do onboarding: logo + nome, some em ~1,6 s */
-@keyframes intro-logo {
-  0% { opacity: 0; transform: scale(0.6) rotate(-8deg); }
-  60% { opacity: 1; transform: scale(1.06) rotate(0deg); }
-  100% { opacity: 1; transform: scale(1); }
+/* ------------------------------------------------------------------ */
+/* Abertura: uma vez por visita, antes de o app carregar.             */
+/* O script inline no <head> liga com html[data-splash="on"].          */
+/* ------------------------------------------------------------------ */
+#af-splash {
+  display: none;
 }
-@keyframes intro-text {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+html[data-splash="on"] #af-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  background: var(--navy);
+  animation: af-splash-out 400ms var(--ease-out) 950ms forwards;
 }
-@keyframes intro-out {
+.af-splash-logo {
+  width: 112px;
+  height: 112px;
+  user-select: none;
+  animation: af-splash-in 600ms var(--ease-out) both;
+}
+.af-splash-name {
+  margin: 0;
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #fff;
+  animation: af-splash-in 600ms var(--ease-out) 120ms both;
+}
+.af-splash-name span {
+  color: #0af0fb;
+}
+@keyframes af-splash-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes af-splash-out {
   to { opacity: 0; visibility: hidden; }
 }
-.intro-splash { animation: intro-out 0.45s ease-in 1.2s forwards; }
-.intro-splash-logo { animation: intro-logo 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.intro-splash-text { animation: intro-text 0.5s ease-out 0.3s both; }
-@media (prefers-reduced-motion: reduce) {
-  .intro-splash { animation-duration: 0.2s; animation-delay: 0.6s; }
-  .intro-splash-logo, .intro-splash-text { animation: none; }
+@media print {
+  #af-splash { display: none !important; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Troca AF People ⇄ AF Campus (src/lib/product-switch.ts).           */
+/* O movimento é feito com WAAPI; aqui só a estrutura.                */
+/* ------------------------------------------------------------------ */
+.af-switch {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: #fff;
+}
+.af-switch-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+.af-switch-logo {
+  width: 64px;
+  height: 64px;
+}
+.af-switch-af {
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.af-switch-words {
+  display: grid;
+  overflow: hidden;
+  padding: 0.15em 0.1em 0.2em;
+}
+.af-switch-word {
+  grid-area: 1 / 1;
+  font-family: "Dancing Script", "Brush Script MT", cursive;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #7fe6da;
+}
+@media (min-width: 1024px) {
+  .af-switch-logo { width: 88px; height: 88px; }
+  .af-switch-af { font-size: 3.75rem; }
+  .af-switch-word { font-size: 4.75rem; }
 }
 
 /* Um único momento de movimento por tela; quem pede menos movimento
@@ -287,7 +368,7 @@
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.rise-in { animation: rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.rise-in { animation: rise-in 0.6s var(--ease-out) both; }
 
 @keyframes fade-only {
   from { opacity: 0; }
@@ -302,6 +383,14 @@
   }
   .rise-in {
     animation: fade-only 0.2s ease-out both;
+  }
+  /* Abertura: sem deslocamento, só aparece e some, e mais curta. */
+  .af-splash-logo,
+  .af-splash-name {
+    animation: fade-only 200ms ease-out both;
+  }
+  html[data-splash="on"] #af-splash {
+    animation: af-splash-out 200ms ease-out 650ms forwards;
   }
   .animate-pulse,
   .animate-fade-in,
