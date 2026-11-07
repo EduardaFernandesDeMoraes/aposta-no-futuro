@@ -1,9 +1,10 @@
 import { track, EVENTS } from "@/lib/analytics";
 import { useState } from "react";
-import { CheckCircle2, Mail } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const emailSchema = z
   .string()
@@ -11,26 +12,26 @@ const emailSchema = z
   .email({ message: "Digite um e-mail válido" })
   .max(254, { message: "E-mail muito longo" });
 
+/**
+ * Lista de espera da Comunidade (tabela `lista_espera` no Supabase, só INSERT).
+ * `tone="dark"` para usar sobre uma superfície escura (teal-ink).
+ */
 export function WaitlistCard({
-  title,
-  description,
   wantsToMentor = false,
-  cta = "Entrar na lista",
-  plain = false,
-  successText = "Assim que a comunidade abrir com pessoas de verdade, eu te aviso.",
+  cta = "Me avise quando abrir",
+  tone = "light",
+  successText = "Assim que a comunidade abrir com pessoas de verdade, a gente te avisa.",
 }: {
-  title?: string;
-  description?: string;
   wantsToMentor?: boolean;
   cta?: string;
-  plain?: boolean;
+  tone?: "light" | "dark";
   successText?: string;
 }) {
+  const dark = tone === "dark";
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
-
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,12 +42,10 @@ export function WaitlistCard({
     }
     setError(null);
     setSending(true);
-    const { error: dbError } = await supabase
-      .from("lista_espera")
-      .insert({
-        email: parsed.data.toLowerCase(),
-        origem: wantsToMentor ? "mentor" : "comunidade",
-      });
+    const { error: dbError } = await supabase.from("lista_espera").insert({
+      email: parsed.data.toLowerCase(),
+      origem: wantsToMentor ? "mentor" : "comunidade",
+    });
     setSending(false);
     // 23505 = e-mail já cadastrado: tratamos como sucesso.
     if (dbError && dbError.code !== "23505") {
@@ -55,48 +54,29 @@ export function WaitlistCard({
     }
     track(EVENTS.waitlistSignup);
     setDone(true);
-
   };
 
   if (done) {
     return (
-      <div
-        className={
-          plain
-            ? "flex items-start gap-3 text-left"
-            : "flex items-start gap-3 rounded-2xl border border-teal-deep/30 bg-teal-soft p-4"
-        }
-      >
-        <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-teal-deep" />
+      <div className="flex items-start gap-3 text-left" role="status">
+        <CheckCircle2 className={cn("mt-0.5 h-5 w-5 flex-none", dark ? "text-[#7fe6da]" : "text-teal-deep")} />
         <div>
-          <p className="font-semibold text-navy">Pronto! Você está na lista.</p>
-          <p className="mt-1 text-sm text-navy/80">{successText}</p>
+          <p className={cn("font-semibold", dark ? "text-white" : "text-navy")}>
+            Pronto! Você está na lista.
+          </p>
+          <p className={cn("mt-1 text-sm", dark ? "text-white/80" : "text-navy/80")}>{successText}</p>
         </div>
       </div>
     );
   }
 
-  const inputId = wantsToMentor ? "waitlist-mentor-email" : "waitlist-email";
-
   return (
-    <form
-      onSubmit={submit}
-      className={plain ? "w-full text-left" : "rounded-2xl border border-teal-deep/30 bg-teal-soft p-4"}
-    >
-      {title && (
-        <div className="flex items-center gap-2">
-          <Mail className="h-4 w-4 flex-none text-teal-deep" />
-          <h3 className="font-semibold text-navy">{title}</h3>
-        </div>
-      )}
-      {description && <p className="mt-1 text-sm text-navy/80">{description}</p>}
-
-      <label htmlFor={inputId} className="sr-only">
+    <form onSubmit={submit} className="w-full text-left" noValidate>
+      <label htmlFor="waitlist-email" className="sr-only">
         Seu e-mail
       </label>
-
       <input
-        id={inputId}
+        id="waitlist-email"
         type="email"
         inputMode="email"
         autoComplete="email"
@@ -105,20 +85,30 @@ export function WaitlistCard({
         onChange={(e) => setEmail(e.target.value)}
         placeholder="seu@email.com"
         aria-invalid={Boolean(error)}
-        className="mt-3 min-h-12 w-full rounded-2xl border border-input bg-card px-4 text-base outline-none placeholder:text-muted-foreground focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
+        aria-describedby={error ? "waitlist-erro" : undefined}
+        className="min-h-12 w-full rounded-2xl border border-input bg-card px-4 text-base text-navy outline-none placeholder:text-muted-foreground focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
       />
-      {error && <p role="alert" className="mt-2 text-sm font-medium text-destructive">{error}</p>}
-
+      {error && (
+        <p
+          id="waitlist-erro"
+          role="alert"
+          className={cn("mt-2 text-sm font-medium", dark ? "text-[#ffd2cb]" : "text-destructive")}
+        >
+          {error}
+        </p>
+      )}
       <Button
         type="submit"
         disabled={sending}
-        className="mt-3 min-h-12 w-full rounded-full bg-teal-deep text-white hover:bg-teal-ink"
+        className={cn(
+          "mt-3 min-h-12 w-full rounded-full font-semibold",
+          dark ? "bg-white text-teal-ink hover:bg-teal-soft" : "bg-teal-deep text-white hover:bg-teal-ink",
+        )}
       >
         {sending ? "Enviando…" : cta}
       </Button>
-
-      <p className="mt-2 text-xs text-muted-foreground">
-        A gente só usa seu e-mail para esse aviso. Nada de spam.
+      <p className={cn("mt-2 text-xs", dark ? "text-white/70" : "text-muted-foreground")}>
+        Só para esse aviso. Nada de spam.
       </p>
     </form>
   );

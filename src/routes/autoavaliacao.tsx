@@ -191,7 +191,7 @@ function Autoavaliacao() {
   return (
     <AppShell
       title="Autoavaliação"
-      intro="9 perguntas sobre os últimos 12 meses. É uma triagem baseada no PGSI, não um diagnóstico. As respostas ficam só no seu aparelho."
+      intro="9 perguntas sobre os últimos 12 meses. Anônimo, e não é um diagnóstico."
     >
       <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
       <div className="lg:sticky lg:top-28 lg:col-span-4 lg:rounded-[2rem] lg:border lg:border-border lg:bg-card lg:p-6 lg:order-1">

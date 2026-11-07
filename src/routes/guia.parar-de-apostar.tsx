@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Calculator, ClipboardCheck, Phone } from "lucide-react";
+import { Calculator, ClipboardCheck } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 
@@ -166,20 +166,6 @@ function GuiaPararDeApostar() {
         </Link>
       </section>
 
-      <p className="mt-6 flex items-start gap-2 text-sm leading-relaxed text-muted-foreground">
-        <Phone className="mt-0.5 h-4 w-4 flex-none text-coral-deep" />
-        <span>
-          Em crise, ligue{" "}
-          <a href="tel:188" className="font-semibold text-navy underline">
-            188 (CVV)
-          </a>
-          , 24h e gratuito, ou veja os{" "}
-          <Link to="/ajuda" className="font-semibold text-navy underline">
-            canais de apoio
-          </Link>
-          .
-        </span>
-      </p>
       </aside>
       </div>
     </AppShell>

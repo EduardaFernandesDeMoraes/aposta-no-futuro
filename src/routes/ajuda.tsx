@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Phone, MapPin, Heart, MessageSquare, ExternalLink } from "lucide-react";
+import { Phone, MapPin, MessageSquare, ExternalLink } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { useEffect } from "react";
 import { trackOnce, EVENTS } from "@/lib/analytics";
@@ -71,8 +71,7 @@ function AjudaPage() {
           Você não está sozinho(a).
         </h1>
         <p className="mt-2 max-w-[56ch] text-[0.95rem] leading-relaxed text-muted-foreground lg:mt-3 lg:text-lg">
-          Pedir ajuda é um ato de força. Estes canais são gratuitos, sigilosos
-          e preparados para te ouvir.
+          Canais gratuitos, sigilosos e preparados para te ouvir.
         </p>
       </div>
 
@@ -85,9 +84,6 @@ function AjudaPage() {
         <h2 id="cvv" className="text-xl font-semibold leading-snug lg:text-[1.75rem]">
           CVV: Centro de Valorização da Vida
         </h2>
-        <p className="mt-1 text-[0.95rem] text-white/85">
-          24 horas, gratuito e sigiloso. Pode ligar ou conversar pelo site.
-        </p>
 
         <a
           href="tel:188"
@@ -122,10 +118,8 @@ function AjudaPage() {
           CAPS: atendimento pelo SUS
         </h2>
         <p className="mt-2 leading-relaxed text-navy/80">
-          Os Centros de Atenção Psicossocial oferecem acompanhamento gratuito,
-          inclusive para dependências. Para achar o seu, ligue para a UBS do
-          seu bairro e peça o endereço, ou busque “CAPS + nome da sua cidade”
-          no site da Prefeitura.
+          Acompanhamento gratuito, inclusive para dependências. A UBS do seu
+          bairro indica o CAPS mais próximo.
         </p>
         <a
           href="https://www.google.com/search?q=CAPS+mais+pr%C3%B3ximo+de+mim"
@@ -157,11 +151,6 @@ function AjudaPage() {
         </a>
       </section>
 
-      <p className="mt-8 flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
-        <Heart className="mt-0.5 h-4 w-4 flex-none text-teal-deep" />
-        Quando a vontade de apostar apertar, o Xande pode te ajudar a segurar
-        alguns minutos. Toque no ícone de brilho no topo da tela.
-      </p>
       </div>
       </div>
     </AppShell>

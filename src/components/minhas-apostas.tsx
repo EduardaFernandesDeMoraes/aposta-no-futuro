@@ -82,8 +82,7 @@ export function MinhasApostas({
         <span className="font-script text-[1.9rem] font-bold text-teal-deep lg:text-[2.75rem]">no futuro</span>
       </h2>
       <p className="mt-2 max-w-[60ch] text-[0.95rem] leading-relaxed text-muted-foreground lg:text-lg">
-        Transforme o que você deixa de apostar em objetivos reais. A única
-        aposta que nunca vira dívida.
+        A única aposta que nunca vira dívida.
       </p>
 
       {!creating && bets.length === 0 && (
@@ -138,10 +137,6 @@ export function MinhasApostas({
         </ul>
       )}
 
-      <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-        É só um planejamento: o app não guarda, movimenta nem investe dinheiro. Seus objetivos ficam
-        salvos apenas neste aparelho.
-      </p>
     </section>
   );
 }
@@ -255,7 +250,7 @@ function BetForm({
         </span>
         {suggestedTarget > 0 && !initial && (
           <span className="mt-1.5 block text-xs text-muted-foreground">
-            Sugestão: o valor estimado de 1 ano do simulador ({brl(suggestedTarget)}).
+            Sugestão: {brl(suggestedTarget)}, 1 ano no simulador.
           </span>
         )}
       </label>
@@ -369,11 +364,6 @@ function BetCard({
           </p>
         </div>
       </div>
-      {weeks && remaining > 0 && (
-        <p className="mt-2 text-xs text-muted-foreground">
-          Se você direcionar {brl(weekly!)} por semana para este objetivo.
-        </p>
-      )}
 
       {confirmDelete ? (
         <div className="mt-3 flex items-center gap-2 rounded-2xl bg-coral-soft p-2.5">

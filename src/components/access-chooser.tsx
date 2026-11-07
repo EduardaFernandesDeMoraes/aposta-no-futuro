@@ -240,8 +240,7 @@ function InstitutionStep({
       <div className="mt-6 flex items-start gap-3 px-1">
         <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-teal-deep" strokeWidth={2.2} />
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Não pedimos e-mail, senha nem matrícula. A instituição escolhida fica salva só no seu
-          aparelho e serve apenas para mostrar o apoio do seu campus.
+          Não pedimos e-mail, senha nem matrícula.
         </p>
       </div>
     </div>

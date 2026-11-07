@@ -1,10 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { ShieldAlert, Info, Eye, Lock, Users, ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { WaitlistCard } from "@/components/waitlist-card";
-import { track, EVENTS } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/comunidade")({
@@ -14,7 +12,7 @@ export const Route = createFileRoute("/comunidade")({
       {
         name: "description",
         content:
-          "Prévia da comunidade: veja exemplos de salas anônimas por tempo sem apostar e entre na lista de espera.",
+          "Comunidade anônima por tempo sem apostar, com mentores voluntários. Entre na lista de espera.",
       },
       { property: "og:title", content: "Comunidade — Aposta no Futuro" },
       {
@@ -33,16 +31,15 @@ type Room = {
   id: string;
   label: string;
   short: string;
-  color: string;
 };
 
 const ROOMS: Room[] = [
-  { id: "0-7", label: "Primeiros passos (0 a 7 dias)", short: "0–7d", color: "#B83427" },
-  { id: "1s", label: "1 semana ou mais", short: "1 sem+", color: "#7D5200" },
-  { id: "1m", label: "1 mês ou mais", short: "1 mês+", color: "#0A5249" },
-  { id: "3m", label: "3 meses ou mais", short: "3 meses+", color: "#0D6B60" },
-  { id: "6m", label: "6 meses ou mais", short: "6 meses+", color: "#0D6B60" },
-  { id: "1a", label: "1 ano ou mais", short: "1 ano+", color: "#16233C" },
+  { id: "0-7", label: "Primeiros passos (0 a 7 dias)", short: "0–7d" },
+  { id: "1s", label: "1 semana ou mais", short: "1 sem+" },
+  { id: "1m", label: "1 mês ou mais", short: "1 mês+" },
+  { id: "3m", label: "3 meses ou mais", short: "3 meses+" },
+  { id: "6m", label: "6 meses ou mais", short: "6 meses+" },
+  { id: "1a", label: "1 ano ou mais", short: "1 ano+" },
 ];
 
 type Msg = { nick: string; text: string; when: string };
@@ -168,319 +165,166 @@ const SEED: Record<string, Msg[]> = {
   ],
 };
 
-function PreviewBanner() {
-  return (
-    <div className="sticky top-[calc(4rem+1px+env(safe-area-inset-top))] z-20 -mx-4 flex items-start gap-2 border-b border-gold/30 bg-gold-soft px-4 py-3 text-sm text-gold-deep shadow-sm">
-      <Eye className="mt-0.5 h-4 w-4 flex-none text-gold-deep" />
-      <p>
-        <strong>Prévia:</strong> estas conversas são exemplos. A comunidade ainda não está aberta e
-        ninguém está lendo.
-      </p>
-    </div>
-  );
-}
-
-function ExampleTag() {
-  return (
-    <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">
-      exemplo
-    </span>
-  );
-}
-
-function LockScreen({ mentor = false, onPreview }: { mentor?: boolean; onPreview: () => void }) {
-  return (
-    <div className="-mx-4 flex min-h-[calc(100dvh-var(--nav-h,62px)-190px)] flex-col items-center justify-center bg-background px-6 py-10 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-teal-soft">
-        {mentor ? (
-          <Users className="h-8 w-8 text-teal-deep" />
-        ) : (
-          <Lock className="h-8 w-8 text-teal-deep" />
-        )}
-      </div>
-
-      <h2 className="mt-5 text-xl font-semibold text-navy">
-        {mentor ? "A rede de mentores está em construção" : "A comunidade está em construção"}
-      </h2>
-      <p className="mt-2 max-w-sm text-sm leading-relaxed text-navy/80">
-        A gente está formando a rede de pessoas e mentores voluntários. Deixe seu e-mail e a gente
-        avisa assim que ela abrir, com gente de verdade do outro lado.
-      </p>
-
-      <div className="mt-5 w-full max-w-sm">
-        <WaitlistCard
-          plain
-          wantsToMentor={mentor}
-          cta={mentor ? "Quero ser mentor" : "Entrar na lista"}
-          successText={
-            mentor
-              ? "Assim que a rede de mentores começar, a gente te chama."
-              : "Assim que a comunidade abrir com pessoas de verdade, a gente te avisa."
-          }
-        />
-      </div>
-
-      <div className="mt-6">
-        <button
-          type="button"
-          onClick={onPreview}
-          className="min-h-11 text-sm text-muted-foreground underline underline-offset-2"
-        >
-          {mentor
-            ? "Ver uma prévia fictícia de como serão os mentores"
-            : "Ver uma prévia fictícia de como será a comunidade"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function BackToLock({ onBack }: { onBack: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onBack}
-      className="-ml-2 flex min-h-11 items-center gap-1.5 rounded-full px-2 text-sm font-semibold text-navy"
-    >
-      <ArrowLeft className="h-4 w-4" />
-      Voltar
-    </button>
-  );
-}
+const MENTOR_INITIALS = ["RA", "JU", "MA", "BI"];
 
 function Comunidade() {
-  const [previewForum, setPreviewForum] = useState(false);
-  const [previewMentores, setPreviewMentores] = useState(false);
+  const [mentor, setMentor] = useState(false);
+  const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
+  const room = ROOMS.find((r) => r.id === activeRoom)!;
+  const messages = SEED[activeRoom] ?? [];
 
   return (
     <AppShell
       title="Comunidade"
-      intro="Um espaço anônimo para trocar com quem entende. Ainda em construção."
+      intro="Um espaço anônimo para conversar com quem entende. Está quase pronto."
     >
-      <Tabs defaultValue="forum" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 rounded-full bg-muted p-1">
-          <TabsTrigger
-            value="forum"
-            className="min-h-10 rounded-full data-[state=active]:bg-teal-deep data-[state=active]:text-white"
-          >
-            Fórum
-          </TabsTrigger>
-          <TabsTrigger
-            value="mentores"
-            className="min-h-10 rounded-full data-[state=active]:bg-teal-deep data-[state=active]:text-white"
-          >
-            Mentores
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="forum" className="mt-4">
-          {previewForum ? (
-            <Forum onBack={() => setPreviewForum(false)} />
-          ) : (
-            <LockScreen
-              onPreview={() => {
-                track(EVENTS.communityPreview);
-                setPreviewForum(true);
-              }}
+      <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
+        {/* Lista de espera: a única ação da página */}
+        <section
+          aria-labelledby="lista"
+          className="rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:sticky lg:top-28 lg:order-2 lg:col-span-5 lg:rounded-[2rem] lg:p-8"
+        >
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#7fe6da]" aria-hidden="true" />
+            Em construção
+          </span>
+          <h2 id="lista" className="mt-4 text-[1.5rem] font-semibold leading-tight tracking-[-0.02em]">
+            Seja avisado quando abrir
+          </h2>
+          <label className="mt-5 flex min-h-11 cursor-pointer items-center gap-3 text-sm text-white/90">
+            <input
+              type="checkbox"
+              checked={mentor}
+              onChange={(e) => setMentor(e.target.checked)}
+              className="h-5 w-5 flex-none cursor-pointer rounded accent-[#7fe6da]"
             />
-          )}
-        </TabsContent>
-
-        <TabsContent value="mentores" className="mt-4">
-          {previewMentores ? (
-            <Mentores onBack={() => setPreviewMentores(false)} />
-          ) : (
-            <LockScreen
-              mentor
-              onPreview={() => {
-                track(EVENTS.communityPreview);
-                setPreviewMentores(true);
-              }}
+            Quero ser mentor (estou há 1 ano ou mais sem apostar)
+          </label>
+          <div className="mt-3">
+            <WaitlistCard
+              tone="dark"
+              wantsToMentor={mentor}
+              cta={mentor ? "Quero ser mentor" : "Me avise quando abrir"}
+              successText={
+                mentor
+                  ? "Quando a rede de mentores começar, a gente te chama."
+                  : "Assim que a comunidade abrir, a gente te avisa."
+              }
             />
-          )}
-        </TabsContent>
-      </Tabs>
-    </AppShell>
-  );
-}
+          </div>
+        </section>
 
-function Forum({ onBack }: { onBack: () => void }) {
-  const [activeRoom, setActiveRoom] = useState<string>(ROOMS[0].id);
-  const listRef = useRef<HTMLDivElement>(null);
-  const navH = useRef<number>(62);
+        <div className="lg:order-1 lg:col-span-7">
+          {/* Como vai funcionar */}
+          <section className="mt-10 lg:mt-0" aria-labelledby="como">
+            <h2 id="como" className="text-lg font-semibold text-navy lg:text-2xl">
+              Como vai funcionar
+            </h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-3xl border border-border bg-card p-5 sm:col-span-2">
+                <p className="font-semibold text-navy">Salas pelo seu momento</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Você conversa com quem está na mesma fase.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-1.5" aria-hidden="true">
+                  {ROOMS.map((r) => (
+                    <span
+                      key={r.id}
+                      className="rounded-full bg-teal-soft px-3 py-1 text-xs font-semibold text-teal-ink"
+                    >
+                      {r.short}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-3xl bg-gold-soft p-5">
+                <div className="flex -space-x-2" aria-hidden="true">
+                  {MENTOR_INITIALS.map((ini) => (
+                    <span
+                      key={ini}
+                      className="grid h-10 w-10 place-items-center rounded-full bg-gold-deep text-xs font-semibold text-white ring-2 ring-gold-soft"
+                    >
+                      {ini}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-4 font-semibold text-navy">Mentores voluntários</p>
+                <p className="mt-1 text-sm text-gold-deep">
+                  Gente com 1 ano ou mais sem apostar. Escuta, não atendimento profissional.
+                </p>
+              </div>
+              <div className="rounded-3xl bg-navy p-5 text-white">
+                <ShieldCheck className="h-6 w-6 text-[#7fe6da]" />
+                <p className="mt-4 font-semibold">Anônimo e moderado</p>
+                <p className="mt-1 text-sm text-white/75">
+                  Só apelido. Proibido divulgar apostas, casas ou palpites.
+                </p>
+              </div>
+            </div>
+          </section>
 
-  const room = ROOMS.find((r) => r.id === activeRoom)!;
-  const messages = SEED[activeRoom] ?? [];
+          {/* Prévia */}
+          <section className="mt-10" aria-labelledby="previa">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 id="previa" className="text-lg font-semibold text-navy lg:text-2xl">
+                Uma prévia
+              </h2>
+              <span className="text-sm text-muted-foreground">Mensagens de exemplo</span>
+            </div>
 
-  useEffect(() => {
-    const nav = document.querySelector("nav");
-    if (nav) navH.current = nav.getBoundingClientRect().height;
-  }, []);
+            <div
+              className="-mx-4 mt-4 overflow-x-auto no-scrollbar lg:mx-0"
+              role="group"
+              aria-label="Escolha uma sala"
+            >
+              <div className="flex w-max gap-2 px-4 lg:px-0">
+                {ROOMS.map((r) => {
+                  const active = r.id === activeRoom;
+                  return (
+                    <button
+                      key={r.id}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setActiveRoom(r.id)}
+                      className={cn(
+                        "min-h-11 whitespace-nowrap rounded-full border px-4 text-sm font-semibold transition-colors",
+                        active
+                          ? "border-teal-deep bg-teal-deep text-white"
+                          : "border-border bg-card text-navy hover:border-teal-deep/40",
+                      )}
+                    >
+                      {r.short}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-  return (
-    <div className="isolate space-y-4">
-      <PreviewBanner />
-      <BackToLock onBack={onBack} />
-
-      {/* Aviso de convivência */}
-      <div className="flex items-start gap-2 rounded-2xl bg-gold-soft p-3 text-sm text-gold-deep">
-        <ShieldAlert className="mt-0.5 h-4 w-4 flex-none text-gold-deep" />
-        <p>
-          <strong>Espaço anônimo e de respeito.</strong> Proibido divulgar apostas, casas de bet ou
-          links de jogos.
-        </p>
-      </div>
-
-      {/* Seletor de salas */}
-      <div className="-mx-4 overflow-x-auto overscroll-x-contain scroll-smooth no-scrollbar">
-        <div className="flex w-max gap-2 px-4 pb-1">
-          {ROOMS.map((r) => {
-            const active = r.id === activeRoom;
-            return (
-              <button
-                key={r.id}
-                type="button"
-                onClick={() => setActiveRoom(r.id)}
-                className={cn(
-                  "whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-semibold transition",
-                  active
-                    ? "border-transparent text-white shadow"
-                    : "border-border bg-card text-navy/80 hover:border-border",
-                )}
-                style={active ? { backgroundColor: r.color } : undefined}
-              >
-                {r.short}
-              </button>
-            );
-          })}
+            <div className="mt-4 rounded-3xl bg-muted/60 p-4" aria-live="polite">
+              <p className="px-1 text-sm font-medium text-navy">{room.label}</p>
+              <ul key={activeRoom} className="rise-in mt-3 space-y-3">
+                {messages.map((m, i) => (
+                  <li key={`${m.nick}-${i}`} className="flex gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="grid h-9 w-9 flex-none place-items-center rounded-full bg-card text-xs font-semibold text-teal-deep"
+                    >
+                      {m.nick.slice(0, 2).toUpperCase()}
+                    </span>
+                    <div className="min-w-0 flex-1 rounded-2xl rounded-tl-sm bg-card px-4 py-3 shadow-card">
+                      <p className="flex items-baseline justify-between gap-2 text-sm">
+                        <span className="font-semibold text-navy">{m.nick}</span>
+                        <span className="text-xs text-muted-foreground">{m.when}</span>
+                      </p>
+                      <p className="mt-1 text-[0.95rem] leading-relaxed text-navy/85">{m.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
         </div>
       </div>
-
-      {/* Cabeçalho da sala */}
-      <div
-        className="w-full rounded-2xl border border-transparent p-4 text-white shadow-sm"
-        style={{ backgroundColor: room.color }}
-      >
-        <p className="text-xs opacity-80">Sala</p>
-        <h2 className="text-lg font-bold">{room.label}</h2>
-        <p className="mt-1 text-xs opacity-90">Quando abrir, tudo será anônimo</p>
-      </div>
-
-      {/* Mensagens de exemplo */}
-      <div ref={listRef} className="flex flex-col gap-3">
-        {messages.map((m, i) => (
-          <div
-            key={`${m.nick}-${i}`}
-            className="w-full rounded-2xl border border-border bg-card p-3 opacity-85"
-          >
-            <div className="flex items-center justify-between gap-2 text-xs">
-              <span className="font-semibold text-navy">{m.nick}</span>
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">{m.when}</span>
-                <ExampleTag />
-              </div>
-            </div>
-            <p className="mt-1.5 text-sm leading-relaxed text-navy/80">{m.text}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-type Mentor = {
-  id: string;
-  name: string;
-  timeLabel: string;
-  bio: string;
-  color: string;
-  initials: string;
-};
-
-const MENTORES: Mentor[] = [
-  {
-    id: "rafa",
-    name: "Rafa",
-    timeLabel: "2 anos livre",
-    bio: "Já estive onde você está. Bora conversar.",
-    color: "#0D6B60",
-    initials: "RA",
-  },
-  {
-    id: "juliana",
-    name: "Juliana",
-    timeLabel: "1 ano e 4 meses livre",
-    bio: "Um dia de cada vez também funcionou pra mim.",
-    color: "#0D6B60",
-    initials: "JU",
-  },
-  {
-    id: "marcos",
-    name: "Marcos",
-    timeLabel: "3 anos livre",
-    bio: "Recaí várias vezes antes de conseguir. Tá tudo bem recomeçar.",
-    color: "#0A5249",
-    initials: "MA",
-  },
-  {
-    id: "bia",
-    name: "Bia",
-    timeLabel: "1 ano e 8 meses livre",
-    bio: "A vida do outro lado é mais leve. Vem conversar.",
-    color: "#7D5200",
-    initials: "BI",
-  },
-];
-
-function Mentores({ onBack }: { onBack: () => void }) {
-  return (
-    <div className="isolate space-y-4">
-      <PreviewBanner />
-      <BackToLock onBack={onBack} />
-
-      <div className="flex items-start gap-2 rounded-2xl bg-teal-soft p-3 text-sm text-teal-ink">
-        <Info className="mt-0.5 h-4 w-4 flex-none text-teal-deep" />
-        <p>
-          Estamos formando a rede de mentores voluntários (pessoas com 1 ano ou mais livres das
-          apostas). Mentores oferecem escuta e apoio, mas{" "}
-          <strong>não substituem atendimento profissional</strong> de saúde.
-        </p>
-      </div>
-
-      <div className="space-y-3">
-        {MENTORES.map((m) => (
-          <div
-            key={m.id}
-            className="rounded-2xl border border-border bg-card p-4 opacity-85 shadow-sm"
-          >
-            <div className="flex items-start gap-3">
-              <div
-                className="flex h-14 w-14 flex-none items-center justify-center rounded-full text-lg font-bold text-white"
-                style={{ backgroundColor: m.color }}
-              >
-                {m.initials}
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-start justify-between gap-2">
-                  <p className="font-semibold text-navy">
-                    {m.name} · <span className="font-normal text-navy/80">{m.timeLabel}</span>
-                  </p>
-                  <ExampleTag />
-                </div>
-                <p className="mt-0.5 text-sm text-navy/80">{m.bio}</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              className="mt-3 w-full cursor-not-allowed rounded-full bg-teal-deep py-2.5 text-sm font-semibold text-white opacity-40"
-            >
-              Em breve
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
+    </AppShell>
   );
 }

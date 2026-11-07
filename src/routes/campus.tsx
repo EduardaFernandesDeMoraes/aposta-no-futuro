@@ -259,10 +259,11 @@ function Dashboard({
           </div>
           <Button
             onClick={exportReport}
-            className="h-11 rounded-full bg-navy px-5 text-sm font-semibold text-white hover:bg-[#0f1a2c]"
+            className="h-11 w-full rounded-full bg-navy px-5 text-sm font-semibold text-white hover:bg-[#0f1a2c] sm:w-auto"
           >
             <Download className="mr-1.5 h-4 w-4" />
-            Exportar Relatório ESG / Assistência Estudantil
+            <span className="sm:hidden">Exportar relatório</span>
+            <span className="hidden sm:inline">Exportar Relatório ESG / Assistência Estudantil</span>
           </Button>
         </div>
 
@@ -293,12 +294,12 @@ function Dashboard({
                   <CartesianGrid strokeDasharray="3 3" stroke="#e3e8ef" vertical={false} />
                   <XAxis
                     dataKey="name"
-                    tick={{ fontSize: 11, fill: "#5b6b83" }}
+                    tick={{ fontSize: 12, fill: "#526075" }}
                     axisLine={false}
                     tickLine={false}
                   />
                   <YAxis
-                    tick={{ fontSize: 11, fill: "#5b6b83" }}
+                    tick={{ fontSize: 12, fill: "#526075" }}
                     axisLine={false}
                     tickLine={false}
                   />
@@ -337,7 +338,7 @@ function Dashboard({
                     type="category"
                     dataKey="name"
                     width={104}
-                    tick={{ fontSize: 11, fill: "#16233c" }}
+                    tick={{ fontSize: 12, fill: "#16233c" }}
                     axisLine={false}
                     tickLine={false}
                   />
@@ -350,7 +351,7 @@ function Dashboard({
                     radius={[0, 8, 8, 0]}
                     label={{
                       position: "right",
-                      fontSize: 11,
+                      fontSize: 12,
                       fill: "#16233c",
                       formatter: (v: number) => `${v}%`,
                     }}

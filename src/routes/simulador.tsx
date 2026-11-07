@@ -148,7 +148,7 @@ function Simulador() {
   return (
     <AppShell
       title="Simulador"
-      intro="Quanto você costumava apostar? Veja o que esse dinheiro pode virar quando fica com você."
+      intro="Veja o que o dinheiro das apostas pode virar."
     >
       <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
       <div className="lg:sticky lg:top-28 lg:col-span-5">
@@ -170,7 +170,7 @@ function Simulador() {
             maxLength={10}
             value={raw}
             aria-invalid={Boolean(error)}
-            aria-describedby={error ? "weekly-erro" : "weekly-nota"}
+            aria-describedby={error ? "weekly-erro" : undefined}
             onChange={(e) => setRaw(e.target.value.replace(/[^0-9,.]/g, ""))}
             className="tabular w-full bg-transparent py-3 text-2xl font-semibold text-navy outline-none placeholder:text-muted-foreground"
           />
@@ -198,9 +198,6 @@ function Simulador() {
             </button>
           ))}
         </div>
-        <p id="weekly-nota" className="mt-3 text-sm text-muted-foreground">
-          O valor fica só no seu aparelho.
-        </p>
         <Button
           type="submit"
           className="mt-5 h-12 w-full rounded-full bg-teal-deep text-base font-semibold text-white hover:bg-teal-ink"
@@ -219,8 +216,7 @@ function Simulador() {
           <p className="mt-5 max-w-[32ch] text-lg leading-relaxed text-navy">
             Escolha um valor ao lado e veja o que ele pode virar em 5 anos.
           </p>
-          <p className="mt-2 text-sm text-muted-foreground">Nada é enviado: a conta acontece no seu aparelho.</p>
-        </div>
+                  </div>
       )}
       {weekly !== null && (
         <div className="rise-in" key={weekly}>

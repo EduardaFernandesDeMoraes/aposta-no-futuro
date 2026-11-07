@@ -157,15 +157,17 @@ function Onboarding() {
         </button>
 
         <div className="rise-in mt-4">
-          <p className="font-script text-[2rem] font-bold leading-none text-teal-deep">
+          <h1>
+          <span className="block font-script text-[2rem] font-bold leading-none text-teal-deep">
             Do seu jeito,
-          </p>
-          <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy">
+          </span>
+          <span className="mt-2 block text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy">
             no seu tempo.
+          </span>
           </h1>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-muted-foreground">
-            Aqui ninguém te julga. Você conta seus dias, vê o que seu dinheiro
-            pode virar e encontra apoio quando precisar.
+            Sem julgamento. Conte seus dias, veja o que seu dinheiro pode virar
+            e encontre apoio.
           </p>
         </div>
 
@@ -239,7 +241,7 @@ function Onboarding() {
           />
           <span id="name-help" className="mt-2 flex items-start gap-2 text-sm text-muted-foreground">
             <ShieldCheck className="mt-0.5 h-4 w-4 flex-none text-teal-deep" />
-            Fica só no seu aparelho. Não vai para nenhum servidor.
+            Fica só no seu aparelho.
           </span>
         </label>
 

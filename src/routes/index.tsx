@@ -33,7 +33,6 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { OnboardingGate } from "@/components/onboarding-gate";
-import { InstallCard } from "@/components/install-card";
 import { CampusSupportCard } from "@/components/campus-support-card";
 import { useAccess } from "@/lib/access";
 import { findPartner } from "@/lib/partners";
@@ -373,7 +372,7 @@ function Home() {
         <span className="min-w-0 flex-1">
           <span className="block font-semibold text-navy">Bateu vontade de apostar?</span>
           <span className="mt-0.5 block text-sm text-teal-ink">
-            Fala com o Xande. A gente segura junto por alguns minutos.
+            O Xande te ajuda a segurar o impulso.
           </span>
         </span>
         <ChevronRight className="h-5 w-5 flex-none text-teal-deep" />
@@ -402,7 +401,7 @@ function Home() {
                 <span className="tabular mt-1 text-[2.25rem] font-semibold leading-none tracking-[-0.03em] text-navy">
                   {brl(sim.weekly * 260)}
                 </span>
-                <span className="mt-1 text-sm text-gold-deep">em 5 anos, se ficarem com você</span>
+                <span className="mt-1 text-sm text-gold-deep">em 5 anos</span>
               </>
             ) : (
               <>
@@ -464,8 +463,6 @@ function Home() {
       </section>
 
       {partner && <CampusSupportCard partner={partner} className="mt-6" />}
-
-      <InstallCard className="mt-6" />
       </aside>
       </div>
 
@@ -480,8 +477,7 @@ function Home() {
         <span className="min-w-0 flex-1">
           <span className="block font-semibold text-navy">Trocar perfil</span>
           <span className="block text-sm text-muted-foreground">
-            Você está como AF People{partner ? ` + ${partner.shortName}` : ", acesso livre"}. Seu
-            progresso continua salvo.
+            AF People{partner ? ` + ${partner.shortName}` : " · acesso livre"}
           </span>
         </span>
         <ChevronRight className="h-5 w-5 flex-none text-muted-foreground" />
@@ -576,34 +572,4 @@ function tierIndex(score: number) {
 }
 function tierShort(score: number) {
   return ["Sem risco", "Risco leve", "Risco moderado", "Risco alto"][tierIndex(score)];
-}
-
-function PathRow({
-  to,
-  icon,
-  title,
-  desc,
-}: {
-  to: string;
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <li>
-      <Link
-        to={to}
-        className="flex min-h-[4.5rem] items-center gap-4 px-4 py-3 transition-colors hover:bg-background"
-      >
-        <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
-          {icon}
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block font-medium leading-snug text-navy">{title}</span>
-          <span className="mt-0.5 block text-sm text-muted-foreground">{desc}</span>
-        </span>
-        <ChevronRight className="h-5 w-5 flex-none text-muted-foreground" />
-      </Link>
-    </li>
-  );
 }

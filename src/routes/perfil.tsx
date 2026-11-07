@@ -161,7 +161,7 @@ function Perfil() {
               {now === null ? "–" : brl(moneySaved)}
             </p>
             <p className="mt-2 text-sm text-gold-deep">
-              Com base em {brl(weekly)} por semana, em {days} {days === 1 ? "dia" : "dias"} sem apostar.
+              Com base em {brl(weekly)} por semana.
             </p>
           </>
         ) : (
@@ -250,9 +250,6 @@ function Perfil() {
             <Share2 className="mr-2 h-5 w-5" />
             Compartilhar minha conquista
           </Button>
-          <p className="mt-2 text-center text-xs text-muted-foreground">
-            Só você decide. Nada é publicado sem você tocar aqui.
-          </p>
         </section>
       )}
 

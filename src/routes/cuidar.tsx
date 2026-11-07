@@ -58,7 +58,7 @@ function CuidarPage() {
   return (
     <AppShell
       title="Cuidar de você"
-      intro="Tudo o que pode te ajudar a entender, pausar e pedir apoio. No seu ritmo."
+      intro="Entender, pausar e pedir apoio. No seu ritmo."
     >
       <div className="grid gap-4 lg:grid-cols-12 lg:gap-6">
         {/* 1. Ajuda agora: o caminho mais curto */}
@@ -93,8 +93,7 @@ function CuidarPage() {
             Como está sua relação com as apostas?
           </span>
           <span className="mt-3 max-w-[40ch] text-[0.95rem] leading-relaxed text-white/80 lg:text-lg">
-            Uma triagem anônima, baseada no PGSI. Ninguém vê suas respostas: elas ficam
-            no seu aparelho.
+            Anônima e rápida. As respostas ficam só com você.
           </span>
 
           <span className="mt-6 block lg:mt-auto lg:pt-10" aria-hidden="true">
@@ -197,8 +196,7 @@ function CuidarPage() {
               </span>
             </span>
             <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-              Um espaço anônimo para trocar com quem entende. Entre na lista e a gente
-              avisa quando abrir.
+              Um espaço anônimo para trocar com quem entende.
             </span>
           </span>
         </Link>

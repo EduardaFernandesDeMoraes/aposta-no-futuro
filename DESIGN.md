@@ -57,3 +57,10 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 - **Home, "Para continuar"**: Simulador em cartão largo dourado (mostra o valor de 5 anos se já houver cálculo), Autoavaliação em branco com a escala, Guia em navy com os 7 passos. No fim da página, "Trocar perfil" leva a `/acesso`.
 - **Metas**: banco de 30 cuidados; 3 sugestões + 3 ideias extras por dia, trocadas à meia-noite do aparelho (timer até a meia-noite + nova checagem ao voltar para a aba). Nada se repete de um dia para o outro.
 - **AF Campus**: abre direto no painel de demonstração, sem login; a instituição é escolhida no topo.
+- **Comunidade**: uma página só (sem abas nem telas de bloqueio). Lista de espera em superfície teal-ink como única ação (com opção "quero ser mentor"), "Como vai funcionar" em três pilares (salas, mentores, anônimo e moderado) e uma prévia de conversa por sala, marcada uma vez como "Mensagens de exemplo".
+
+## Texto
+
+- Direto ao ponto: uma frase de introdução por tela, sem repetir o que o rodapé ou outra tela já dizem.
+- O aviso "não substitui atendimento profissional" fica só no rodapé (e no onboarding e no chat do Xande, que não têm rodapé).
+- Não explicar o óbvio nem repetir privacidade em cada campo; isso está em /privacidade.

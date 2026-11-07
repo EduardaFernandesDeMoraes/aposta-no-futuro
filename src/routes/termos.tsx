@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FileText } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 
 export const Route = createFileRoute("/termos")({
@@ -26,9 +25,9 @@ export const Route = createFileRoute("/termos")({
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-5 rounded-2xl bg-card p-4 shadow-card">
-      <h2 className="text-sm font-semibold text-navy">{title}</h2>
-      <div className="mt-2 space-y-2 text-sm leading-relaxed text-navy/80">
+    <section>
+      <h2 className="text-lg font-semibold text-navy lg:text-xl">{title}</h2>
+      <div className="mt-2 space-y-3 leading-relaxed text-navy/80 lg:text-[1.05rem]">
         {children}
       </div>
     </section>
@@ -37,17 +36,11 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function Termos() {
   return (
-    <AppShell title="Termos de uso">
-      <div className="flex items-start gap-3 rounded-2xl border border-teal-deep/30 bg-teal-soft p-4">
-        <FileText className="mt-0.5 h-5 w-5 flex-none text-teal-deep" />
-        <div>
-          <h1 className="font-semibold text-navy">Termos de uso</h1>
-          <p className="mt-1 text-sm text-navy/80">
-            Regras simples para este espaço continuar sendo seguro para todo
-            mundo.
-          </p>
-        </div>
-      </div>
+    <AppShell
+      title="Termos de uso"
+      intro="Regras simples para este espaço continuar sendo seguro para todo mundo."
+    >
+      <div className="max-w-[68ch] space-y-8 lg:space-y-10">
 
       <Section title="Idade recomendada">
         <p>
@@ -64,7 +57,7 @@ function Termos() {
           psiquiatra ou outro profissional.
         </p>
         <p>
-          A Xande é um guia automático com respostas prontas: não é uma pessoa e
+          O Xande é um guia automático com respostas prontas: não é uma pessoa e
           ninguém está lendo as conversas. Em crise, ligue 188 (CVV). Em
           emergência, ligue 192 ou vá ao pronto-socorro mais próximo.
         </p>
@@ -94,7 +87,7 @@ function Termos() {
           . Este e-mail não é um canal de emergência.
         </p>
       </Section>
-
+      </div>
     </AppShell>
   );
 }

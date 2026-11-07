@@ -245,7 +245,7 @@ function Metas() {
   return (
     <AppShell
       title="Metas"
-      intro="Pequenos cuidados para hoje. Sem pontos, sem pressa: marque o que fizer sentido."
+      intro="Pequenos cuidados para hoje. Marque o que fizer sentido."
     >
       <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
       <div className="lg:sticky lg:top-28 lg:col-span-4">

@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 
 export const Route = createFileRoute("/privacidade")({
@@ -26,9 +25,9 @@ export const Route = createFileRoute("/privacidade")({
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-5 rounded-2xl bg-card p-4 shadow-card">
-      <h2 className="text-sm font-semibold text-navy">{title}</h2>
-      <div className="mt-2 space-y-2 text-sm leading-relaxed text-navy/80">
+    <section>
+      <h2 className="text-lg font-semibold text-navy lg:text-xl">{title}</h2>
+      <div className="mt-2 space-y-3 leading-relaxed text-navy/80 lg:text-[1.05rem]">
         {children}
       </div>
     </section>
@@ -37,17 +36,11 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function Privacidade() {
   return (
-    <AppShell title="Privacidade">
-      <div className="flex items-start gap-3 rounded-2xl border border-teal-deep/30 bg-teal-soft p-4">
-        <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-teal-deep" />
-        <div>
-          <h1 className="font-semibold text-navy">Política de Privacidade</h1>
-          <p className="mt-1 text-sm text-navy/80">
-            Em linguagem simples: quase tudo o que você escreve aqui fica no seu
-            próprio celular.
-          </p>
-        </div>
-      </div>
+    <AppShell
+      title="Privacidade"
+      intro="Em linguagem simples: quase tudo o que você escreve aqui fica no seu próprio celular."
+    >
+      <div className="max-w-[68ch] space-y-8 lg:space-y-10">
 
       <Section title="O que fica só no seu aparelho">
         <p>
@@ -101,7 +94,7 @@ function Privacidade() {
           . Este e-mail não é um canal de emergência.
         </p>
       </Section>
-
+      </div>
     </AppShell>
   );
 }
