@@ -116,8 +116,12 @@ export function AppShell({
   return (
     <div className="min-h-dvh bg-background text-navy flex flex-col">
       {/* Topo azul-escuro: marca + navegação (desktop) + Xande + Ajuda */}
-      <header className="sticky top-0 z-30 bg-navy text-white shadow-[0_1px_0_rgb(255_255_255/0.06),0_8px_24px_-16px_rgb(0_0_0/0.5)] pt-[env(safe-area-inset-top)]">
-        <div className="relative mx-auto flex min-h-16 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-2xl lg:min-h-[4.5rem] lg:max-w-6xl lg:gap-8 lg:px-8">
+      {/* Fixo (não sticky): o Safari do iOS 26 só pinta a faixa do relógio
+          com a cor de elementos fixos no topo; com sticky, a página aparecia
+          rolando acima do header. O espaçador reserva a mesma altura. */}
+      <div aria-hidden="true" className="h-[calc(4rem+env(safe-area-inset-top))] flex-none lg:h-[calc(4.5rem+env(safe-area-inset-top))]" />
+      <header className="fixed inset-x-0 top-0 z-30 bg-navy text-white shadow-[0_1px_0_rgb(255_255_255/0.06),0_8px_24px_-16px_rgb(0_0_0/0.5)] pt-[env(safe-area-inset-top)]">
+        <div className="relative mx-auto flex h-16 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-2xl lg:h-[4.5rem] lg:max-w-6xl lg:gap-8 lg:px-8">
           <Link
             to="/"
             className="flex min-w-0 items-center gap-2 rounded-lg max-lg:flex-1 lg:mr-2 lg:shrink-0 lg:border-r lg:border-white/10 lg:pr-8"

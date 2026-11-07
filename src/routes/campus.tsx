@@ -199,8 +199,10 @@ function Dashboard({
 
   return (
     <div className="min-h-dvh bg-background">
-      <header className="sticky top-0 z-30 bg-navy text-white shadow-soft">
-        <div className="mx-auto flex min-h-14 max-w-[1100px] items-center justify-between gap-3 px-4 py-2">
+      {/* Fixo, como no AF People: o Safari do iOS 26 pinta a faixa do topo com a cor do header. */}
+      <div aria-hidden="true" className="h-[calc(3.75rem+env(safe-area-inset-top))]" />
+      <header className="fixed inset-x-0 top-0 z-30 bg-navy pt-[env(safe-area-inset-top)] text-white shadow-soft">
+        <div className="mx-auto flex h-[3.75rem] max-w-[1100px] items-center justify-between gap-3 px-4 py-2">
           <div className="flex min-w-0 items-center gap-2">
             <img src={logoMark} alt="" aria-hidden="true" className="h-7 w-7" />
             <BrandLockup product="Campus" tone="dark" partner={narrow ? undefined : partner.shortName} as="h1" />
