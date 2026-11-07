@@ -2,11 +2,12 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { track, EVENTS } from "@/lib/analytics";
 import { AccessChooser, type AccessChoice } from "@/components/access-chooser";
 import { useAccess } from "@/lib/access";
+import { AppShell } from "@/components/app-shell";
 
 export const Route = createFileRoute("/acesso")({
   head: () => ({
     meta: [
-      { title: "Alterar instituição ou perfil | Aposta no Futuro" },
+      { title: "Trocar perfil | Aposta no Futuro" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -43,11 +44,13 @@ function AcessoRoute() {
   }
 
   return (
-    <div className="min-h-dvh bg-background">
-      <main className="mx-auto flex min-h-dvh max-w-md flex-col px-4 pb-[calc(env(safe-area-inset-bottom)+2rem)] pt-10">
-        <h1 className="sr-only">Alterar instituição ou perfil</h1>
-        <AccessChooser onDone={handle} />
-      </main>
-    </div>
+    <AppShell
+      title="Trocar perfil"
+      intro="Escolha como você quer usar o app agora. Seu contador, suas metas e suas apostas no futuro continuam salvos neste aparelho."
+    >
+      <div className="max-w-xl">
+        <AccessChooser variant="switch" onDone={handle} />
+      </div>
+    </AppShell>
   );
 }

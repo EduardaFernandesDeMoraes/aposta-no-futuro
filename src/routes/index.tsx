@@ -9,6 +9,8 @@ import {
   RefreshCw,
   Sparkles,
   ChevronRight,
+  PiggyBank,
+  ArrowLeftRight,
   Heart,
   Sprout,
   Leaf,
@@ -206,6 +208,8 @@ function Home() {
   }
 
   const firstName = profile.name.trim().split(/\s+/)[0];
+  const [sim] = useLocalStorage<{ weekly: number } | null>("anf.simulador", null);
+  const [assessment] = useLocalStorage<{ score: number } | null>("anf.autoavaliacao", null);
 
   return (
     <AppShell title="Aposta no Futuro" titleAs="p">
@@ -213,10 +217,17 @@ function Home() {
       <div className="lg:col-span-7">
       {/* Saudação + título da página */}
       <div className="pb-6 lg:pb-8">
-        <p className="font-script text-[2rem] font-bold leading-none text-teal-deep lg:text-[2.75rem]">
-          {firstName ? `Oi, ${firstName}` : "Oi, que bom te ver"}
+        <p className="text-lg leading-snug text-muted-foreground lg:text-xl">
+          {firstName ? (
+            <>
+              Oi, <span className="font-semibold text-teal-deep">{firstName}</span>. Que bom
+              te ver.
+            </>
+          ) : (
+            "Que bom te ver por aqui."
+          )}
         </p>
-        <h1 className="mt-3 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[3.25rem] lg:leading-[1.05] lg:tracking-[-0.035em]">
+        <h1 className="mt-2 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:text-[3.25rem] lg:leading-[1.05] lg:tracking-[-0.035em]">
           Menos apostas. Mais futuro.
         </h1>
       </div>
@@ -235,22 +246,22 @@ function Home() {
                 <span className="tabular block text-[4.5rem] font-semibold leading-[0.9] tracking-[-0.03em] lg:text-[8.5rem] lg:tracking-[-0.045em]">
                   {now === null ? "–" : days}
                 </span>
-                <span className="mt-2 block text-sm font-medium text-white/85 lg:mt-3 lg:text-lg">
+                <span className="mt-2 block text-sm text-white/85 lg:mt-3 lg:text-base">
                   {days === 1 ? "dia" : "dias"}
                 </span>
               </div>
-              <div className="mb-1 flex gap-4 text-white/85 lg:mb-3 lg:gap-8">
+              <div className="flex gap-4 text-white/85 lg:gap-8">
                 <div>
                   <span className="tabular block text-2xl font-semibold leading-none text-white lg:text-[2.75rem]">
                     {now === null ? "–" : String(hours).padStart(2, "0")}
                   </span>
-                  <span className="mt-1 block text-xs lg:mt-2 lg:text-sm">horas</span>
+                  <span className="mt-2 block text-sm lg:mt-3 lg:text-base">horas</span>
                 </div>
                 <div>
                   <span className="tabular block text-2xl font-semibold leading-none text-white lg:text-[2.75rem]">
                     {now === null ? "–" : String(minutes).padStart(2, "0")}
                   </span>
-                  <span className="mt-1 block text-xs lg:mt-2 lg:text-sm">min</span>
+                  <span className="mt-2 block text-sm lg:mt-3 lg:text-base">min</span>
                 </div>
               </div>
             </div>
@@ -373,26 +384,83 @@ function Home() {
         <h2 id="caminhos-titulo" className="text-lg font-semibold text-navy">
           Para continuar
         </h2>
-        <ul className="mt-3 divide-y divide-border overflow-hidden rounded-3xl border border-border bg-card">
-          <PathRow
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          {/* Simulador: cartão largo, com o número como protagonista */}
+          <Link
             to="/simulador"
-            icon={<Calculator className="h-5 w-5" />}
-            title="O que seu dinheiro pode virar"
-            desc="Simulador de futuro"
-          />
-          <PathRow
+            className="col-span-2 flex flex-col rounded-3xl bg-gold-soft p-5 transition-colors hover:bg-[#f7e6c4]"
+          >
+            <span className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gold-deep">Simulador</span>
+              <PiggyBank className="h-5 w-5 text-gold-deep" />
+            </span>
+            {sim ? (
+              <>
+                <span className="mt-3 text-[0.95rem] text-navy/80">
+                  Seus {brl(sim.weekly)} por semana viram
+                </span>
+                <span className="tabular mt-1 text-[2.25rem] font-semibold leading-none tracking-[-0.03em] text-navy">
+                  {brl(sim.weekly * 260)}
+                </span>
+                <span className="mt-1 text-sm text-gold-deep">em 5 anos, se ficarem com você</span>
+              </>
+            ) : (
+              <>
+                <span className="mt-3 text-[1.35rem] font-semibold leading-snug text-navy">
+                  O que o dinheiro das apostas pode virar?
+                </span>
+                <span className="mt-1 text-sm text-gold-deep">Descubra em 10 segundos</span>
+              </>
+            )}
+          </Link>
+
+          {/* Autoavaliação: com a escala de resultado */}
+          <Link
             to="/autoavaliacao"
-            icon={<ClipboardCheck className="h-5 w-5" />}
-            title="Como está sua relação com as bets?"
-            desc="9 perguntas, uns 2 minutos, anônimo"
-          />
-          <PathRow
+            className="flex flex-col rounded-3xl border border-border bg-card p-4 transition-colors hover:border-teal-deep/40"
+          >
+            <ClipboardCheck className="h-5 w-5 text-teal-deep" />
+            <span className="mt-3 font-semibold leading-snug text-navy">
+              {assessment ? "Sua autoavaliação" : "Como está sua relação com as bets?"}
+            </span>
+            <span className="mt-1 text-sm leading-snug text-muted-foreground">
+              {assessment
+                ? `${tierShort(assessment.score)} · refazer`
+                : "9 perguntas · 2 min"}
+            </span>
+            <span className="mt-auto grid grid-cols-4 gap-1 pt-4" aria-hidden="true">
+              {[0, 1, 2, 3].map((i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "h-1.5 rounded-full",
+                    assessment && tierIndex(assessment.score) === i ? "bg-teal-deep" : "bg-muted",
+                  )}
+                />
+              ))}
+            </span>
+          </Link>
+
+          {/* Guia: com os 7 passos */}
+          <Link
             to="/guia/parar-de-apostar"
-            icon={<BookOpen className="h-5 w-5" />}
-            title="Como parar de apostar"
-            desc="Guia passo a passo"
-          />
-        </ul>
+            className="flex flex-col rounded-3xl bg-navy p-4 text-white transition-colors hover:bg-[#1d2d4c]"
+          >
+            <BookOpen className="h-5 w-5 text-[#7fe6da]" />
+            <span className="mt-3 font-semibold leading-snug">Como parar de apostar</span>
+            <span className="mt-1 text-sm leading-snug text-white/75">Guia em 7 passos</span>
+            <span className="tabular mt-auto grid grid-cols-7 gap-1 pt-4 text-[0.65rem] font-semibold" aria-hidden="true">
+              {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+                <span
+                  key={n}
+                  className="grid aspect-square place-items-center rounded-full bg-white/10 text-white/80"
+                >
+                  {n}
+                </span>
+              ))}
+            </span>
+          </Link>
+        </div>
       </section>
 
       {partner && <CampusSupportCard partner={partner} className="mt-6" />}
@@ -400,6 +468,24 @@ function Home() {
       <InstallCard className="mt-6" />
       </aside>
       </div>
+
+      {/* Trocar perfil */}
+      <Link
+        to="/acesso"
+        className="mt-10 flex items-center gap-4 rounded-3xl border border-border bg-card p-4 transition-colors hover:border-teal-deep/40 lg:mt-14 lg:p-5"
+      >
+        <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-teal-soft text-teal-deep">
+          <ArrowLeftRight className="h-5 w-5" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold text-navy">Trocar perfil</span>
+          <span className="block text-sm text-muted-foreground">
+            Você está como AF People{partner ? ` + ${partner.shortName}` : ", acesso livre"}. Seu
+            progresso continua salvo.
+          </span>
+        </span>
+        <ChevronRight className="h-5 w-5 flex-none text-muted-foreground" />
+      </Link>
 
       {/* Recomeçar */}
       <Dialog open={restartOpen} onOpenChange={setRestartOpen}>
@@ -476,6 +562,20 @@ function HandsWatermark() {
       draggable={false}
     />
   );
+}
+
+const brl = (n: number) =>
+  n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+
+/** Mesmas faixas do PGSI usadas na tela de autoavaliação. */
+function tierIndex(score: number) {
+  if (score === 0) return 0;
+  if (score <= 2) return 1;
+  if (score <= 7) return 2;
+  return 3;
+}
+function tierShort(score: number) {
+  return ["Sem risco", "Risco leve", "Risco moderado", "Risco alto"][tierIndex(score)];
 }
 
 function PathRow({

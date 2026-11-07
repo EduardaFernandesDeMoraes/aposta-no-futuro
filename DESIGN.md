@@ -28,7 +28,7 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 ## Tipografia
 
 - **Poppins** para tudo. Título de página: 1,75rem, semibold, tracking −0,02em. Seções: 1,125rem semibold. Corpo: 1rem (0,95rem em textos de apoio). Mínimo: 12px.
-- **Dancing Script** só em momentos de marca: "AF *People*", a saudação ("Oi, Lucas"), "no futuro", "Respira.", "Obrigado", "Um passo só".
+- **Dancing Script** só em momentos de marca: "AF *People*", "no futuro", "Respira.", "Obrigado", "Um passo só". A saudação da home é em Poppins ("Oi, **Lucas**. Que bom te ver."), não em cursiva.
 - Números que contam usam a classe `.tabular`.
 - Não usar rótulo em maiúsculas acima de título (eyebrow).
 
@@ -50,3 +50,10 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 - A home nunca abre com recaída: "Precisei recomeçar" é um link discreto, e quem ainda aposta vê "Seu contador começa quando você quiser".
 - O resultado da autoavaliação começa agradecendo, mostra a faixa numa escala calma e termina com "Seu próximo passo".
 - Metas não têm pontos nem medalhas (evita o ciclo de recompensa das bets): são "cuidados de hoje".
+
+## Telas com regras próprias
+
+- **Cuidar**: bento com uma identidade por item. Ajuda (coral), Autoavaliação (superfície rica teal-ink, com a escala de faixas), Xande (teal-soft com prévia da conversa), Guia (branco com os 3 primeiros passos) e Comunidade (tracejado, "Em breve").
+- **Home, "Para continuar"**: Simulador em cartão largo dourado (mostra o valor de 5 anos se já houver cálculo), Autoavaliação em branco com a escala, Guia em navy com os 7 passos. No fim da página, "Trocar perfil" leva a `/acesso`.
+- **Metas**: banco de 30 cuidados; 3 sugestões + 3 ideias extras por dia, trocadas à meia-noite do aparelho (timer até a meia-noite + nova checagem ao voltar para a aba). Nada se repete de um dia para o outro.
+- **AF Campus**: abre direto no painel de demonstração, sem login; a instituição é escolhida no topo.

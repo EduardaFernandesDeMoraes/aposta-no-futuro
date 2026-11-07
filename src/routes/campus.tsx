@@ -13,17 +13,14 @@ import {
   YAxis,
 } from "recharts";
 import {
-  ArrowLeft,
   Download,
   Eye,
   HeartHandshake,
-  Lock,
   LogOut,
   PiggyBank,
   ShieldCheck,
   Users,
   ClipboardCheck,
-  Info,
 } from "lucide-react";
 import logoMark from "@/assets/logo-maos-coracao.svg";
 import { BrandLockup } from "@/components/brand-lockup";
@@ -56,33 +53,21 @@ function readSession(): string | null {
 }
 
 function CampusRoute() {
-  const [partnerCode, setPartnerCode] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
+  // Sem login: o painel abre direto (demonstração com dados fictícios).
+  // A instituição escolhida fica só nesta aba (sessionStorage).
+  const [partnerCode, setPartnerCode] = useState<string>(PARTNERS[0].code);
 
   useEffect(() => {
-    setPartnerCode(readSession());
-    setReady(true);
+    const saved = readSession();
+    if (saved && findPartner(saved)) setPartnerCode(saved);
   }, []);
 
-  const partner = findPartner(partnerCode);
+  const partner = findPartner(partnerCode) ?? PARTNERS[0];
 
-  if (!ready) return <div className="min-h-dvh bg-background" />;
-
-  return partner ? (
+  return (
     <Dashboard
       partner={partner}
-      onLogout={() => {
-        try {
-          window.sessionStorage.removeItem(CAMPUS_SESSION_KEY);
-        } catch {
-          /* ignore */
-        }
-        setPartnerCode(null);
-      }}
-    />
-  ) : (
-    <Login
-      onEnter={(code) => {
+      onChangePartner={(code) => {
         try {
           window.sessionStorage.setItem(CAMPUS_SESSION_KEY, code);
         } catch {
@@ -91,120 +76,6 @@ function CampusRoute() {
         setPartnerCode(code);
       }}
     />
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Tela 1B · Login                                                     */
-/* ------------------------------------------------------------------ */
-
-function Login({ onEnter }: { onEnter: (code: string) => void }) {
-  const [code, setCode] = useState(PARTNERS[0].code);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-
-  function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setError("Informe um e-mail corporativo válido.");
-      return;
-    }
-    if (password.length < 4) {
-      setError("Informe sua senha de acesso.");
-      return;
-    }
-    // Ambiente de demonstração: nenhuma credencial é enviada ou armazenada.
-    setPassword("");
-    onEnter(code);
-  }
-
-  const selected = findPartner(code);
-
-  return (
-    <div className="min-h-dvh bg-background">
-      <header className="bg-navy text-white shadow-soft">
-        <div className="mx-auto flex min-h-14 max-w-md items-center gap-2 px-4 py-2 sm:max-w-[1100px]">
-          <img src={logoMark} alt="" aria-hidden="true" className="h-7 w-7" />
-          <BrandLockup product="Campus" tone="dark" as="p" />
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-md px-4 pb-12 pt-8">
-        <Link
-          to="/acesso"
-          className="-ml-1 inline-flex items-center gap-1 rounded-full px-1 py-1 text-xs font-semibold text-navy/80 hover:text-navy"
-        >
-          <ArrowLeft className="h-4 w-4" /> Voltar
-        </Link>
-        <h1 className="mt-3 text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy">
-          Acesso Gestor — AF Campus
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Selecione sua instituição e insira suas credenciais corporativas:
-        </p>
-
-        <div className="mt-5 flex items-start gap-3 rounded-2xl bg-gold-soft p-4">
-          <Info className="mt-0.5 h-5 w-5 flex-none text-gold-deep" />
-          <p className="text-sm leading-snug text-gold-deep">
-            <strong>Ambiente de demonstração.</strong> O AF Campus está em fase piloto: nenhuma
-            credencial é enviada ou armazenada, e o painel exibe dados fictícios.
-          </p>
-        </div>
-
-        <form onSubmit={submit} className="mt-4 space-y-4 rounded-3xl border border-border bg-card p-5">
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-navy">Instituição</span>
-            <select
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="min-h-12 w-full rounded-2xl border border-input bg-background px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
-            >
-              {PARTNERS.map((p) => (
-                <option key={p.code} value={p.code}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-navy">E-mail corporativo</span>
-            <input
-              type="email"
-              autoComplete="username"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setError(null);
-              }}
-              placeholder={`nome@${selected?.emailDomain ?? "instituicao.edu.br"}`}
-              className="min-h-12 w-full rounded-2xl border border-input bg-background px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
-            />
-          </label>
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-navy">Senha de acesso</span>
-            <input
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setError(null);
-              }}
-              className="min-h-12 w-full rounded-2xl border border-input bg-background px-4 text-base outline-none focus:border-teal-deep focus:ring-2 focus:ring-teal-deep/20"
-            />
-          </label>
-          {error && <p role="alert" className="text-sm font-medium text-destructive">{error}</p>}
-          <Button
-            type="submit"
-            className="h-12 w-full rounded-full bg-navy text-base font-semibold text-white hover:bg-[#0f1a2c]"
-          >
-            <Lock className="mr-1.5 h-4 w-4" /> Entrar no Painel AF Campus
-          </Button>
-        </form>
-
-      </main>
-    </div>
   );
 }
 
@@ -254,7 +125,13 @@ function useDemoData(partner: Partner) {
 const brl = (n: number) =>
   n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 
-function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => void }) {
+function Dashboard({
+  partner,
+  onChangePartner,
+}: {
+  partner: Partner;
+  onChangePartner: (code: string) => void;
+}) {
   const d = useDemoData(partner);
 
   useEffect(() => {
@@ -328,19 +205,29 @@ function Dashboard({ partner, onLogout }: { partner: Partner; onLogout: () => vo
             <BrandLockup product="Campus" tone="dark" partner={partner.shortName} as="h1" />
           </div>
           <div className="flex items-center gap-2">
+            <label className="sr-only" htmlFor="campus-instituicao">
+              Instituição
+            </label>
+            <select
+              id="campus-instituicao"
+              value={partner.code}
+              onChange={(e) => onChangePartner(e.target.value)}
+              className="h-11 max-w-[9.5rem] cursor-pointer rounded-full border border-white/20 bg-white/10 px-3 text-sm font-semibold text-white outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-white/60 sm:max-w-none"
+            >
+              {PARTNERS.map((p) => (
+                <option key={p.code} value={p.code} className="text-navy">
+                  {p.shortName}
+                </option>
+              ))}
+            </select>
             <Link
               to="/acesso"
-              className="hidden rounded-full px-3 py-2 text-xs font-semibold text-white/80 hover:text-white sm:inline"
+              className="inline-flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
             >
-              Alterar perfil
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">Sair do Campus</span>
+              <span className="sr-only sm:hidden">Sair do Campus</span>
             </Link>
-            <button
-              type="button"
-              onClick={onLogout}
-              className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-2 text-xs font-semibold hover:bg-white/15"
-            >
-              <LogOut className="h-4 w-4" /> Sair
-            </button>
           </div>
         </div>
       </header>

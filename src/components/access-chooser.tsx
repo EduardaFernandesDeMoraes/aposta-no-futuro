@@ -22,11 +22,19 @@ export type AccessChoice =
  * O estudante nunca informa e-mail, matrícula ou senha: só escolhe a
  * instituição, e o código dela fica salvo no próprio aparelho.
  */
-export function AccessChooser({ onDone }: { onDone: (c: AccessChoice) => void }) {
+export function AccessChooser({
+  onDone,
+  variant = "welcome",
+}: {
+  onDone: (c: AccessChoice) => void;
+  /** "switch": usado em /acesso, para quem já usa o app e quer trocar de perfil. */
+  variant?: "welcome" | "switch";
+}) {
   const [step, setStep] = useState<"profile" | "institution">("profile");
 
   return step === "profile" ? (
     <ProfileStep
+      variant={variant}
       onStudent={() => setStep("institution")}
       onFree={() => onDone({ kind: "free" })}
       onManager={() => onDone({ kind: "manager" })}
@@ -41,16 +49,20 @@ export function AccessChooser({ onDone }: { onDone: (c: AccessChoice) => void })
 }
 
 function ProfileStep({
+  variant,
   onStudent,
   onFree,
   onManager,
 }: {
+  variant: "welcome" | "switch";
   onStudent: () => void;
   onFree: () => void;
   onManager: () => void;
 }) {
   return (
     <div className="rise-in flex flex-1 flex-col">
+      {variant === "welcome" && (
+      <>
       <div className="flex items-center gap-2.5 lg:hidden">
         <img
           src="/logo-maos-coracao.svg"
@@ -73,8 +85,12 @@ function ProfileStep({
         Um espaço sem julgamento para cuidar da sua relação com as apostas e do
         seu dinheiro. Gratuito e anônimo.
       </p>
+      </>
+      )}
 
-      <p className="mt-8 font-semibold text-navy">Como você quer entrar?</p>
+      <p className={variant === "welcome" ? "mt-8 font-semibold text-navy" : "font-semibold text-navy"}>
+        {variant === "welcome" ? "Como você quer entrar?" : "Como você quer usar o app agora?"}
+      </p>
       <div className="mt-3 space-y-2.5">
         <ProfileCard
           onClick={onStudent}
