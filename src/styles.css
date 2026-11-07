@@ -267,45 +267,141 @@
 
 /* ------------------------------------------------------------------ */
 /* Abertura: uma vez por visita, antes de o app carregar.             */
-/* O script inline no <head> liga com html[data-splash="on"].          */
+/* O script inline no <head> liga com html[data-splash="on"]; um toque */
+/* ou tecla muda para "skip" e encerra na hora.                        */
+/*                                                                    */
+/* Roteiro (~3,3s):                                                   */
+/*   120ms  as mãos sobem e se encontram                              */
+/*   620ms  o coração chega                                           */
+/*  1180ms  as quatro faíscas acendem, de dentro para fora            */
+/*  1450ms  "Aposta no" sobe; "Futuro" se revela da esquerda          */
+/*  1500ms  o coração bate uma vez                                    */
+/*  1850ms  "Menos apostas. Mais futuro."                             */
+/*  2650ms  o conteúdo sai; 2800ms o fundo some                       */
 /* ------------------------------------------------------------------ */
 #af-splash {
   display: none;
 }
-html[data-splash="on"] #af-splash {
+html[data-splash="on"] #af-splash,
+html[data-splash="skip"] #af-splash {
   position: fixed;
   inset: 0;
   z-index: 120;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.25rem;
   background: var(--navy);
-  animation: af-splash-out 400ms var(--ease-out) 950ms forwards;
+  animation: af-splash-out 500ms var(--ease-out) 2800ms forwards;
 }
-.af-splash-logo {
-  width: 112px;
-  height: 112px;
-  user-select: none;
-  animation: af-splash-in 600ms var(--ease-out) both;
+html[data-splash="skip"] #af-splash {
+  animation: af-splash-out 280ms var(--ease-out) forwards;
 }
+
+.af-splash-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1.5rem;
+  text-align: center;
+  animation: af-stage-out 450ms var(--ease-out) 2650ms forwards;
+}
+
+.af-splash-mark {
+  width: 132px;
+  height: 132px;
+  overflow: visible;
+}
+.af-splash-mark g {
+  transform-box: fill-box;
+}
+
+.af-splash-hand {
+  transform-origin: 50% 100%;
+  animation: af-hand-left 800ms var(--ease-out) 120ms both;
+}
+.af-splash-hand--right {
+  animation-name: af-hand-right;
+  animation-delay: 180ms;
+}
+
+.af-splash-heart {
+  transform-origin: 50% 55%;
+  animation:
+    af-heart-in 700ms var(--ease-out) 620ms both,
+    af-heart-beat 440ms var(--ease-in-out) 1500ms;
+}
+
+.af-splash-spark {
+  transform-origin: 50% 100%;
+  animation: af-spark 420ms var(--ease-out) both;
+}
+
 .af-splash-name {
-  margin: 0;
+  margin: 1.5rem 0 0;
   font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.875rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: #fff;
-  animation: af-splash-in 600ms var(--ease-out) 120ms both;
 }
-.af-splash-name span {
+.af-splash-name-a {
+  display: inline-block;
+  animation: af-rise 600ms var(--ease-out) 1450ms both;
+}
+.af-splash-name-b {
+  display: inline-block;
   color: #0af0fb;
+  animation: af-wipe 650ms var(--ease-out) 1560ms both;
 }
-@keyframes af-splash-in {
-  from { opacity: 0; transform: translateY(6px) scale(0.97); }
+
+.af-splash-tagline {
+  margin: 0.75rem 0 0;
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  color: rgb(255 255 255 / 0.72);
+  animation: af-rise 600ms var(--ease-out) 1850ms both;
+}
+
+@media (min-width: 1024px) {
+  .af-splash-mark { width: 168px; height: 168px; }
+  .af-splash-name { font-size: 2.75rem; margin-top: 1.75rem; }
+  .af-splash-tagline { font-size: 1.125rem; }
+}
+
+@keyframes af-hand-left {
+  from { opacity: 0; transform: translate(-9%, 12%) rotate(-8deg); }
+  to { opacity: 1; transform: translate(0, 0) rotate(0); }
+}
+@keyframes af-hand-right {
+  from { opacity: 0; transform: translate(9%, 12%) rotate(8deg); }
+  to { opacity: 1; transform: translate(0, 0) rotate(0); }
+}
+@keyframes af-heart-in {
+  0% { opacity: 0; transform: translateY(10%) scale(0.9); }
+  55% { opacity: 1; transform: translateY(0) scale(1.08); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes af-heart-beat {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.07); }
+  60% { transform: scale(0.99); }
+  100% { transform: scale(1); }
+}
+@keyframes af-spark {
+  from { opacity: 0; transform: translateY(18%) scale(0.92); }
   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes af-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes af-wipe {
+  from { opacity: 0; clip-path: inset(0 100% 0 0); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+@keyframes af-stage-out {
+  to { opacity: 0; transform: scale(1.03); }
 }
 @keyframes af-splash-out {
   to { opacity: 0; visibility: hidden; }
@@ -384,13 +480,25 @@ html[data-splash="on"] #af-splash {
   .rise-in {
     animation: fade-only 0.2s ease-out both;
   }
-  /* Abertura: sem deslocamento, só aparece e some, e mais curta. */
-  .af-splash-logo,
-  .af-splash-name {
-    animation: fade-only 200ms ease-out both;
+  /* Abertura: sem deslocamentos nem batidas; tudo aparece com um fade
+     curto e a tela sai mais cedo. */
+  .af-splash-stage,
+  .af-splash-hand,
+  .af-splash-heart,
+  .af-splash-spark,
+  .af-splash-name-a,
+  .af-splash-name-b,
+  .af-splash-tagline {
+    animation: fade-only 300ms ease-out both !important;
+    animation-delay: 0ms !important;
+  }
+  .af-splash-tagline,
+  .af-splash-name-a,
+  .af-splash-name-b {
+    animation-delay: 150ms !important;
   }
   html[data-splash="on"] #af-splash {
-    animation: af-splash-out 200ms ease-out 650ms forwards;
+    animation: af-splash-out 300ms ease-out 1300ms forwards;
   }
   .animate-pulse,
   .animate-fade-in,
