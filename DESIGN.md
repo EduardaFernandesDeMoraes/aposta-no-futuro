@@ -23,6 +23,11 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 | `coral-deep` / `coral-soft` | `#B83427` / `#FDEBE6` | **Só ajuda e crise.** Botão "Ajuda", emergência. |
 | `gold` / `gold-deep` / `gold-soft` | `#F5A623` / `#7D5200` / `#FBF0DB` | **Só conquista**: marcos, dinheiro que ficou com você, apostas no futuro. |
 
+| `mint` | `#7FE6DA` | Texto e ícone sobre navy ou teal-ink ("People", "Campus", ícones do topo). |
+| `coral-soft-hover` | `#FBDCD4` | Hover dos botões de ajuda em coral claro. |
+
+Nenhuma cor solta nas telas: se faltar um tom, crie o token em `styles.css`.
+
 `magenta` e `cyan` continuam definidos por compatibilidade, mas não são usados nas telas.
 
 ## Tipografia
@@ -35,10 +40,10 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 ## Componentes e padrões
 
 - `AppShell`: topo **azul-escuro (navy)** em todos os tamanhos, com a assinatura da marca, o Xande e "Ajuda" (coral com texto navy) sempre rotulado; título da página grande no conteúdo; "Voltar" nas telas fora das abas; um único rodapé com o aviso "não substitui atendimento profissional".
-- **Desktop (≥ 1024px)**: a navegação sobe para o topo (Início, Simulador, Cuidar, Metas, Perfil) e a barra inferior some. O conteúdo usa até 1152px (`max-w-6xl`) e cada tela tem composição própria em 12 colunas: conteúdo principal (7–8 colunas) + coluna lateral fixa (4–5 colunas, `sticky top-28`). Ex.: home = contador grande + trilha | Xande e caminhos; Simulador = formulário fixo | revelação; Autoavaliação = pergunta | progresso; Guia = artigo | índice dos passos. O onboarding vira tela dividida com painel navy da marca à esquerda.
+- **Desktop (≥ 1024px)**: a navegação sobe para o topo (Início, Simulador, Cuidar, Metas, Perfil) e a barra inferior some. O conteúdo usa até 1152px (`max-w-6xl`) e cada tela tem composição própria em 12 colunas: conteúdo principal (7–8 colunas) + coluna lateral (4–5 colunas). **Nada acompanha a rolagem**: nenhuma coluna ou cartão usa `sticky` (decisão de 10/11/2026, o Luiz não gostou dos cartões deslizando com a tela). Ex.: home = contador grande + trilha | Xande e caminhos; Simulador = faixa de entrada na largura toda, depois revelação | linha do tempo e renda; Autoavaliação = pergunta | progresso; Guia = artigo | índice dos passos. O onboarding vira tela dividida com painel navy da marca à esquerda.
 - Tablet (768–1023px): uma coluna de até 672px, com a barra inferior.
 - **Regras de alinhamento no desktop**: o título da página (e a saudação, na home; a identidade, no Perfil) fica sempre **acima** da grade, ocupando a largura toda. Grade de 12 colunas com espaçamento único de 48px (`lg:gap-12`) em todas as telas. As duas colunas começam na mesma altura: ou as duas abrem com um cabeçalho de seção (`text-lg lg:text-xl`, semibold), ou nenhuma. Nunca compensar desalinhamento com `padding-top` fixo. Título de página: 44px (`lg:text-[2.75rem]`) em todas as telas.
-- Abas: Início, Simulador, **Cuidar** (autoavaliação, guia, Xande, comunidade, ajuda), Metas, Perfil.
+- Abas: Início, Simulador, **Cuidar** (autoavaliação, guia, guia da rede de apoio, Xande, comunidade, ajuda), Metas, Perfil.
 - Listas em linhas (`divide-y` dentro de um cartão) em vez de grades de cartões iguais.
 - Área de toque mínima de 44px; foco visível em teal profundo (`:focus-visible`).
 - Ícones Lucide, nunca emoji como ícone.
@@ -60,11 +65,13 @@ Cada tela tem **uma** superfície rica (o contador na home, a revelação no Sim
 
 ## Telas com regras próprias
 
-- **Cuidar**: bento com uma identidade por item. Ajuda (coral), Autoavaliação (superfície rica teal-ink, com a escala de faixas), Xande (teal-soft com prévia da conversa), Guia (branco com os 3 primeiros passos) e Comunidade (tracejado, "Em breve").
+- **Cuidar**: bento com uma identidade por item. Ajuda (coral), Autoavaliação (superfície rica teal-ink, com a escala de faixas), Xande (teal-soft com prévia da conversa), Guia (branco com os 3 primeiros passos), Rede de apoio (navy com ícone em menta) e Comunidade (tracejado, "Em breve", faixa na largura toda no desktop).
 - **Home, "Para continuar"**: Simulador em cartão largo dourado (mostra o valor de 5 anos se já houver cálculo), Autoavaliação em branco com a escala, Guia em navy com os 7 passos. No fim da página, "Trocar perfil" leva a `/acesso`.
 - **Metas**: banco de 30 cuidados; 3 sugestões + 3 ideias extras por dia, trocadas à meia-noite do aparelho (timer até a meia-noite + nova checagem ao voltar para a aba). Nada se repete de um dia para o outro.
-- **AF Campus**: abre direto no painel de demonstração, sem login; a instituição é escolhida no topo. Um único aviso no alto (LGPD com o selo "Demonstração · dados fictícios"); a instituição aparece como subtítulo, abaixo de "Visão geral do mês"; "Exportar relatório" em teal profundo, como toda ação.
-- **Simulador no desktop**: antes do cálculo, a coluna da direita mostra um exemplo apagado (R$ 50 por semana) com "Usar R$ 50", em vez de um quadro vazio.
+- **AF Campus**: abre direto no painel de demonstração, sem login. O selo "Demonstração" fica no topo fixo, para aparecer em qualquer captura ou vídeo. Um único aviso no alto diz que os dados são fictícios e que a FIPECAFI é parceira e exemplo, **não cliente** (a frase vem da constante `NOT_CLIENT` e também vai para o CSV). A instituição aparece como subtítulo ("Exemplo: Faculdade FIPECAFI"), abaixo de "Visão geral do mês"; o seletor de instituição só existe com mais de uma parceira; "Exportar relatório" em teal profundo, como toda ação.
+- **Simulador**: a entrada lê como uma frase, "Valor por [semana | mês]". No desktop ela é uma faixa na largura toda; abaixo, a revelação (7 colunas) e um cartão com "Ao longo do tempo" e "Quanto isso pesa na sua renda" (5 colunas), começando na mesma altura. Cada período é um botão que muda o número grande. A renda é opcional e fica só no aparelho; os resultados falam do que volta para a pessoa ("de volta para você", "passam a ser seus"), nunca do que ela perdeu. Se houver uma aposta no futuro, a revelação diz em quantas semanas ela chega. Antes do cálculo, o desktop mostra um exemplo apagado (R$ 50 por semana) com "Usar R$ 50". Sem rendimento em destaque e sem "quanto você já perdeu".
+- **Guia para a rede de apoio** (`/guia/rede-de-apoio`): leitura em cinco partes, cada uma com uma forma própria. Sinais em lista de linhas; a conversa em pares de balões ("em vez de" riscado em cinza, "experimente" em teal profundo); o que não ajuda em termo + explicação; para onde levar em linhas clicáveis; "Cuide de você também" em teal-soft com a cursiva "Você também conta". Sempre "rede de apoio", nunca "quem está do lado".
+- **Instituição parceira na assinatura**: depois de um divisor fino, o nome da FIPECAFI em letras redesenhadas a partir do logo dela (`PartnerMark` em `brand-lockup.tsx`). No celular o nome vai para baixo de "AF People". Com a instituição no topo, o desktop usa os rótulos curtos ("Xande", "Ajuda") e, entre 1024 e 1279px, esconde os ícones da navegação.
 - **Perfil no desktop**: cartão dourado + números do caminho na esquerda; atalhos e instalação na direita.
 - **Comunidade**: uma página só (sem abas nem telas de bloqueio). Lista de espera em superfície teal-ink como única ação (com opção "quero ser mentor"), "Como vai funcionar" em três pilares (salas, mentores, anônimo e moderado) e uma prévia de conversa por sala, marcada uma vez como "Mensagens de exemplo".
 

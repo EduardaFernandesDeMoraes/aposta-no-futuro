@@ -78,7 +78,7 @@ export function CampusSupportCard({
           </ul>
           <a
             href="tel:188"
-            className="mt-3 flex min-h-12 items-center justify-center gap-2 rounded-full bg-coral-soft px-4 text-sm font-semibold text-coral-deep transition-colors hover:bg-[#fbdcd4]"
+            className="mt-3 flex min-h-12 items-center justify-center gap-2 rounded-full bg-coral-soft px-4 text-sm font-semibold text-coral-deep transition-colors hover:bg-coral-soft-hover"
           >
             <Phone className="h-4 w-4" strokeWidth={2.5} />
             Em crise? Ligue 188 (CVV, 24h)

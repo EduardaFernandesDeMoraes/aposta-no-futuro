@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Phone, MapPin, MessageSquare, ExternalLink } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Phone, MapPin, MessageSquare, ExternalLink } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { useEffect } from "react";
 import { trackOnce, EVENTS } from "@/lib/analytics";
@@ -153,6 +153,19 @@ function AjudaPage() {
 
       </div>
       </div>
+
+      <Link
+        to="/guia/rede-de-apoio"
+        className="mt-8 flex min-h-16 items-center gap-3 rounded-3xl border border-border bg-card px-5 py-4 transition-colors hover:border-teal-deep/40 lg:mt-12 lg:px-8"
+      >
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold text-navy">A ajuda é para outra pessoa?</span>
+          <span className="block text-sm text-muted-foreground">
+            Veja o guia para a rede de apoio: sinais, como conversar e para onde levar.
+          </span>
+        </span>
+        <ArrowRight className="h-5 w-5 flex-none text-teal-deep" />
+      </Link>
     </AppShell>
   );
 }

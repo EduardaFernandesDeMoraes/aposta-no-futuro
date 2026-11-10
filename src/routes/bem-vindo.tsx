@@ -288,12 +288,12 @@ function OnboardingFrame({ children }: { children: React.ReactNode }) {
             draggable={false}
           />
           <p className="text-xl font-bold tracking-tight">
-            Aposta no <span className="text-[#7fe6da]">Futuro</span>
+            Aposta no <span className="text-mint">Futuro</span>
           </p>
         </div>
 
         <div className="relative">
-          <p className="font-script text-[3rem] font-bold leading-none text-[#7fe6da]">
+          <p className="font-script text-[3rem] font-bold leading-none text-mint">
             Menos apostas.
           </p>
           <p className="mt-2 text-[3.25rem] font-semibold leading-[1.05] tracking-[-0.035em]">

@@ -210,12 +210,12 @@ function Comunidade() {
         {/* Lista de espera: a única ação da página */}
         <section
           aria-labelledby="lista"
-          className="lg:sticky lg:top-28 lg:order-2 lg:col-span-5"
+          className="lg:order-2 lg:col-span-5"
         >
           <h2 id="lista" className="scroll-mt-24 text-lg font-semibold text-navy lg:text-xl">Lista de espera</h2>
           <div className="mt-4 rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:rounded-[2rem] lg:p-8">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#7fe6da]" aria-hidden="true" />
+              <span className="h-1.5 w-1.5 rounded-full bg-mint" aria-hidden="true" />
               Em construção
             </span>
             <p className="mt-4 text-[1.5rem] font-semibold leading-tight tracking-[-0.02em]">
@@ -233,7 +233,7 @@ function Comunidade() {
                         key={r.id}
                         className={cn(
                           "flex min-h-16 cursor-pointer items-center gap-3.5 rounded-2xl border px-4 py-3 transition-colors",
-                          "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[#7fe6da] has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-teal-ink",
+                          "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-mint has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-teal-ink",
                           selected
                             ? "border-white bg-white text-teal-ink"
                             : "border-white/20 bg-white/[0.06] text-white hover:bg-white/10",
@@ -340,7 +340,7 @@ function Comunidade() {
                 )}
               </div>
               <div className="rounded-3xl bg-navy p-5 text-white">
-                <ShieldCheck className="h-6 w-6 text-[#7fe6da]" />
+                <ShieldCheck className="h-6 w-6 text-mint" />
                 <p className="mt-4 font-semibold">Anônimo e moderado</p>
                 <p className="mt-1 text-sm text-white/75">
                   Só apelido. Proibido divulgar apostas, casas ou palpites.

@@ -113,6 +113,9 @@ export function AppShell({
   const accessPartner =
     access.mode === "student" ? findPartner(access.partner)?.shortName : undefined;
   const partner = brand?.partner ?? accessPartner;
+  // Com a instituição na assinatura, o topo usa os rótulos curtos e menos
+  // espaço entre os grupos, para caber tudo em 1152px.
+  const compact = Boolean(partner);
   const isRoot = ROOT_PATHS.includes(location.pathname);
 
   const [tipSeen, setTipSeen] = useLocalStorage<boolean>("anf.dicaXande", false);
@@ -162,10 +165,18 @@ export function AppShell({
           rolando acima do header. O espaçador reserva a mesma altura. */}
       <div aria-hidden="true" className="h-[calc(4rem+env(safe-area-inset-top))] flex-none lg:h-[calc(4.5rem+env(safe-area-inset-top))]" />
       <header className="fixed inset-x-0 top-0 z-30 bg-navy text-white shadow-[0_1px_0_rgb(255_255_255/0.06),0_8px_24px_-16px_rgb(0_0_0/0.5)] pt-[env(safe-area-inset-top)]">
-        <div className="relative mx-auto flex h-16 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-2xl lg:h-[4.5rem] lg:max-w-6xl lg:gap-8 lg:px-8">
+        <div
+          className={cn(
+            "relative mx-auto flex h-16 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-2xl lg:h-[4.5rem] lg:max-w-6xl lg:px-8",
+            compact ? "lg:gap-5" : "lg:gap-8",
+          )}
+        >
           <Link
             to="/"
-            className="flex min-w-0 items-center gap-2 rounded-lg max-lg:flex-1 lg:mr-2 lg:shrink-0 lg:border-r lg:border-white/10 lg:pr-8"
+            className={cn(
+              "flex min-h-11 min-w-0 items-center gap-2 rounded-lg max-lg:flex-1 lg:shrink-0 lg:border-r lg:border-white/10",
+              compact ? "lg:pr-5" : "lg:mr-2 lg:pr-8",
+            )}
             aria-label="Aposta no Futuro, ir para o início"
           >
             <img
@@ -192,18 +203,25 @@ export function AppShell({
                       to={tab.to}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "relative inline-flex h-11 items-center gap-2 rounded-full px-3 text-[0.95rem] font-medium transition-colors xl:px-4",
+                        "relative inline-flex h-11 items-center gap-2 rounded-full px-3 text-[0.95rem] font-medium transition-colors",
+                        !compact && "xl:px-4",
                         active
                           ? "bg-white/10 text-white"
                           : "text-white/70 hover:bg-white/5 hover:text-white",
                       )}
                     >
-                      <Icon className="h-[18px] w-[18px]" strokeWidth={active ? 2.3 : 1.9} />
+                      <Icon
+                        className={cn("h-[18px] w-[18px]", compact && "lg:max-xl:hidden")}
+                        strokeWidth={active ? 2.3 : 1.9}
+                      />
                       {tab.label}
                       {active && (
                         <span
                           aria-hidden="true"
-                          className="absolute inset-x-3 -bottom-[13px] h-[3px] rounded-full bg-teal xl:inset-x-4"
+                          className={cn(
+                            "absolute inset-x-3 -bottom-[13px] h-[3px] rounded-full bg-teal",
+                            !compact && "xl:inset-x-4",
+                          )}
                         />
                       )}
                     </Link>
@@ -219,11 +237,15 @@ export function AppShell({
               aria-label="Conversar com o Xande"
               className="inline-flex h-11 items-center justify-center gap-2 rounded-full transition-colors max-lg:w-11 hover:bg-white/10 lg:bg-white/10 lg:px-4 lg:hover:bg-white/15"
             >
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-teal/20 text-[#7fe6da] lg:h-auto lg:w-auto lg:bg-transparent">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-teal/20 text-mint lg:h-auto lg:w-auto lg:bg-transparent">
                 <Sparkles className="h-[18px] w-[18px]" strokeWidth={2.2} />
               </span>
-              <span className="hidden text-sm font-semibold lg:inline xl:hidden">Xande</span>
-              <span className="hidden text-sm font-semibold xl:inline">Falar com o Xande</span>
+              <span className={cn("hidden text-sm font-semibold lg:inline", !compact && "xl:hidden")}>
+                Xande
+              </span>
+              {!compact && (
+                <span className="hidden text-sm font-semibold xl:inline">Falar com o Xande</span>
+              )}
             </button>
             <Link
               to="/ajuda"
@@ -231,15 +253,18 @@ export function AppShell({
               className="inline-flex h-11 items-center gap-1.5 rounded-full bg-coral px-3.5 text-sm font-semibold text-navy transition-colors hover:bg-[#ff7466] lg:px-4"
             >
               <Phone className="h-4 w-4" strokeWidth={2.4} />
-              <span className="xl:hidden">Ajuda</span>
-              <span className="hidden xl:inline">Preciso de ajuda</span>
+              <span className={cn(!compact && "xl:hidden")}>Ajuda</span>
+              {!compact && <span className="hidden xl:inline">Preciso de ajuda</span>}
             </Link>
           </div>
 
           {showTip && (
             <div
               role="status"
-              className="rise-in absolute right-[4.5rem] top-[calc(100%+6px)] z-40 w-64 rounded-2xl bg-card p-4 text-sm leading-snug text-navy shadow-soft ring-1 ring-border lg:right-[7.5rem] xl:right-[13.5rem]"
+              className={cn(
+                "rise-in absolute right-[4.5rem] top-[calc(100%+6px)] z-40 w-64 rounded-2xl bg-card p-4 text-sm leading-snug text-navy shadow-soft ring-1 ring-border lg:right-[7.5rem]",
+                !compact && "xl:right-[13.5rem]",
+              )}
             >
               <span
                 aria-hidden="true"
@@ -642,7 +667,7 @@ function ChatSheet({
                 onOpenChange(false);
                 navigate({ to: "/ajuda" });
               }}
-              className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-coral-soft px-3.5 text-sm font-semibold text-coral-deep transition-colors hover:bg-[#fbdcd4]"
+              className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-coral-soft px-3.5 text-sm font-semibold text-coral-deep transition-colors hover:bg-coral-soft-hover"
               aria-label="Preciso de ajuda agora"
             >
               <Phone className="h-4 w-4" strokeWidth={2.4} />
@@ -688,7 +713,7 @@ function ChatSheet({
                     className={cn(
                       "min-h-11 max-w-[90%] rounded-full px-4 py-2.5 text-left text-sm font-medium transition-colors",
                       q.id === "ajuda"
-                        ? "bg-coral-soft text-coral-deep hover:bg-[#fbdcd4]"
+                        ? "bg-coral-soft text-coral-deep hover:bg-coral-soft-hover"
                         : "border border-teal-deep/25 bg-card text-teal-ink hover:bg-teal-soft",
                     )}
                   >

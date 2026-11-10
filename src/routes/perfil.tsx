@@ -282,7 +282,7 @@ function Perfil() {
             />
             <div className="relative flex h-full flex-col">
               <p className="text-sm font-semibold">
-                Aposta no <span className="text-[#7fe6da]">Futuro</span>
+                Aposta no <span className="text-mint">Futuro</span>
               </p>
               <div className="mt-auto">
                 <p className="text-[0.95rem] text-white/85">Estou há</p>

@@ -121,15 +121,15 @@ function GuiaPararDeApostar() {
         ))}
       </ol>
 
-      <aside className="lg:sticky lg:top-28 lg:col-span-5">
+      <aside className="lg:col-span-5">
       <nav aria-label="Passos do guia" className="hidden rounded-[2rem] border border-border bg-card p-6 lg:block">
-        <p className="text-sm font-semibold text-navy">Neste guia</p>
+        <h2 className="text-lg font-semibold text-navy lg:text-xl">Neste guia</h2>
         <ol className="mt-3 space-y-1">
           {STEPS.map((s) => (
             <li key={s.n}>
               <a
                 href={`#passo-${s.n}`}
-                className="flex min-h-10 items-center gap-3 rounded-xl px-2 text-sm text-navy/80 transition-colors hover:bg-teal-soft hover:text-navy"
+                className="flex min-h-11 items-center gap-3 rounded-xl px-2 text-sm text-navy/80 transition-colors hover:bg-teal-soft hover:text-navy"
               >
                 <span className="tabular w-5 text-right font-semibold text-teal-deep">{s.n}</span>
                 {s.title}

@@ -26,6 +26,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as GuiaPararDeApostarRouteImport } from './routes/guia.parar-de-apostar'
+import { Route as GuiaRedeDeApoioRouteImport } from './routes/guia.rede-de-apoio'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -112,6 +113,11 @@ const GuiaPararDeApostarRoute = GuiaPararDeApostarRouteImport.update({
   path: '/guia/parar-de-apostar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuiaRedeDeApoioRoute = GuiaRedeDeApoioRouteImport.update({
+  id: '/guia/rede-de-apoio',
+  path: '/guia/rede-de-apoio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
+  '/guia/rede-de-apoio': typeof GuiaRedeDeApoioRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
+  '/guia/rede-de-apoio': typeof GuiaRedeDeApoioRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/guia/parar-de-apostar': typeof GuiaPararDeApostarRoute
+  '/guia/rede-de-apoio': typeof GuiaRedeDeApoioRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/guia/parar-de-apostar'
+    | '/guia/rede-de-apoio'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -210,6 +220,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/guia/parar-de-apostar'
+    | '/guia/rede-de-apoio'
   id:
     | '__root__'
     | '/'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/guia/parar-de-apostar'
+    | '/guia/rede-de-apoio'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   GuiaPararDeApostarRoute: typeof GuiaPararDeApostarRoute
+  GuiaRedeDeApoioRoute: typeof GuiaRedeDeApoioRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuiaPararDeApostarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guia/rede-de-apoio': {
+      id: '/guia/rede-de-apoio'
+      path: '/guia/rede-de-apoio'
+      fullPath: '/guia/rede-de-apoio'
+      preLoaderRoute: typeof GuiaRedeDeApoioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -393,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   GuiaPararDeApostarRoute: GuiaPararDeApostarRoute,
+  GuiaRedeDeApoioRoute: GuiaRedeDeApoioRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

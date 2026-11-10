@@ -31,11 +31,11 @@ import { playProductSwitch } from "@/lib/product-switch";
 export const Route = createFileRoute("/campus")({
   head: () => ({
     meta: [
-      { title: "AF Campus | Painel institucional — Aposta no Futuro" },
+      { title: "AF Campus | Painel de demonstração — Aposta no Futuro" },
       {
         name: "description",
         content:
-          "Painel institucional do Aposta no Futuro com indicadores agregados e anônimos de campanhas de prevenção.",
+          "Demonstração do painel institucional do Aposta no Futuro, com dados fictícios e indicadores agregados e anônimos.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -99,14 +99,14 @@ function useDemoData(partner: Partner) {
       (name, i) => ({ name, acessos: r(30, 60) + i * r(4, 9) }),
     );
     const pgsi = [
-      { name: "Sem risco", value: r(48, 56), color: "#16BFAC" },
-      { name: "Risco baixo", value: r(22, 28), color: "#0D6B60" },
-      { name: "Risco moderado", value: r(12, 16), color: "#F5A623" },
+      { name: "Sem risco", value: r(48, 56), color: "var(--teal)" },
+      { name: "Risco baixo", value: r(22, 28), color: "var(--teal-deep)" },
+      { name: "Risco moderado", value: r(12, 16), color: "var(--gold)" },
     ];
     pgsi.push({
       name: "Risco alto",
       value: 100 - pgsi.reduce((a, b) => a + b.value, 0),
-      color: "#FF5B4C",
+      color: "var(--coral)",
     });
     return {
       students,
@@ -120,6 +120,10 @@ function useDemoData(partner: Partner) {
     };
   }, [partner.code]);
 }
+
+/** Uma frase só, repetida no aviso, no rodapé e no relatório exportado. */
+const NOT_CLIENT =
+  "A FIPECAFI é instituição parceira e a faculdade da nossa equipe. Aparece aqui como exemplo e não é cliente do Aposta no Futuro.";
 
 const brl = (n: number) =>
   n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
@@ -142,7 +146,8 @@ function Dashboard({
   function exportReport() {
     const rows = [
       ["Relatório AF Campus — DEMONSTRAÇÃO (dados fictícios)"],
-      ["Instituição", partner.name],
+      ["Instituição usada como exemplo", partner.name],
+      ["Aviso", `${NOT_CLIENT} Todos os números são fictícios.`],
       ["Gerado em", new Date().toLocaleString("pt-BR")],
       [],
       ["Indicador", "Valor"],
@@ -181,7 +186,7 @@ function Dashboard({
       icon: Eye,
       label: "Usos de ferramentas",
       value: d.tools.toLocaleString("pt-BR"),
-      tone: "bg-teal-soft text-[#0f6f99]",
+      tone: "bg-teal-soft text-teal-deep",
     },
     {
       icon: ClipboardCheck,
@@ -193,7 +198,7 @@ function Dashboard({
       icon: HeartHandshake,
       label: "Acessos aos canais de ajuda",
       value: d.help.toLocaleString("pt-BR"),
-      tone: "bg-coral-soft text-[#c2392c]",
+      tone: "bg-coral-soft text-coral-deep",
     },
   ];
 
@@ -202,31 +207,44 @@ function Dashboard({
       {/* Fixo, como no AF People: o Safari do iOS 26 pinta a faixa do topo com a cor do header. */}
       <div aria-hidden="true" className="h-[calc(3.75rem+env(safe-area-inset-top))]" />
       <header className="fixed inset-x-0 top-0 z-30 bg-navy pt-[env(safe-area-inset-top)] text-white shadow-soft">
-        <div className="mx-auto flex h-[3.75rem] max-w-[1100px] items-center justify-between gap-3 px-4 py-2">
+        <div className="mx-auto flex h-[3.75rem] max-w-6xl items-center justify-between gap-3 px-4 py-2">
           <div className="flex min-w-0 items-center gap-2">
             <img src={logoMark} alt="" aria-hidden="true" className="h-7 w-7" />
-            <BrandLockup product="Campus" tone="dark" partner={narrow ? undefined : partner.shortName} as="h1" />
+            <BrandLockup
+              product="Campus"
+              tone="dark"
+              partner={narrow ? undefined : partner.shortName}
+              as="h1"
+            />
           </div>
           <div className="flex items-center gap-2">
-            <label className="sr-only" htmlFor="campus-instituicao">
-              Instituição
-            </label>
-            <select
-              id="campus-instituicao"
-              value={partner.code}
-              onChange={(e) => onChangePartner(e.target.value)}
-              className="h-11 max-w-[9.5rem] cursor-pointer rounded-full border border-white/20 bg-white/10 px-3 text-sm font-semibold text-white outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-white/60 sm:max-w-none"
-            >
-              {PARTNERS.map((p) => (
-                <option key={p.code} value={p.code} className="text-navy">
-                  {p.shortName}
-                </option>
-              ))}
-            </select>
+            {/* Fica no topo fixo: aparece em qualquer captura ou trecho de vídeo. */}
+            <span className="whitespace-nowrap rounded-full bg-gold-soft px-3 py-1 text-xs font-semibold text-gold-deep">
+              Demonstração
+            </span>
+            {PARTNERS.length > 1 && (
+              <>
+                <label className="sr-only" htmlFor="campus-instituicao">
+                  Instituição
+                </label>
+                <select
+                  id="campus-instituicao"
+                  value={partner.code}
+                  onChange={(e) => onChangePartner(e.target.value)}
+                  className="h-11 max-w-[9.5rem] cursor-pointer rounded-full border border-white/20 bg-white/10 px-3 text-sm font-semibold text-white outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-white/60 sm:max-w-none"
+                >
+                  {PARTNERS.map((p) => (
+                    <option key={p.code} value={p.code} className="text-navy">
+                      {p.shortName}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
             <button
               type="button"
               onClick={() => void playProductSwitch("People", () => navigate({ to: "/acesso" }))}
-              className="inline-flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
+              className="inline-flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
             >
               <LogOut className="h-4 w-4" />
               <span className="hidden sm:inline">Sair do Campus</span>
@@ -236,28 +254,28 @@ function Dashboard({
         </div>
       </header>
 
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-[1100px] px-4 pb-16 pt-5 outline-none">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-6xl px-4 pb-16 pt-5 outline-none">
         {/* Um aviso só: privacidade (LGPD) + selo de demonstração. */}
         <div className="flex items-start gap-3 rounded-2xl bg-teal-soft p-4">
           <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-teal-deep" strokeWidth={2.4} />
           <div className="min-w-0 flex-1">
-            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-navy">
-              Só dados agregados, protegidos pela LGPD
-              <span className="rounded-full bg-gold-soft px-2.5 py-0.5 text-xs font-semibold text-gold-deep ring-1 ring-gold/50">
-                Demonstração · dados fictícios
-              </span>
+            <p className="text-sm font-semibold text-navy">
+              Painel de demonstração, com dados fictícios
             </p>
-            <p className="mt-1 text-xs leading-relaxed text-navy/75">
-              Nenhum nome, e-mail, matrícula ou resposta individual aparece. Faixas com menos de
-              10 estudantes ficam ocultas.
+            <p className="mt-1 max-w-[80ch] text-sm leading-relaxed text-navy">{NOT_CLIENT}</p>
+            <p className="mt-2 max-w-[80ch] text-sm leading-relaxed text-navy/75">
+              Num painel real só entram dados agregados, protegidos pela LGPD: nenhum nome, e-mail,
+              matrícula ou resposta individual, e faixas com menos de 10 estudantes ficam ocultas.
             </p>
           </div>
         </div>
 
         <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold text-navy sm:text-2xl">Visão geral do mês</h2>
-            <p className="mt-0.5 text-sm text-muted-foreground">{partner.name}</p>
+            <h2 className="text-xl font-semibold tracking-[-0.02em] text-navy sm:text-2xl">
+              Visão geral do mês
+            </h2>
+            <p className="mt-0.5 text-sm text-muted-foreground">Exemplo: {partner.name}</p>
           </div>
           <Button
             onClick={exportReport}
@@ -276,7 +294,7 @@ function Dashboard({
                 <span className={`grid h-10 w-10 place-items-center rounded-xl ${k.tone}`}>
                   <I className="h-5 w-5" />
                 </span>
-                <p className="mt-3 text-2xl font-bold tabular-nums text-navy sm:text-3xl">
+                <p className="mt-3 text-2xl font-semibold tabular-nums text-navy sm:text-3xl">
                   {k.value}
                 </p>
                 <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{k.label}</p>
@@ -288,8 +306,14 @@ function Dashboard({
         <div className="mt-4 grid gap-4 lg:grid-cols-5">
           <section className="min-w-0 rounded-3xl bg-card p-5 shadow-card lg:col-span-3 lg:p-6">
             <h3 className="font-semibold text-navy">Engajamento no campus por semana</h3>
-            <p className="mt-0.5 text-sm text-muted-foreground">Acessos ao AF People vindos da campanha</p>
-            <div className="mt-5 h-64 lg:h-60">
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              Acessos ao AF People vindos da campanha
+            </p>
+            <div
+              className="mt-5 h-64 lg:h-60"
+              role="img"
+              aria-label={`Acessos por semana: de ${d.weeks[0].acessos} na semana 1 para ${d.weeks[d.weeks.length - 1].acessos} na semana ${d.weeks.length}.`}
+            >
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={d.weeks} margin={{ top: 8, right: 24, left: 0, bottom: 4 }}>
                   <CartesianGrid stroke="#e6edea" vertical={false} />
@@ -360,31 +384,28 @@ function Dashboard({
         <section className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="min-w-0 rounded-3xl bg-navy p-5 text-white shadow-soft">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10">
-              <PiggyBank className="h-5 w-5 text-[#7fe6da]" />
+              <PiggyBank className="h-5 w-5 text-mint" />
             </span>
-            <p className="mt-3 text-xs font-semibold text-[#7fe6da]">
+            <p className="mt-3 text-xs font-semibold text-mint">
               Metas financeiras simbólicas acumuladas
             </p>
-            <p className="mt-1 text-3xl font-bold tabular-nums">{brl(d.goalsValue)}</p>
+            <p className="mt-1 text-3xl font-semibold tabular-nums">{brl(d.goalsValue)}</p>
             <p className="mt-1 text-sm text-white/75">
               planejados em {d.goals} “apostas no futuro” criadas pelos estudantes.
             </p>
           </div>
           <div className="min-w-0 rounded-3xl bg-card p-5 shadow-card">
             <h3 className="text-sm font-semibold text-navy">Canais de apoio divulgados no app</h3>
+            <p className="mt-0.5 text-xs text-muted-foreground">Contatos públicos da faculdade.</p>
             <ul className="mt-3 space-y-2">
               {partner.channels.map((c) => (
                 <li key={c.label} className="rounded-2xl bg-background px-3 py-2">
-                  <p className="text-xs font-semibold text-teal-deep">
-                    {c.label}
-                  </p>
+                  <p className="text-xs font-semibold text-teal-deep">{c.label}</p>
                   <p className="break-words text-sm text-navy">{c.detail}</p>
                 </li>
               ))}
               <li className="rounded-2xl bg-coral-soft px-3 py-2">
-                <p className="text-xs font-semibold text-[#c2392c]">
-                  Crise
-                </p>
+                <p className="text-xs font-semibold text-coral-deep">Crise</p>
                 <p className="text-sm text-navy">CVV 188 · 24h, gratuito e sigiloso</p>
               </li>
             </ul>
@@ -392,8 +413,8 @@ function Dashboard({
         </section>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          AF Campus · Aposta no Futuro. Os estudantes usam o AF People de forma gratuita e anônima;
-          a instituição vê apenas indicadores agregados.
+          Demonstração com dados fictícios. Os estudantes usam o AF People de forma gratuita e
+          anônima; a instituição vê apenas indicadores agregados.
         </p>
       </main>
     </div>

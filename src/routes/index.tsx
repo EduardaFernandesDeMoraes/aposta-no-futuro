@@ -407,7 +407,7 @@ function Home() {
             to="/guia/parar-de-apostar"
             className="flex flex-col rounded-3xl bg-navy p-4 text-white transition-colors hover:bg-[#1d2d4c]"
           >
-            <BookOpen className="h-5 w-5 text-[#7fe6da]" />
+            <BookOpen className="h-5 w-5 text-mint" />
             <span className="mt-3 font-semibold leading-snug">Como parar de apostar</span>
             <span className="mt-1 text-sm leading-snug text-white/75">Guia em 7 passos</span>
             <span className="tabular mt-auto grid grid-cols-7 gap-1 pt-4 text-xs font-semibold" aria-hidden="true">

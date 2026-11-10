@@ -3,6 +3,7 @@ import {
   ArrowRight,
   BookOpen,
   ClipboardCheck,
+  HeartHandshake,
   Lock,
   Phone,
   Sparkles,
@@ -22,7 +23,7 @@ export const Route = createFileRoute("/cuidar")({
       {
         name: "description",
         content:
-          "Autoavaliação anônima, guia para parar de apostar, conversa com o Xande e canais de apoio gratuitos, num só lugar.",
+          "Autoavaliação anônima, guia para parar de apostar, guia para a rede de apoio, conversa com o Xande e canais de ajuda gratuitos, num só lugar.",
       },
       { property: "og:title", content: "Cuidar de você | Aposta no Futuro" },
       { property: "og:url", content: "https://apostanofuturo.online/cuidar" },
@@ -157,7 +158,7 @@ function CuidarPage() {
                 Como parar de apostar
               </span>
             </span>
-            <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-navy text-[#7fe6da]">
+            <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-navy text-mint">
               <BookOpen className="h-5 w-5" />
             </span>
           </span>
@@ -177,10 +178,30 @@ function CuidarPage() {
           </span>
         </Link>
 
-        {/* 5. Comunidade: em construção */}
+        {/* 5. Rede de apoio: para quem está cuidando de outra pessoa */}
+        <Link
+          to="/guia/rede-de-apoio"
+          className="group flex flex-col rounded-3xl bg-navy p-5 text-white transition-colors hover:bg-[#1d2d4d] lg:col-span-5 lg:col-start-8 lg:row-start-3 lg:rounded-[2rem] lg:p-7"
+        >
+          <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-white/10 text-mint">
+            <HeartHandshake className="h-5 w-5" />
+          </span>
+          <span className="mt-4 block text-xl font-semibold leading-snug lg:text-2xl">
+            Como ajudar alguém que aposta
+          </span>
+          <span className="mt-1 block text-[0.95rem] leading-relaxed text-white/80">
+            Para colegas, amigos e familiares.
+          </span>
+          <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-mint lg:mt-auto lg:pt-6">
+            Ler o guia da rede de apoio
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </Link>
+
+        {/* 6. Comunidade: em construção */}
         <Link
           to="/comunidade"
-          className="group flex items-start gap-4 rounded-3xl border-2 border-dashed border-border p-5 transition-colors hover:border-teal-deep/40 lg:col-span-5 lg:col-start-8 lg:row-start-3 lg:flex-col lg:rounded-[2rem] lg:p-7"
+          className="group flex items-start gap-4 rounded-3xl border-2 border-dashed border-border p-5 transition-colors hover:border-teal-deep/40 lg:col-span-12 lg:row-start-4 lg:items-center lg:rounded-[2rem] lg:p-7"
         >
           <span className="relative grid h-11 w-11 flex-none place-items-center rounded-full bg-muted text-navy/70">
             <Users className="h-5 w-5" />

@@ -86,4 +86,5 @@ export const EVENTS = {
   campusSupportOpened: "apoio_campus_aberto",
   futureBetCreated: "aposta_futuro_criada",
   campusDashboardView: "painel_campus_demo",
+  supportGuideShared: "guia_rede_apoio_enviado",
 } as const;

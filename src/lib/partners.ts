@@ -1,5 +1,8 @@
 /**
- * Instituições do piloto AF People / AF Campus.
+ * Instituições parceiras do AF People / AF Campus.
+ *
+ * Parceira não é cliente: a FIPECAFI é a faculdade da equipe e autorizou o uso
+ * do nome. O painel do AF Campus continua sendo uma demonstração.
  *
  * Os contatos de apoio são os canais públicos divulgados pelas próprias
  * instituições. Confira periodicamente — telefones e horários mudam.
@@ -46,26 +49,6 @@ export const PARTNERS: Partner[] = [
       },
     ],
     sourceUrl: "https://fipecafi.edu.br/Fale_Conosco",
-  },
-  {
-    code: "UFU",
-    shortName: "UFU",
-    name: "Universidade Federal de Uberlândia",
-    city: "Uberlândia · MG",
-    emailDomain: "ufu.br",
-    supportTitle: "Saúde do Estudante · PROAE/UFU",
-    supportText:
-      "A Divisão de Saúde (Disau) da Pró-Reitoria de Assistência Estudantil oferece acolhimento psicológico gratuito para estudantes.",
-    channels: [
-      { label: "E-mail Disau", detail: "disau@proae.ufu.br", href: "mailto:disau@proae.ufu.br" },
-      { label: "Telefone", detail: "(34) 3230-9558", href: "tel:+553432309558" },
-      {
-        label: "Atendimento presencial",
-        detail: "Bloco 3E, sala 125 · Campus Santa Mônica",
-        href: "https://proae.ufu.br/disau",
-      },
-    ],
-    sourceUrl: "https://proae.ufu.br/disau",
   },
 ];
 

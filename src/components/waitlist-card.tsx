@@ -62,7 +62,7 @@ export function WaitlistCard({
   if (done) {
     return (
       <div className="flex items-start gap-3 text-left" role="status">
-        <CheckCircle2 className={cn("mt-0.5 h-5 w-5 flex-none", dark ? "text-[#7fe6da]" : "text-teal-deep")} />
+        <CheckCircle2 className={cn("mt-0.5 h-5 w-5 flex-none", dark ? "text-mint" : "text-teal-deep")} />
         <div>
           <p className={cn("font-semibold", dark ? "text-white" : "text-navy")}>
             Pronto! Você está na lista.

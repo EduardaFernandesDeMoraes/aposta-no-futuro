@@ -195,7 +195,7 @@ function Autoavaliacao() {
       intro="9 perguntas sobre os últimos 12 meses. Anônimo, e não é um diagnóstico."
     >
       <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
-      <div className="lg:sticky lg:top-28 lg:col-span-4 lg:rounded-[2rem] lg:border lg:border-border lg:bg-card lg:p-6 lg:order-1">
+      <div className="lg:col-span-4 lg:rounded-[2rem] lg:border lg:border-border lg:bg-card lg:p-6 lg:order-1">
       {saved && answeredCount === 0 && (
         <button
           type="button"
@@ -392,7 +392,7 @@ function Result({ score, onRestart }: { score: number; onRestart: () => void }) 
       </div>
 
       <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
-      <div className="lg:sticky lg:top-28 lg:col-span-5">
+      <div className="lg:col-span-5">
       {/* Resultado */}
       <section className="mt-8 lg:mt-0" aria-labelledby="faixa">
         <h2 id="faixa" className="text-lg font-semibold text-navy lg:text-xl">Sua faixa</h2>

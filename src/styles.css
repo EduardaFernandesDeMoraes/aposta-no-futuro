@@ -53,6 +53,8 @@
   --color-coral-soft: var(--coral-soft);
   --color-gold-deep: var(--gold-deep);
   --color-gold-soft: var(--gold-soft);
+  --color-mint: var(--mint);
+  --color-coral-soft-hover: var(--coral-soft-hover);
 
   --shadow-soft: 0 10px 30px -14px rgb(22 35 60 / 0.22);
   --shadow-card: 0 1px 2px rgb(22 35 60 / 0.04), 0 6px 18px -10px rgb(22 35 60 / 0.14);
@@ -106,11 +108,14 @@
   --teal-deep: #0d6b60;
   --teal-ink: #0a5249;
   --teal-soft: #dcf0ea;
+  /* Menta: o teal claro para texto e ícone sobre navy ou teal-ink. */
+  --mint: #7fe6da;
   /* Coral: reservado para ajuda e cuidado imediato. */
   --coral: #ff5b4c;
   --coral-foreground: #ffffff;
   --coral-deep: #b83427;
   --coral-soft: #fdebe6;
+  --coral-soft-hover: #fbdcd4;
   /* Dourado: conquistas e marcos. */
   --gold: #f5a623;
   --gold-foreground: #16233c;
@@ -453,7 +458,7 @@ html[data-splash="skip"] #af-splash {
   font-size: 3.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #7fe6da;
+  color: var(--mint);
 }
 @media (min-width: 1024px) {
   .af-switch-logo { width: 88px; height: 88px; }

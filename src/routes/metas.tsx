@@ -248,7 +248,7 @@ function Metas() {
       intro="Pequenos cuidados para hoje. Marque o que fizer sentido."
     >
       <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
-      <div className="lg:sticky lg:top-28 lg:col-span-4">
+      <div className="lg:col-span-4">
       <h2 className="sr-only text-lg font-semibold text-navy lg:not-sr-only lg:block lg:text-xl">Seu dia</h2>
       {/* Resumo do dia */}
       <section className="lg:mt-3 flex items-center gap-4 rounded-3xl bg-gold-soft p-5 lg:flex-col lg:items-start lg:rounded-[2rem] lg:p-8" aria-live="polite">

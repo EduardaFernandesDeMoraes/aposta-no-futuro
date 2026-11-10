@@ -62,33 +62,37 @@ function ProfileStep({
   return (
     <div className="rise-in flex flex-1 flex-col">
       {variant === "welcome" && (
-      <>
-      <div className="flex items-center gap-2.5 lg:hidden">
-        <img
-          src="/logo-maos-coracao.svg"
-          alt=""
-          aria-hidden="true"
-          width={44}
-          height={44}
-          className="h-11 w-11 select-none"
-          draggable={false}
-        />
-        <p className="text-lg font-bold tracking-tight text-navy">
-          Aposta no <span className="text-teal-deep">Futuro</span>
-        </p>
-      </div>
+        <>
+          <div className="flex items-center gap-2.5 lg:hidden">
+            <img
+              src="/logo-maos-coracao.svg"
+              alt=""
+              aria-hidden="true"
+              width={44}
+              height={44}
+              className="h-11 w-11 select-none"
+              draggable={false}
+            />
+            <p className="text-lg font-bold tracking-tight text-navy">
+              Aposta no <span className="text-teal-deep">Futuro</span>
+            </p>
+          </div>
 
-      <h2 className="mt-10 text-balance text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:mt-0 lg:text-[2.5rem]">
-        Que bom que você chegou.
-      </h2>
-      <p className="mt-3 text-[0.95rem] leading-relaxed text-muted-foreground">
-        Um espaço sem julgamento para cuidar da sua relação com as apostas e do
-        seu dinheiro. Gratuito e anônimo.
-      </p>
-      </>
+          <h2 className="mt-10 text-balance text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy lg:mt-0 lg:text-[2.5rem]">
+            Que bom que você chegou.
+          </h2>
+          <p className="mt-3 text-[0.95rem] leading-relaxed text-muted-foreground">
+            Um espaço sem julgamento para cuidar da sua relação com as apostas e do seu dinheiro.
+            Gratuito e anônimo.
+          </p>
+        </>
       )}
 
-      <p className={variant === "welcome" ? "mt-8 font-semibold text-navy" : "font-semibold text-navy"}>
+      <p
+        className={
+          variant === "welcome" ? "mt-8 font-semibold text-navy" : "font-semibold text-navy"
+        }
+      >
         {variant === "welcome" ? "Como você quer entrar?" : "Como você quer usar o app agora?"}
       </p>
       <div className="mt-3 space-y-2.5">
@@ -109,7 +113,7 @@ function ProfileStep({
       <div className="mt-auto pt-10 lg:pt-8">
         <Link
           to="/ajuda"
-          className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-coral-soft px-4 text-sm font-semibold text-coral-deep transition-colors hover:bg-[#fbdcd4]"
+          className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-coral-soft px-4 text-sm font-semibold text-coral-deep transition-colors hover:bg-coral-soft-hover"
         >
           <Phone className="h-4 w-4" strokeWidth={2.4} />
           Preciso de ajuda agora
@@ -192,18 +196,21 @@ function InstitutionStep({
         Assim a gente mostra os canais de apoio do seu campus.
       </p>
 
-      <label className="mt-5 flex min-h-12 items-center gap-2 rounded-2xl border border-input bg-card px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
-        <Search className="h-4 w-4 text-muted-foreground" />
-        <span className="sr-only">Buscar instituição</span>
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar faculdade ou universidade"
-          className="w-full bg-transparent py-3 text-base outline-none md:text-sm"
-        />
-      </label>
+      {/* A busca só aparece quando a lista fica longa. */}
+      {PARTNERS.length > 4 && (
+        <label className="mt-5 flex min-h-12 items-center gap-2 rounded-2xl border border-input bg-card px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
+          <Search className="h-4 w-4 text-muted-foreground" />
+          <span className="sr-only">Buscar instituição</span>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar faculdade ou universidade"
+            className="w-full bg-transparent py-3 text-base outline-none md:text-sm"
+          />
+        </label>
+      )}
 
-      <ul className="mt-4 space-y-2.5">
+      <ul className={PARTNERS.length > 4 ? "mt-4 space-y-2.5" : "mt-5 space-y-2.5"}>
         {list.map((p) => (
           <li key={p.code}>
             <button
