@@ -362,7 +362,7 @@ function Simulador() {
             </details>
           </div>
 
-          <div className="mt-8 lg:col-span-5 lg:mt-0 lg:rounded-[2rem] lg:border lg:border-border lg:bg-card lg:p-8">
+          <div className="mt-4 rounded-3xl border border-border bg-card p-5 lg:col-span-5 lg:mt-0 lg:rounded-[2rem] lg:p-8">
             {/* Linha do tempo: cada período muda o número grande. */}
             <section aria-labelledby="tempo-titulo">
               <h2 id="tempo-titulo" className="text-lg font-semibold text-navy lg:text-xl">
@@ -439,7 +439,7 @@ function Simulador() {
                 <label htmlFor="renda" className="mt-3 block text-sm font-medium text-navy">
                   Sua renda por mês
                 </label>
-                <div className="mt-1.5 flex min-h-12 items-center gap-2 rounded-2xl border border-input bg-card px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20 lg:bg-background">
+                <div className="mt-1.5 flex min-h-12 items-center gap-2 rounded-2xl border border-input bg-background px-4 focus-within:border-teal-deep focus-within:ring-2 focus-within:ring-teal-deep/20">
                   <span className="text-sm font-semibold text-muted-foreground">R$</span>
                   <input
                     id="renda"
@@ -456,32 +456,45 @@ function Simulador() {
                   Opcional. Fica só neste aparelho.
                 </p>
                 {share !== null && workDays !== null && (
-                  <ul className="mt-4 space-y-3" aria-live="polite">
-                    <li className="flex items-baseline gap-3">
-                      <span className="tabular w-[5.5rem] flex-none text-2xl font-semibold tracking-[-0.02em] text-gold-deep">
-                        {share >= 100 ? "100%" : `${share < 1 ? "<1" : Math.round(share)}%`}
-                      </span>
-                      <span className="text-[0.95rem] leading-snug text-navy">
+                  <div
+                    aria-live="polite"
+                    className="mt-4 divide-y divide-gold/30 rounded-2xl bg-gold-soft px-4 leading-relaxed text-navy"
+                  >
+                    <p className="py-3.5">
+                      <span className="tabular">{brl(monthly)}</span> por mês é{" "}
+                      <strong className="tabular font-semibold text-gold-deep">
                         {share >= 100
-                          ? "ou mais da sua renda, de volta para você todo mês."
-                          : "da sua renda, de volta para você todo mês."}
-                      </span>
-                    </li>
-                    <li className="flex items-baseline gap-3">
-                      <span className="tabular w-[5.5rem] flex-none text-2xl font-semibold tracking-[-0.02em] text-gold-deep">
-                        {workDays} {workDays === 1 ? "dia" : "dias"}
-                      </span>
-                      <span className="text-[0.95rem] leading-snug text-navy">
-                        de trabalho por ano que passam a ser seus.
-                      </span>
-                    </li>
-                  </ul>
+                          ? "mais do que toda a sua renda"
+                          : `${share < 1 ? "menos de 1" : Math.round(share)}% da sua renda`}
+                      </strong>
+                      .
+                    </p>
+                    <p className="py-3.5">
+                      {workDays > WORK_DAYS * 12 ? (
+                        <>
+                          Em um ano, é{" "}
+                          <strong className="font-semibold text-gold-deep">
+                            mais do que você ganha no ano inteiro
+                          </strong>
+                          .
+                        </>
+                      ) : (
+                        <>
+                          Em um ano, é o que você ganha em{" "}
+                          <strong className="tabular font-semibold text-gold-deep">
+                            {workDays} {workDays === 1 ? "dia" : "dias"} de trabalho
+                          </strong>
+                          .
+                        </>
+                      )}
+                    </p>
+                  </div>
                 )}
               </section>
             )}
           </div>
 
-          <details className="group mt-6 rounded-2xl border border-border bg-card lg:hidden">
+          <details className="group mt-4 rounded-2xl border border-border bg-card lg:hidden">
             <HowWeCalculate monthly={monthly} fv5y={fv5y} />
           </details>
         </div>

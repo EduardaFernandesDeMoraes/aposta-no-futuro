@@ -240,15 +240,11 @@ export function AppShell({
             <button
               onClick={openChat}
               aria-label="Conversar com o Xande"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full transition-colors max-lg:w-11 hover:bg-white/10 lg:bg-white/10 lg:pl-1.5 lg:pr-4 lg:hover:bg-white/15"
+              title="Conversar com o Xande"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-white/10"
             >
-              <XandeAvatar className="h-9 w-9 lg:h-8 lg:w-8" />
-              <span className={cn("hidden text-sm font-semibold lg:inline", !compact && "xl:hidden")}>
-                Xande
-              </span>
-              {!compact && (
-                <span className="hidden text-sm font-semibold xl:inline">Falar com o Xande</span>
-              )}
+              {/* Só o rosto do Xande, no celular e no desktop. */}
+              <XandeAvatar className="h-9 w-9" />
             </button>
             <Link
               to="/ajuda"
@@ -265,13 +261,13 @@ export function AppShell({
             <div
               role="status"
               className={cn(
-                "rise-in absolute right-[4.5rem] top-[calc(100%+6px)] z-40 w-64 rounded-2xl bg-card p-4 text-sm leading-snug text-navy shadow-soft ring-1 ring-border lg:right-[7.5rem]",
-                !compact && "xl:right-[13.5rem]",
+                "rise-in absolute right-[4.5rem] top-[calc(100%+6px)] z-40 w-64 rounded-2xl bg-card p-4 text-sm leading-snug text-navy shadow-soft ring-1 ring-border lg:right-[5.5rem]",
+                !compact && "xl:right-[10.25rem]",
               )}
             >
               <span
                 aria-hidden="true"
-                className="absolute -top-1.5 right-3 h-3 w-3 rotate-45 bg-card ring-1 ring-border [clip-path:polygon(0_0,100%_0,0_100%)] lg:right-16"
+                className="absolute -top-1.5 right-[3.625rem] h-3 w-3 rotate-45 bg-card ring-1 ring-border [clip-path:polygon(0_0,100%_0,0_100%)] lg:right-16"
               />
               <p>
                 Este é o <strong>Xande</strong>. Quando bater vontade de apostar,

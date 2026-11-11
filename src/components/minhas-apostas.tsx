@@ -97,7 +97,7 @@ export function MinhasApostas({
             onClick={() => setCreating(true)}
             className="mt-5 min-h-12 flex-none rounded-full bg-teal-deep px-6 text-sm font-semibold text-white hover:bg-teal-ink lg:mt-0"
           >
-            <Plus className="mr-1 h-4 w-4" /> Criar minha primeira aposta
+            <Plus className="mr-1 h-4 w-4" /> Criar meu primeiro objetivo
           </Button>
         </div>
       )}
