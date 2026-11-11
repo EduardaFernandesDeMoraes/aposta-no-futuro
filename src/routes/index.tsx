@@ -5,7 +5,8 @@ import confetti from "canvas-confetti";
 import {
   ClipboardCheck,
   Calculator,
-  BookOpen,
+  ArrowRight,
+  HeartHandshake,
   RefreshCw,
   Sparkles,
   ChevronRight,
@@ -402,23 +403,19 @@ function Home() {
             </span>
           </Link>
 
-          {/* Guia: com os 7 passos */}
+          {/* Guia para a rede de apoio (o guia de 7 passos fica no Cuidar) */}
           <Link
-            to="/guia/parar-de-apostar"
-            className="flex flex-col rounded-3xl bg-navy p-4 text-white transition-colors hover:bg-[#1d2d4c]"
+            to="/guia/rede-de-apoio"
+            className="group flex flex-col rounded-3xl bg-navy p-4 text-white transition-colors hover:bg-[#1d2d4c]"
           >
-            <BookOpen className="h-5 w-5 text-mint" />
-            <span className="mt-3 font-semibold leading-snug">Como parar de apostar</span>
-            <span className="mt-1 text-sm leading-snug text-white/75">Guia em 7 passos</span>
-            <span className="tabular mt-auto grid grid-cols-7 gap-1 pt-4 text-xs font-semibold" aria-hidden="true">
-              {[1, 2, 3, 4, 5, 6, 7].map((n) => (
-                <span
-                  key={n}
-                  className="grid aspect-square place-items-center rounded-full bg-white/10 text-white/80"
-                >
-                  {n}
-                </span>
-              ))}
+            <HeartHandshake className="h-5 w-5 text-mint" />
+            <span className="mt-3 font-semibold leading-snug">Como ajudar alguém que aposta</span>
+            <span className="mt-1 text-sm leading-snug text-white/75">
+              Guia para a rede de apoio
+            </span>
+            <span className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-semibold text-mint">
+              Ler o guia
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </span>
           </Link>
         </div>

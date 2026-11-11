@@ -256,19 +256,29 @@ function Dashboard({
 
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-6xl px-4 pb-16 pt-5 outline-none">
         {/* Um aviso só: privacidade (LGPD) + selo de demonstração. */}
-        <div className="flex items-start gap-3 rounded-2xl bg-teal-soft p-4">
-          <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-teal-deep" strokeWidth={2.4} />
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-navy">
+        <section
+          aria-labelledby="aviso-demo"
+          className="rounded-3xl bg-teal-soft p-5 lg:rounded-[2rem] lg:p-7"
+        >
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-card text-teal-deep shadow-card">
+              <ShieldCheck className="h-5 w-5" strokeWidth={2.2} />
+            </span>
+            <h2
+              id="aviso-demo"
+              className="text-base font-semibold leading-snug text-navy lg:text-lg"
+            >
               Painel de demonstração, com dados fictícios
-            </p>
-            <p className="mt-1 max-w-[80ch] text-sm leading-relaxed text-navy">{NOT_CLIENT}</p>
-            <p className="mt-2 max-w-[80ch] text-sm leading-relaxed text-navy/75">
+            </h2>
+          </div>
+          <div className="mt-4 space-y-3 text-justify text-sm leading-relaxed text-navy/85 hyphens-auto lg:grid lg:grid-cols-2 lg:gap-10 lg:space-y-0 lg:text-[0.95rem]">
+            <p>{NOT_CLIENT}</p>
+            <p className="lg:border-l lg:border-teal-deep/20 lg:pl-10">
               Num painel real só entram dados agregados, protegidos pela LGPD: nenhum nome, e-mail,
-              matrícula ou resposta individual, e faixas com menos de 10 estudantes ficam ocultas.
+              matrícula ou resposta individual aparece.
             </p>
           </div>
-        </div>
+        </section>
 
         <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
           <div>

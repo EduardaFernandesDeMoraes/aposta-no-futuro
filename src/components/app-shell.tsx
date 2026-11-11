@@ -167,8 +167,8 @@ export function AppShell({
       <header className="fixed inset-x-0 top-0 z-30 bg-navy text-white shadow-[0_1px_0_rgb(255_255_255/0.06),0_8px_24px_-16px_rgb(0_0_0/0.5)] pt-[env(safe-area-inset-top)]">
         <div
           className={cn(
-            "relative mx-auto flex h-16 w-full max-w-md items-center justify-between gap-3 px-4 py-2 sm:max-w-2xl lg:h-[4.5rem] lg:max-w-6xl lg:px-8",
-            compact ? "lg:gap-5" : "lg:gap-8",
+            "relative mx-auto flex h-16 w-full max-w-md items-center justify-between px-4 py-2 sm:max-w-2xl lg:h-[4.5rem] lg:max-w-6xl lg:px-8",
+            compact ? "gap-2 sm:gap-3 lg:gap-5" : "gap-3 lg:gap-8",
           )}
         >
           <Link
@@ -185,7 +185,11 @@ export function AppShell({
               aria-hidden="true"
               width={30}
               height={30}
-              className="h-[30px] w-[30px] shrink-0 select-none lg:h-9 lg:w-9"
+              className={cn(
+                "h-[30px] w-[30px] shrink-0 select-none lg:h-9 lg:w-9",
+                // Em celulares estreitos (menos de 390px), o ícone dá lugar ao nome da instituição.
+                compact && "max-[389px]:hidden",
+              )}
               draggable={false}
             />
             <BrandLockup tone="dark" product={brand?.product ?? "People"} partner={partner} />

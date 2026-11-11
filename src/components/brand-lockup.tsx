@@ -2,8 +2,9 @@ import { cn } from "@/lib/utils";
 
 /**
  * Assinatura do produto: "AF" em Poppins + "People" ou "Campus" em cursiva,
- * com a instituição parceira depois de um divisor fino. No celular não cabe
- * lado a lado com o Xande e a Ajuda, então o nome dela vai para baixo.
+ * com a instituição parceira depois de um divisor fino. No celular o nome dela
+ * fica menor, e o topo esconde o ícone das mãos para caber tudo numa linha só
+ * (ver `app-shell.tsx`).
  * `tone="dark"` para usar sobre fundo navy.
  */
 export function BrandLockup({
@@ -21,15 +22,7 @@ export function BrandLockup({
 }) {
   const dark = tone === "dark";
   return (
-    <Tag
-      className={cn(
-        "flex min-w-0",
-        partner
-          ? "flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5"
-          : "items-center",
-        className,
-      )}
-    >
+    <Tag className={cn("flex min-w-0", "items-center", partner && "gap-2 sm:gap-2.5", className)}>
       <span className="flex items-baseline gap-1 whitespace-nowrap leading-none">
         <span
           className={cn(
@@ -53,7 +46,7 @@ export function BrandLockup({
           <span
             aria-hidden="true"
             className={cn(
-              "hidden h-6 w-px flex-none sm:block",
+              "h-5 w-px flex-none max-[349px]:hidden sm:h-6",
               dark ? "bg-white/30" : "bg-navy/20",
             )}
           />
@@ -78,7 +71,7 @@ function PartnerMark({ name, className }: { name: string; className?: string }) 
         viewBox="-12 -4 252 48"
         role="img"
         aria-label="FIPECAFI"
-        className={cn("h-3 w-auto flex-none sm:h-[18px]", className)}
+        className={cn("h-3.5 w-auto flex-none max-[349px]:hidden sm:h-[18px]", className)}
       >
         <g
           fill="none"

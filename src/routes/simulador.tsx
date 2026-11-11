@@ -317,13 +317,15 @@ function Simulador() {
       </form>
 
       {!demo && (
-        <div className="lg:mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-12">
-          <div className="lg:col-span-7">
-            <div className="rise-in" key={weekly}>
+        // As duas colunas terminam na mesma linha: a revelação cresce até
+        // "Como calculamos" encostar na base do cartão da direita.
+        <div className="lg:mt-12 lg:grid lg:grid-cols-12 lg:items-stretch lg:gap-12">
+          <div className="lg:col-span-7 lg:flex lg:flex-col">
+            <div className="rise-in lg:flex lg:flex-1 lg:flex-col" key={weekly}>
               {/* A revelação */}
               <section
                 aria-live="polite"
-                className="relative mt-10 overflow-hidden rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:mt-0 lg:rounded-[2.25rem] lg:p-10"
+                className="relative mt-10 overflow-hidden rounded-[1.75rem] bg-teal-ink p-6 text-white shadow-soft lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:rounded-[2.25rem] lg:p-10"
               >
                 <p className="text-[0.95rem] text-white/85 lg:text-lg">
                   Em {selected.label} sem apostar, você teria
@@ -347,7 +349,7 @@ function Simulador() {
                 ) : null}
                 <a
                   href="#minhas-apostas"
-                  className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-teal-ink transition-colors hover:bg-teal-soft"
+                  className="mt-5 inline-flex min-h-12 w-fit items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-teal-ink transition-colors hover:bg-teal-soft lg:mt-auto"
                 >
                   {nextBet ? "Ver minhas apostas no futuro" : "Criar uma aposta no futuro"}
                   <ArrowDown className="h-4 w-4" />
