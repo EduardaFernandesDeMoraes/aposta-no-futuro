@@ -15,19 +15,22 @@ const LINK =
 export function SiteFooter() {
   return (
     <footer className="mt-14 border-t border-border/60 pt-6 text-center text-xs leading-relaxed text-muted-foreground/90 lg:mt-20 lg:flex lg:items-center lg:justify-between lg:gap-10 lg:pt-5 lg:text-left">
-      <p className="mx-auto max-w-[46ch] lg:mx-0 lg:max-w-[62ch]">
-        O Aposta no Futuro é um apoio e não substitui atendimento profissional. Em
-        emergência, ligue{" "}
-        {/* Número de crise: o padding vertical (inline) amplia a área de toque
+      <p className="mx-auto max-w-[46ch] lg:mx-0 lg:max-w-none lg:flex-1">
+        O Aposta no Futuro é um apoio e não substitui atendimento profissional.{" "}
+        {/* A segunda frase nunca quebra no meio: ou cabe na mesma linha, ou desce inteira. */}
+        <span className="whitespace-nowrap">
+          Em emergência, ligue{" "}
+          {/* Número de crise: o padding vertical (inline) amplia a área de toque
             sem mudar a altura da linha. */}
-        <a
-          href="tel:188"
-          aria-label="Ligar para o CVV, 188"
-          className="-mx-1 rounded-md px-1 py-3.5 font-semibold text-navy/75 transition-colors hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-deep/30"
-        >
-          188
-        </a>{" "}
-        (CVV) ou 192.
+          <a
+            href="tel:188"
+            aria-label="Ligar para o CVV, 188"
+            className="-mx-1 rounded-md px-1 py-3.5 font-semibold text-navy/75 transition-colors hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-deep/30"
+          >
+            188
+          </a>{" "}
+          (CVV) ou 192.
+        </span>
       </p>
       <nav
         aria-label="Links institucionais"

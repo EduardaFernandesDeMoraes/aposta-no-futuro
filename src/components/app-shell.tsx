@@ -709,15 +709,16 @@ function ChatSheet({
               </div>
             )}
 
-            {/* Respostas rápidas, logo abaixo da mensagem do Xande */}
+            {/* Respostas rápidas, logo abaixo da mensagem do Xande.
+                Todas com a largura da mais comprida. */}
             {quick.length > 0 && !typing && (
-              <div className="flex flex-col items-start gap-2 pl-1">
+              <div className="ml-1 grid w-fit max-w-[90%] gap-2">
                 {quick.map((q) => (
                   <button
                     key={q.id}
                     onClick={() => handleQuick(q.id)}
                     className={cn(
-                      "min-h-11 max-w-[90%] rounded-full px-4 py-2.5 text-left text-sm font-medium transition-colors",
+                      "min-h-11 w-full rounded-full px-4 py-2.5 text-left text-sm font-medium transition-colors",
                       q.id === "ajuda"
                         ? "bg-coral-soft text-coral-deep hover:bg-coral-soft-hover"
                         : "border border-teal-deep/25 bg-card text-teal-ink hover:bg-teal-soft",
