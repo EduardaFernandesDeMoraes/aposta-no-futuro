@@ -155,7 +155,7 @@ function Dashboard({
       ["Usos de ferramentas", String(d.tools)],
       ["Autoavaliações concluídas", String(d.assessments)],
       ["Acessos aos canais de ajuda", String(d.help)],
-      ["Apostas no futuro criadas", String(d.goals)],
+      ["Objetivos criados", String(d.goals)],
       ["Metas financeiras simbólicas acumuladas (R$)", String(d.goalsValue)],
       [],
       ["Distribuição agregada da autoavaliação (PGSI)", "%"],
@@ -401,7 +401,7 @@ function Dashboard({
             </p>
             <p className="mt-1 text-3xl font-semibold tabular-nums">{brl(d.goalsValue)}</p>
             <p className="mt-1 text-sm text-white/75">
-              planejados em {d.goals} “apostas no futuro” criadas pelos estudantes.
+              planejados em {d.goals} objetivos criados pelos estudantes.
             </p>
           </div>
           <div className="min-w-0 rounded-3xl bg-card p-5 shadow-card">

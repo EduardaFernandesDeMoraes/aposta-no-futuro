@@ -97,7 +97,7 @@ const CHALLENGES: Challenge[] = [
   { id: "ar-livre", icon: Leaf, title: "10 minutos ao ar livre", description: "Uma praça, uma janela aberta, um quintal. Luz do dia ajuda o humor." },
   { id: "playlist", icon: Music, title: "Uma playlist para os dias difíceis", description: "Músicas que te acalmam ou te animam, prontas para quando a vontade aparecer." },
   { id: "extrato", icon: Receipt, title: "Olhe suas contas com calma", description: "Veja o extrato do mês sem se julgar. Saber onde está o dinheiro devolve o controle." },
-  { id: "aposta-futuro", icon: Sprout, title: "Alimente uma aposta no futuro", description: "Registre no Simulador um valor que você separou para um objetivo seu." },
+  { id: "aposta-futuro", icon: Sprout, title: "Alimente um objetivo seu", description: "Registre no Simulador um valor que você separou." },
   { id: "hobby", icon: Palette, title: "Volte para um hobby antigo", description: "Desenho, violão, jogo de tabuleiro, crochê. Algo que te prenda sem dinheiro em jogo." },
   { id: "algo-bom", icon: Smile, title: "Anote algo bom de hoje", description: "Uma coisa pequena que deu certo. É um treino para enxergar o que funciona." },
   { id: "regra-15", icon: Timer, title: "Regra dos 15 minutos", description: "Se a vontade aparecer, espere 15 minutos antes de qualquer decisão. Ela costuma passar." },

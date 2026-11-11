@@ -107,7 +107,7 @@ export function MinhasApostas({
           variant="outline"
           className="mt-4 min-h-11 rounded-full border-teal-deep/30 bg-card px-5 text-sm font-semibold text-teal-deep hover:bg-teal-soft"
         >
-          <Plus className="mr-1 h-4 w-4" /> Nova aposta no futuro
+          <Plus className="mr-1 h-4 w-4" /> Novo objetivo
         </Button>
       )}
 
@@ -261,7 +261,7 @@ function BetForm({
         type="submit"
         className="mt-5 min-h-12 w-full rounded-full bg-teal-deep text-sm font-semibold text-white hover:bg-teal-ink"
       >
-        {initial ? "Salvar alterações" : "Criar minha aposta no futuro"}
+        {initial ? "Salvar alterações" : "Criar objetivo"}
       </Button>
     </form>
   );

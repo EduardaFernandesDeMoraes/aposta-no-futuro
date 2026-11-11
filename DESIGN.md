@@ -85,7 +85,7 @@ O Xande é o robô azul do story de 14/09/2026: corpo arredondado e brilhante, v
 
 ## Texto
 
-- **Vocabulário de "Minhas apostas no futuro":** o nome da seção fica, mas dentro dela cada item é um **objetivo** ("Criar meu primeiro objetivo", "Novo objetivo"). Não usar "aposta" sozinha em botões: remete às bets.
+- **Vocabulário de "Minhas apostas no futuro":** o nome da seção fica, mas dentro dela cada item é um **objetivo** ("Criar meu primeiro objetivo", "Novo objetivo", "Criar um objetivo", "Ver meus objetivos"). Não usar "aposta" nem "aposta no futuro" em botões e frases de interface: remete às bets. O mesmo vale para o painel do Campus ("objetivos criados pelos estudantes").
 
 - Direto ao ponto: uma frase de introdução por tela, sem repetir o que o rodapé ou outra tela já dizem.
 - O aviso "não substitui atendimento profissional" fica só no rodapé (e no onboarding e no chat do Xande, que não têm rodapé).

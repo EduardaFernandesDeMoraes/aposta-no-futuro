@@ -47,7 +47,7 @@ function AcessoRoute() {
   return (
     <AppShell
       title="Trocar perfil"
-      intro="Escolha como você quer usar o app agora. Seu contador, suas metas e suas apostas no futuro continuam salvos neste aparelho."
+      intro="Escolha como você quer usar o app agora. Seu contador, suas metas e seus objetivos continuam salvos neste aparelho."
     >
       <div className="max-w-xl">
         <AccessChooser variant="switch" onDone={handle} />

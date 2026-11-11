@@ -218,7 +218,7 @@ function Simulador() {
   const share = income ? (monthly / income) * 100 : null;
   const workDays = income ? Math.round(yearAmount / (income / WORK_DAYS)) : null;
 
-  // A aposta no futuro mais perto de ser alcançada, para ligar o valor a um objetivo.
+  // O objetivo mais perto de ser alcançado, para ligar o valor a um objetivo.
   const nextBet = bets
     .filter((b) => b.target - b.saved > 0)
     .sort((a, b) => a.target - a.saved - (b.target - b.saved))[0];
@@ -339,8 +339,7 @@ function Simulador() {
                 </p>
                 {nextBet && nextBetWeeks ? (
                   <p className="mt-5 max-w-[46ch] rounded-2xl bg-white/10 px-4 py-3 text-[0.95rem] leading-relaxed text-white">
-                    Com esse valor, sua aposta no futuro <strong>“{nextBet.name}”</strong> chega em
-                    cerca de{" "}
+                    Com esse valor, seu objetivo <strong>“{nextBet.name}”</strong> chega em cerca de{" "}
                     <strong className="tabular">
                       {nextBetWeeks} {nextBetWeeks === 1 ? "semana" : "semanas"}
                     </strong>
@@ -351,7 +350,7 @@ function Simulador() {
                   href="#minhas-apostas"
                   className="mt-5 inline-flex min-h-12 w-fit items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-teal-ink transition-colors hover:bg-teal-soft lg:mt-auto"
                 >
-                  {nextBet ? "Ver minhas apostas no futuro" : "Criar uma aposta no futuro"}
+                  {nextBet ? "Ver meus objetivos" : "Criar um objetivo"}
                   <ArrowDown className="h-4 w-4" />
                 </a>
               </section>
