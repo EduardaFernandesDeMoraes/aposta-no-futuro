@@ -8,7 +8,6 @@ import {
   ArrowRight,
   HeartHandshake,
   RefreshCw,
-  Sparkles,
   ChevronRight,
   PiggyBank,
   ArrowLeftRight,
@@ -21,6 +20,7 @@ import {
   Award,
   type LucideIcon,
 } from "lucide-react";
+import { XandeAvatar } from "@/components/xande-avatar";
 import { AppShell, openXande, useHoldXandeTip } from "@/components/app-shell";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Button } from "@/components/ui/button";
@@ -329,9 +329,7 @@ function Home() {
         onClick={openXande}
         className="mt-8 lg:mt-0 flex w-full items-center gap-4 rounded-3xl bg-teal-soft p-4 text-left transition-colors hover:bg-[#cfe9e1]"
       >
-        <span className="grid h-12 w-12 flex-none place-items-center rounded-full bg-card text-teal-deep shadow-card">
-          <Sparkles className="h-5 w-5" />
-        </span>
+        <XandeAvatar className="h-12 w-12 bg-card shadow-card" />
         <span className="min-w-0 flex-1">
           <span className="block font-semibold text-navy">Bateu vontade de apostar?</span>
           <span className="mt-0.5 block text-sm text-teal-ink">

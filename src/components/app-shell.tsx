@@ -8,7 +8,6 @@ import {
   HeartHandshake,
   Flag,
   User,
-  Sparkles,
   ChevronLeft,
   ChevronRight,
   Phone,
@@ -19,6 +18,8 @@ import {
   Heart,
 } from "lucide-react";
 import logoMark from "@/assets/logo-maos-coracao.svg";
+import xandeFull from "@/assets/xande.webp";
+import { XandeAvatar } from "@/components/xande-avatar";
 import { BrandLockup } from "@/components/brand-lockup";
 import { cn } from "@/lib/utils";
 
@@ -239,11 +240,9 @@ export function AppShell({
             <button
               onClick={openChat}
               aria-label="Conversar com o Xande"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full transition-colors max-lg:w-11 hover:bg-white/10 lg:bg-white/10 lg:px-4 lg:hover:bg-white/15"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full transition-colors max-lg:w-11 hover:bg-white/10 lg:bg-white/10 lg:pl-1.5 lg:pr-4 lg:hover:bg-white/15"
             >
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-teal/20 text-mint lg:h-auto lg:w-auto lg:bg-transparent">
-                <Sparkles className="h-[18px] w-[18px]" strokeWidth={2.2} />
-              </span>
+              <XandeAvatar className="h-9 w-9 lg:h-8 lg:w-8" />
               <span className={cn("hidden text-sm font-semibold lg:inline", !compact && "xl:hidden")}>
                 Xande
               </span>
@@ -656,9 +655,7 @@ function ChatSheet({
               >
                 <ChevronRight className="h-6 w-6" strokeWidth={2.2} />
               </button>
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-teal-soft text-teal-deep">
-                <Sparkles className="h-5 w-5" strokeWidth={2.2} />
-              </div>
+              <XandeAvatar className="h-10 w-10" />
               <div className="ml-1.5 min-w-0">
                 <div className="truncate text-[0.95rem] font-semibold text-navy">Xande</div>
                 <div className="text-xs text-muted-foreground">
@@ -684,7 +681,16 @@ function ChatSheet({
             ref={scrollRef}
             className="min-h-0 flex-1 space-y-4 overflow-y-auto bg-muted/60 p-4 pb-6"
           >
-            {/* Aviso sobre a natureza do guia, no começo da conversa */}
+            {/* O Xande recebe a pessoa no começo da conversa */}
+            <img
+              src={xandeFull}
+              alt="Xande, o mascote do Aposta no Futuro, acenando"
+              width={488}
+              height={760}
+              draggable={false}
+              className="mx-auto h-36 w-auto select-none"
+            />
+            {/* Aviso sobre a natureza do guia */}
             <p className="mx-auto max-w-[34ch] text-center text-xs leading-relaxed text-muted-foreground">
               Respostas prontas, ninguém está lendo esta conversa. O Xande não
               substitui atendimento profissional.

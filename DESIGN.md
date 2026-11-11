@@ -57,6 +57,14 @@ Nenhuma cor solta nas telas: se faltar um tom, crie o token em `styles.css`.
 - **Teclado:** o link "Pular para o conteúdo" (em `__root.tsx`) aponta para `#conteudo`. Todo `<main>` tem `id="conteudo"` e `tabIndex={-1}`, e a cada troca de tela o foco vai para ele.
 - Formulários: rótulo sempre visível (o texto de exemplo dentro do campo não substitui o rótulo).
 
+## Xande, o mascote
+
+O Xande é o robô azul do story de 14/09/2026: corpo arredondado e brilhante, visor escuro, olhos em arco ciano (sempre sorrindo, sem boca), uma antena e o símbolo do AF (mãos e coração) aceso no peito. Os arquivos-mestre estão na pasta do projeto, em `01 MARCA E IDENTIDADE/Xande (mascote)/`.
+
+- `XandeAvatar` (`components/xande-avatar.tsx`): o rosto num círculo teal-soft. Usa `src/assets/xande-rosto.webp`. Aparece no botão do Xande no topo, no cabeçalho do chat, no cartão da home e na lista do Cuidar. É decorativo: o nome "Xande" sempre vem em texto.
+- Corpo inteiro (`src/assets/xande.webp`): só no começo da conversa, acenando, acima do aviso.
+- Não usar o ícone de faíscas (Sparkles) para o Xande. Não redesenhar nem recolorir o mascote; para poses novas, gerar a partir do arquivo-mestre.
+
 ## Tom das telas sensíveis
 
 - A home nunca abre com recaída: "Precisei recomeçar" é um link discreto, e quem ainda aposta vê "Seu contador começa quando você quiser".
@@ -65,7 +73,7 @@ Nenhuma cor solta nas telas: se faltar um tom, crie o token em `styles.css`.
 
 ## Telas com regras próprias
 
-- **Cuidar**: bento com uma identidade por item. Ajuda (coral), Autoavaliação (superfície rica teal-ink, com a escala de faixas), Xande (teal-soft com prévia da conversa), Guia (branco com os 3 primeiros passos), Rede de apoio (navy com ícone em menta) e Comunidade (tracejado, "Em breve", faixa na largura toda no desktop).
+- **Cuidar** (enxugada em 10/11/2026): três blocos e nada mais. "Preciso de ajuda agora" (coral, uma linha), a Autoavaliação (única superfície rica, teal-ink) e uma lista em linhas com os outros caminhos: Xande, guia de 7 passos, guia da rede de apoio e Comunidade ("Em breve"). Sem prévias de conversa, de passos ou de escala, e sem o cartão "Apoio no seu campus" (ele fica na home). No celular a ordem é ajuda, autoavaliação, lista; no desktop a autoavaliação fica à esquerda e as duas colunas terminam na mesma linha.
 - **Home, "Para continuar"**: Simulador em cartão largo dourado (mostra o valor de 5 anos se já houver cálculo), Autoavaliação em branco com a escala, e o guia da rede de apoio em navy ("Como ajudar alguém que aposta"; o guia de 7 passos fica no Cuidar). No fim da página, "Trocar perfil" leva a `/acesso`.
 - **Metas**: banco de 30 cuidados; 3 sugestões + 3 ideias extras por dia, trocadas à meia-noite do aparelho (timer até a meia-noite + nova checagem ao voltar para a aba). Nada se repete de um dia para o outro.
 - **AF Campus**: abre direto no painel de demonstração, sem login. O selo "Demonstração" fica no topo fixo, para aparecer em qualquer captura ou vídeo. Um único aviso no alto (teal-soft, ícone em círculo branco, texto justificado, em duas colunas no desktop) diz que os dados são fictícios e que a FIPECAFI é parceira e exemplo, **não cliente** (a frase vem da constante `NOT_CLIENT` e também vai para o CSV). A instituição aparece como subtítulo ("Exemplo: Faculdade FIPECAFI"), abaixo de "Visão geral do mês"; o seletor de instituição só existe com mais de uma parceira; "Exportar relatório" em teal profundo, como toda ação.
