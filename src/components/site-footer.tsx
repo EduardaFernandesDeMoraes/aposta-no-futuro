@@ -17,8 +17,8 @@ export function SiteFooter() {
     <footer className="mt-14 border-t border-border/60 pt-6 text-center text-xs leading-relaxed text-muted-foreground/90 lg:mt-20 lg:flex lg:items-center lg:justify-between lg:gap-10 lg:pt-5 lg:text-left">
       <p className="mx-auto max-w-[46ch] lg:mx-0 lg:max-w-none lg:flex-1">
         O Aposta no Futuro é um apoio e não substitui atendimento profissional.{" "}
-        {/* A segunda frase nunca quebra no meio: ou cabe na mesma linha, ou desce inteira. */}
-        <span className="whitespace-nowrap">
+        {/* A segunda frase fica sempre numa linha própria, inteira. */}
+        <span className="block whitespace-nowrap">
           Em emergência, ligue{" "}
           {/* Número de crise: o padding vertical (inline) amplia a área de toque
             sem mudar a altura da linha. */}
